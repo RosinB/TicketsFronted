@@ -5,6 +5,10 @@ const Register = () => {
     // 使用狀態來管理表單輸入
     const [userName, setuserName] = useState("");
     const [userPhone, setuserPhone] = useState("");
+    const [password, setpassword] = useState("");
+    const [userIdCard, setuserIdCard] = useState("");
+    const [userEmail, setuserEmail] = useState("");
+
     const [error, setError] = useState(null); // 用於儲存錯誤信息
     const [successMessage, setSuccessMessage] = useState(""); // 用於儲存成功消息
 
@@ -18,6 +22,9 @@ const Register = () => {
             const response = await axios.post("http://localhost:8080/user/register", {
                 userName,
                 userPhone,
+                password,
+                userIdCard,
+                userEmail
             });
             console.log("Sending data:", response); // 打印即將發送的數據
 
@@ -50,14 +57,27 @@ const Register = () => {
             <form className="mt-6" onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">
-                        姓名
+                        帳號
                     </label>
                     <input
                         type="text"
                         className="w-full border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         value={userName}
                         onChange={(e) => setuserName(e.target.value)} // 更新狀態
-                        placeholder="請輸入姓名"
+                        placeholder="請輸入帳號"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-semibold mb-2">
+                        密碼
+                    </label>
+                    <input
+                        type="text"
+                        className="w-full border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                        value={password}
+                        onChange={(e) => setpassword(e.target.value)} // 更新狀態
+                        placeholder="請輸入密碼"
                         required
                     />
                 </div>
@@ -71,6 +91,33 @@ const Register = () => {
                         value={userPhone}
                         onChange={(e) => setuserPhone(e.target.value)} // 更新狀態
                         placeholder="請輸入電話"
+                        required
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-semibold mb-2">
+                        電郵
+                    </label>
+                    <input
+                        type="email"
+                        className="w-full border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                        value={userEmail}
+                        onChange={(e) => setuserEmail(e.target.value)} // 更新狀態
+                        placeholder="請輸入電郵"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-semibold mb-2">
+                        身分證
+                    </label>
+                    <input
+                        type="text"
+                        className="w-full border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                        value={userIdCard}
+                        onChange={(e) => setuserIdCard(e.target.value)} // 更新狀態
+                        placeholder="請輸入身分證"
                         required
                     />
                 </div>
