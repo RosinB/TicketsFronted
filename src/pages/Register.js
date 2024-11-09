@@ -29,7 +29,6 @@ const Register = () => {
             });
             console.log(response);
             // 如果請求成功，顯示成功消息
-            setSuccessMessage("註冊成功");
             setuserName(""); // 清空輸入框
             setuserPhone(""); // 清空輸入框
         } catch (err) {
