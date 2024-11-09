@@ -8,15 +8,12 @@ const Register = () => {
     const [password, setpassword] = useState("");
     const [userIdCard, setuserIdCard] = useState("");
     const [userEmail, setuserEmail] = useState("");
-
     const [error, setError] = useState(null); // 用於儲存錯誤信息
     const [successMessage, setSuccessMessage] = useState(""); // 用於儲存成功消息
 
     // 提交表單的處理函數
     const handleSubmit = async (e) => {
         e.preventDefault(); // 防止默認表單提交行為
-
-
         try {
             // 發送 POST 請求到後端
             const response = await axios.post("http://localhost:8080/user/register", {
@@ -26,31 +23,25 @@ const Register = () => {
                 userIdCard,
                 userEmail
             });
-            console.log("Sending data:", response); // 打印即將發送的數據
-
             // 如果請求成功，顯示成功消息
-            // setSuccessMessage(response.data);
+            setSuccessMessage("註冊成功");
             setuserName(""); // 清空輸入框
             setuserPhone(""); // 清空輸入框
         } catch (err) {
             // 處理錯誤
-            console.error("Failed to fetch members:", err);
-            if (err.response) {
-                console.error("Error data:", err.response.data);
-                setError(`Failed to fetch members: ${err.response.data.message}`); // 提取具體的錯誤信息
-            } else {
-                setError("Failed to fetch members: An unknown error occurred.");
-            }
+            console.error(err);
         }
     };
 
 
 
+    
+
     return (
         <div className="bg-white shadow-md rounded-lg p-8 max-w-lg mx-auto">
             <h2 className="text-3xl font-bold text-center text-gray-800">會員註冊</h2>
 
-            {/* 顯示成功或錯誤消息 */}
+            {/* 顯示成功或錯誤消息 && 這是判斷式*/}
             {successMessage && <div className="text-green-500 text-center">{successMessage}</div>}
             {error && <div className="text-red-500 text-center">{error}</div>}
 
