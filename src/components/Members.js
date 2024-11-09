@@ -45,6 +45,7 @@ const Member = () => {
                         <th className="border border-gray-300 px-4 py-2">名稱</th>
                         <th className="border border-gray-300 px-4 py-2">手機</th>
                         <th className="border border-gray-300 px-4 py-2">電子郵件</th>
+                        <th className="border border-gray-300 px-4 py-2">出生日期</th>
                         <th className="border border-gray-300 px-4 py-2">認證</th>
 
                     </tr>
@@ -56,6 +57,7 @@ const Member = () => {
                             <td className="border border-gray-300 px-4 py-2">{member.userName}</td>
                             <td className="border border-gray-300 px-4 py-2">{member.userPhone}</td>
                             <td className="border border-gray-300 px-4 py-2">{member.userEmail}</td>
+                            <td className="border border-gray-300 px-4 py-2">{member.userBirthDate}</td>
                             <td className="border border-gray-300 px-4 py-2">  {member.userIsVerified ? "有認證" : "沒認證"}
                             </td>
 
