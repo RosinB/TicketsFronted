@@ -31,6 +31,11 @@ const Register = () => {
             // 如果請求成功，顯示成功消息
             setuserName(""); // 清空輸入框
             setuserPhone(""); // 清空輸入框
+            setpassword(""); // 清空輸入框
+            setuserIdCard(""); // 清空輸入框
+            setuserEmail(""); // 清空輸入框
+            setuserBirthDate(""); // 清空輸入框
+            setSuccessMessage("註冊成功");
         } catch (err) {
             if (err.response) {
                 console.error("這是後端返回的錯誤！"); // 明確標明來源
@@ -104,8 +109,20 @@ const Register = () => {
                         value={userPhone}
                         onChange={(e) => {
                             const value = e.target.value;
-                            if (/^\d{0,10}$/.test(value)) { // 允許 0 到 10 位數字
+                
+                            // 限制只能輸入數字且最多 10 位
+                            if (/^\d{0,10}$/.test(value)) {
                                 setuserPhone(value);
+                
+                                // 即時判斷是否滿足條件
+                                if (value.length === 10) {
+                                    setFieldErrors((prev) => ({ ...prev, userPhone: null })); // 清除錯誤訊息
+                                } else {
+                                    setFieldErrors((prev) => ({
+                                        ...prev,
+                                        userPhone: "電話必須是 10 位數字",
+                                    })); // 顯示錯誤訊息
+                                }
                             }
                         }}
                         placeholder="請輸入電話"
