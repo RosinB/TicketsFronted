@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [userName, setUserName] = useState(""); // 儲存帳號
     const [password, setPassword] = useState(""); // 儲存密碼
     const [errorMessage, setErrorMessage] = useState(""); // 錯誤訊息
-    const [successMessage, setSuccessMessage] = useState(""); // 成功訊息
     
-    const navigate = useNavigate(); // 初始化導航功能
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // 防止默認表單提交行為
@@ -20,17 +18,13 @@ const Login = () => {
                 password,
             });
 
-            // 登入成功，顯示成功訊息
-            setSuccessMessage("登入成功！");
-            setErrorMessage(""); // 清除錯誤訊息
-
             // 提取 Token 和其他數據
             const { token, userName: tokenUserName } = response.data.data;
-            console.log("Token:", token, "UserName:", tokenUserName);
+            console.log("登入的使用者UserName:", tokenUserName);
             localStorage.setItem("token", token);
-            console.log(localStorage.getItem("token"));
 
-            navigate("/"); // 登入成功後跳轉到首頁 
+            window.location.href = "/";
+
 
         }
         catch (err) {
@@ -38,12 +32,11 @@ const Login = () => {
             if (err.response) {
                 console.error("登入失敗：", err.response.data.message);
                 setErrorMessage(err.response.data.message); // 顯示後端返回的錯誤訊息
-                setPassword("");
+                setPassword("");//清空密碼input
             } else {
                 console.error("請求失敗：", err);
                 setErrorMessage("系統錯誤，請稍後再試！");
             }
-            setSuccessMessage(""); // 清除成功訊息
         }
     };
 
@@ -51,8 +44,7 @@ const Login = () => {
         <div className="bg-white shadow-md rounded-lg p-8 max-w-lg mx-auto">
             <h2 className="text-3xl font-bold text-center text-gray-800">登入</h2>
 
-            {/* 顯示成功或錯誤消息 */}
-            {successMessage && <div className="text-green-500 text-center">{successMessage}</div>}
+            {/* 顯示錯誤消息 */}
             {errorMessage && <div className="text-red-500 text-center">{errorMessage}</div>}
 
             <form className="mt-6" onSubmit={handleSubmit}>

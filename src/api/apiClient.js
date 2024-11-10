@@ -8,8 +8,10 @@ const apiClient = axios.create({
 // 設置請求攔截器
 apiClient.interceptors.request.use(
     (config) => {
+        //獲得token 
         const token = localStorage.getItem("token");
         if (token) {
+            //在token前面加入Bearer 讓後端判斷
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
@@ -26,7 +28,8 @@ apiClient.interceptors.response.use(
 
             // 清除 Token 並跳轉到登入頁
             localStorage.removeItem("token");
-
+            
+            window.location.href = "/login";  
         }
         return Promise.reject(error);
     }
