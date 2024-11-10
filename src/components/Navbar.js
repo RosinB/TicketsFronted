@@ -30,7 +30,7 @@ const Navbar = () => {
         <nav className="bg-gradient-to-r from-blue-500 to-indigo-600 shadow-md sticky top-0 z-10">
             <div className="container mx-auto flex justify-between items-center py-4 px-6">
                 <h1 className="text-2xl font-bold text-white">
-                    <Link to="/">My Website</Link>
+                    <Link to="/">售票網站</Link>
                 </h1>
                 <ul className="flex space-x-6 text-white font-semibold">
                     <li>
@@ -46,6 +46,11 @@ const Navbar = () => {
                     <li>
                         <Link to="/members" className="hover:text-gray-300 transition">
                             顯示會員資料
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/userupdate" className="hover:text-gray-300 transition">
+                            更新會員資料
                         </Link>
                     </li>
                     <li>

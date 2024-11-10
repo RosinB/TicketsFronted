@@ -5,6 +5,7 @@ import Register from "../pages/Register";
 import Members from "../pages/Members";
 import Login from "../pages/Login";
 import ProtectedRoute from "../api/ProtectedRoute";
+import UserUpdate from "../pages/UserUpdate";
 
 const Body = () => {
     return (
@@ -13,12 +14,19 @@ const Body = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/members" 
-                            element={
-                                <ProtectedRoute>
-                                    <Members />
-                                </ProtectedRoute>
-                                    } />
+                    <Route path="/members"
+                        element={
+                            <ProtectedRoute>
+                                <Members />
+                            </ProtectedRoute>
+                        } />
+                    <Route path="/userupdate"
+                        element={
+                            <ProtectedRoute>
+                                <UserUpdate />
+                            </ProtectedRoute>
+
+                        } />
                     <Route path="/login" element={<Login />} />
                 </Routes>
             </div>

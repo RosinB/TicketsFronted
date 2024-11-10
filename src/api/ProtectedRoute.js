@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 const ProtectedRoute = ({ children }) => {
 
     const token = localStorage.getItem("token");
-    console.log("這是在ProtectedRoute")
+    console.log("網頁經過ProtectedRoute驗證token")
     if (!token) {
         // 如果沒有 Token，跳轉到登入頁
         return <Navigate to="/login" replace />;
