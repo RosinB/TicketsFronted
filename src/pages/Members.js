@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "../api/apiClient";
 
 const Member = () => {
     const [members, setMembers] = useState([]); // 儲存從後端獲取的資料
     const [loading, setLoading] = useState(true); // 加載狀態
     const [error, setError] = useState(null); // 錯誤訊息
 
+
     useEffect(() => {
         // 定義一個函式來從後端獲取資料
         const fetchMembers = async () => {
+        
             try {
-                const response = await axios.get("http://localhost:8080/user/all"); // 請求後端 API
+                const response = await apiClient.get("http://localhost:8080/user/all"); // 請求後端 API
                 console.log("Members data:", response.data);
                 setMembers(response.data.data); // 將回應資料存入 state
             } catch (err) {

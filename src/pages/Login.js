@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [userName, setUserName] = useState(""); // 儲存帳號
     const [password, setPassword] = useState(""); // 儲存密碼
     const [errorMessage, setErrorMessage] = useState(""); // 錯誤訊息
     const [successMessage, setSuccessMessage] = useState(""); // 成功訊息
+    
+    const navigate = useNavigate(); // 初始化導航功能
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // 防止默認表單提交行為
@@ -18,16 +21,24 @@ const Login = () => {
             });
 
             // 登入成功，顯示成功訊息
-            console.log(response.data);
             setSuccessMessage("登入成功！");
             setErrorMessage(""); // 清除錯誤訊息
-                   } 
-            catch (err) {
+
+            // 提取 Token 和其他數據
+            const { token, userName: tokenUserName } = response.data.data;
+            console.log("Token:", token, "UserName:", tokenUserName);
+            localStorage.setItem("token", token);
+            console.log(localStorage.getItem("token"));
+
+            navigate("/"); // 登入成功後跳轉到首頁 
+
+        }
+        catch (err) {
             // 處理登入失敗
             if (err.response) {
                 console.error("登入失敗：", err.response.data.message);
                 setErrorMessage(err.response.data.message); // 顯示後端返回的錯誤訊息
-                setPassword(""); 
+                setPassword("");
             } else {
                 console.error("請求失敗：", err);
                 setErrorMessage("系統錯誤，請稍後再試！");

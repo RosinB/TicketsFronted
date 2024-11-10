@@ -2,8 +2,10 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Homes"
 import Register from "../pages/Register";
-import Members from "./Members";
+import Members from "../pages/Members";
 import Login from "../pages/Login";
+import ProtectedRoute from "../api/ProtectedRoute";
+
 const Body = () => {
     return (
         <main className="flex-grow bg-gray-50 py-10">
@@ -11,7 +13,12 @@ const Body = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/members" element={<Members />} />
+                    <Route path="/members" 
+                            element={
+                                <ProtectedRoute>
+                                    <Members />
+                                </ProtectedRoute>
+                                    } />
                     <Route path="/login" element={<Login />} />
                 </Routes>
             </div>
