@@ -20,6 +20,11 @@ const Navbar = () => {
                         </Link>
                     </li>
                     <li>
+                        <Link to="/login" className="hover:text-gray-300 transition">
+                            登入
+                        </Link>
+                    </li>
+                    <li>
                         <Link to="/members" className="hover:text-gray-300 transition">
                             顯示會員資料
                         </Link>
