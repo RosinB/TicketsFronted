@@ -7,12 +7,14 @@ import Login from "../pages/Login";
 import ProtectedRoute from "../api/ProtectedRoute";
 import UserUpdate from "../pages/UserUpdate";
 import Event from "../components/Event"
+import EventTicket from "../pages/EventTicket"
 const Body = () => {
     return (
         <main className="flex-grow bg-gray-50 py-10">
             <div className="container mx-auto px-6">
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/eventticket" element={<EventTicket/>}></Route>
                     <Route path="/register" element={<Register />} />
                     <Route path="/event" element={<Event />} />
                     <Route path="/members"

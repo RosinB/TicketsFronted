@@ -38,6 +38,11 @@ const Navbar = () => {
                         </Link>
                     </li>
                     <li>
+                        <Link to="/eventticket" className="hover:text-gray-300 transition">
+                            購票網頁
+                        </Link>
+                    </li>
+                    <li>
                         <Link to="/event" className="hover:text-gray-300 transition">
                             票務資訊
                         </Link>
