@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import apiClient from "../api/apiClient";
+import apiClient from "../api/ApiClient";
 
 const Member = () => {
+    
     const [members, setMembers] = useState([]); // 儲存從後端獲取的資料
     const [loading, setLoading] = useState(true); // 加載狀態
     const [error, setError] = useState(null); // 錯誤訊息
@@ -12,12 +13,12 @@ const Member = () => {
         const fetchMembers = async () => {
         
             try {
-                const response = await apiClient.get("http://localhost:8080/user/all"); // 請求後端 API
-                console.log("Members data:", response.data);
+                const response = await apiClient.get("/user/all"); 
+                console.log("查詢的用戶資料:", response.data);
                 setMembers(response.data.data); // 將回應資料存入 state
                 
             } catch (err) {
-                setError("Failed to fetch members."); // 捕獲錯誤
+                setError("用戶資料讀取失敗"); 
                 console.error(err);
             } finally {
                 setLoading(false); // 結束加載
@@ -37,6 +38,7 @@ const Member = () => {
     if (error) {
         return <div>Error: {error}</div>;
     }
+
 
     return (
         <div className="p-4">

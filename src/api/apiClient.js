@@ -1,12 +1,12 @@
 import axios from "axios";
 
 // 建立 Axios 實例 //這會在請求上加token
-const apiClient = axios.create({
+const ApiClient = axios.create({
     baseURL: "http://localhost:8080", // 後端 API 的基礎 URL
 });
 
 // 設置請求攔截器
-apiClient.interceptors.request.use(
+ApiClient.interceptors.request.use(
     (config) => {
         //獲得token 
         const token = localStorage.getItem("token");
@@ -20,7 +20,7 @@ apiClient.interceptors.request.use(
 );
 
 // 設置響應攔截器
-apiClient.interceptors.response.use(
+ApiClient.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
@@ -35,4 +35,4 @@ apiClient.interceptors.response.use(
     }
 );
 
-export default apiClient;
+export default ApiClient;

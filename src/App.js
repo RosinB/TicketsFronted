@@ -1,9 +1,9 @@
 import React from "react";
-import Navbar from "./components/Navbar";
-import Body from "./components/Body";
-import Footer from "./components/Footer";
+import Navbar from "./layout/Navbar";
+import Body from "./layout/Body";
+import Footer from "./layout/Footer";
 
-const App = () => {
+function App(){
     return (
             <div className="flex flex-col min-h-screen">
                 <Navbar />

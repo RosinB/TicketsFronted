@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import apiClient from "../api/apiClient";
+import apiClient from "../api/ApiClient";
 
-const UserUpdate = () => {
+function UserUpdate  () {
     const [User, setUser] = useState({}); // 從後端獲取的資料
     const [userPhone, setUserPhone] = useState(""); // 電話
     const [userEmail, setUserEmail] = useState(""); // 電子郵件
@@ -10,13 +10,11 @@ const UserUpdate = () => {
 
     const [message, setMessage] = useState(null); // 提示訊息
     const [fieldErrors, setFieldErrors] = useState({});
-    const errors = {};
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await apiClient.get("http://localhost:8080/user/userUpdate"); 
-                console.log("user data:", response.data);
+                const response = await apiClient.get("/user/userUpdate"); 
 
                 const userdata=response.data.data;
                 setUser(userdata); // 將回應資料存入 state
@@ -26,7 +24,7 @@ const UserUpdate = () => {
                 setUserBirthDate(userdata.userBirthDate || "")
 
             }  catch (err) {
-                console.error(err);
+                console.error("獲取用戶資料失敗：",err);
             } 
         };
         fetchUser(); 
@@ -36,24 +34,19 @@ const UserUpdate = () => {
     const handleSubmit=async(e)=>{
         e.preventDefault();
 
-         // 驗證電話號碼
-        if (!/^\d{10}$/.test(userPhone))  errors.userPhone = "電話必須是 10 位數字";
-        
-        // 如果有錯誤，更新錯誤狀態並阻止提交
-        if (Object.keys(errors).length > 0) 
-        {
-            setFieldErrors(errors);
-            setMessage("更新失敗");
-            return;
-        }
         try{     
-                const response =await apiClient.post(
-                                                    "http://localhost:8080/user/userUpdate",
+                const response =await apiClient.post("/user/userUpdate",
                                                     {userName,userPhone,userEmail,userBirthDate} )
                     console.log(response);
                     setMessage("更新成功");}
         catch(err){
-                console.error(err);}
+                console.error(err);
+                setMessage("更新失敗，請稍後再試");
+
+                // 伺服器回傳的錯誤中提取錯誤資訊，並將其設定到狀態中
+                setFieldErrors(err.response?.data?.data || {});
+            
+            }
 
         }
 
@@ -66,14 +59,20 @@ const UserUpdate = () => {
 
             {/* message有值才會執行後面 */}
             {message && (
-                <p className="text-center text-sm text-red-500 mb-4">{message}</p>
+                <p
+                    className={`text-center text-sm font-semibold mb-4 ${
+                        message.includes("成功") ? "text-green-500" : "text-red-500"
+                    }`}
+                >
+                    {message}
+                </p>
             )}
 
 
             <form className="mt-6" onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">
-                        帳號
+                        帳號:
                     </label>
                     <input
                         type="text"
@@ -85,7 +84,7 @@ const UserUpdate = () => {
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">
-                        密碼
+                        密碼:
                     </label>
                     <input
                         type="password"
@@ -96,30 +95,13 @@ const UserUpdate = () => {
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">
-                        電話
+                        電話:
                     </label>
                     <input
                         type="text"
                         className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         value={userPhone}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                
-                            // 限制只能輸入數字且最多 10 位
-                            if (/^\d{0,10}$/.test(value)) {
-                                setUserPhone(value);
-                
-                                // 即時判斷是否滿足條件
-                                if (value.length === 10) {
-                                    setFieldErrors((prev) => ({ ...prev, userPhone: null })); // 清除錯誤訊息
-                                } else {
-                                    setFieldErrors((prev) => ({
-                                        ...prev,
-                                        userPhone: "電話必須是 10 位數字",
-                                    })); // 顯示錯誤訊息
-                                }
-                            }
-                        }}
+                        onChange={(e) => {setUserPhone(e.target.value)}}
                     />
                     {fieldErrors.userPhone && <p className="text-red-500 text-sm">{fieldErrors.userPhone}</p>}
 
@@ -127,7 +109,7 @@ const UserUpdate = () => {
 
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">
-                        電子信箱
+                        電子信箱:
                     </label>
                     <input
                         type="email"
@@ -139,7 +121,7 @@ const UserUpdate = () => {
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">
-                        身分證
+                        身分證:
                     </label>
                     <input
                         type="text"
@@ -152,7 +134,7 @@ const UserUpdate = () => {
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">
-                        出生日期
+                        出生日期:
                     </label>
                     <input
                         type="date"

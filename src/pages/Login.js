@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import axios from "axios";
+import apiClient from "../api/ApiClient";
 // import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+function Login() {
+
     const [userName, setUserName] = useState(""); // 儲存帳號
     const [password, setPassword] = useState(""); // 儲存密碼
     const [errorMessage, setErrorMessage] = useState(""); // 錯誤訊息
-    
+
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // 防止默認表單提交行為
+        setErrorMessage(""); // 清空之前的錯誤訊息
 
         try {
-            // 發送 POST 請求到後端
-            const response = await axios.post("http://localhost:8080/user/login", {
+            const response = await apiClient.post("/user/login", {
                 userName,
                 password,
             });
@@ -31,7 +32,7 @@ const Login = () => {
             // 處理登入失敗
             if (err.response) {
                 console.error("登入失敗：", err.response.data.message);
-                setErrorMessage(err.response.data.message); // 顯示後端返回的錯誤訊息
+                setErrorMessage(err.response.data.message || "登入失敗，請檢查您的帳號密碼！"); // 顯示後端返回的錯誤訊息
                 setPassword("");//清空密碼input
             } else {
                 console.error("請求失敗：", err);
@@ -45,7 +46,7 @@ const Login = () => {
             <h2 className="text-3xl font-bold text-center text-gray-800">登入</h2>
 
             {/* 顯示錯誤消息 */}
-            {errorMessage && <div className="text-red-500 text-center">{errorMessage}</div>}
+            {errorMessage && <div className="text-red-500 text-center mb-4">{errorMessage}</div>}
 
             <form className="mt-6" onSubmit={handleSubmit}>
                 <div className="mb-4">
@@ -79,6 +80,7 @@ const Login = () => {
                 </button>
             </form>
         </div>
+
     );
 };
 
