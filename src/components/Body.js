@@ -6,7 +6,7 @@ import Members from "../pages/Members";
 import Login from "../pages/Login";
 import ProtectedRoute from "../api/ProtectedRoute";
 import UserUpdate from "../pages/UserUpdate";
-
+import Event from "../components/Event"
 const Body = () => {
     return (
         <main className="flex-grow bg-gray-50 py-10">
@@ -14,6 +14,7 @@ const Body = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/event" element={<Event />} />
                     <Route path="/members"
                         element={
                             <ProtectedRoute>

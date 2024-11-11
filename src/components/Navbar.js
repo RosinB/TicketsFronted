@@ -11,7 +11,6 @@ const Navbar = () => {
         const token = localStorage.getItem("token");
         setIsLoggedIn(!!token); // 如果有 token，設置為已登錄
     }, []);
-
     // 登出功能
     const handleLogout = () => {
         // 清除 token
@@ -36,6 +35,11 @@ const Navbar = () => {
                     <li>
                         <Link to="/" className="hover:text-gray-300 transition">
                             首頁
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/event" className="hover:text-gray-300 transition">
+                            票務資訊
                         </Link>
                     </li>
                     <li>
