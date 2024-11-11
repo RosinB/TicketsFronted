@@ -38,9 +38,9 @@ const Register = () => {
             setSuccessMessage("註冊成功");
         } catch (err) {
             if (err.response) {
-                console.error("這是後端返回的錯誤！"); // 明確標明來源
-                console.error("錯誤訊息:", err.response.data.message); // 打印 "註冊失敗"
-                console.error("詳細錯誤資訊:", err.response.data.data); // 打印具體錯誤
+                console.error("這是後端返回的錯誤！"); 
+                console.error("錯誤訊息:", err.response.data.message); 
+                console.error("詳細錯誤資訊:", err.response.data.data); 
                 setFieldErrors(err.response.data.data || {}); // 將錯誤存入狀態
                 setSuccessMessage("註冊失敗");
 
