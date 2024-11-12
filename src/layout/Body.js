@@ -6,8 +6,8 @@ import Members from "../pages/Members";
 import Login from "../pages/Login";
 import ProtectedRoute from "../api/ProtectedRoute";
 import UserUpdate from "../pages/UserUpdate";
-import Event from "../pages/EventCard"
 import EventTicket from "../pages/EventTicket"
+import EventList from "../pages/EventList";
 
 
 
@@ -19,7 +19,7 @@ function Body(){
                     <Route path="/" element={<Home />} />
                     <Route path="/eventticket" element={<EventTicket/>} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/event" element={<Event />} />
+                    <Route path="/eventlist" element={<EventList/>}/>
                     <Route path="/members"
                         element={
                             <ProtectedRoute>
