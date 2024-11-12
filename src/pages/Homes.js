@@ -1,20 +1,17 @@
 import React from "react";
+import TicketCarouse from '../components/TicketCarousel'
 
 function Home() {
     return (
         <div className="text-center">
-               {/* 放圖片的區域 */}
-               <div className="bg-gray-300  mb-8 h-96 flex justify-center items-center -mt-2">
-               <img
-                    src="/path/to/your/image.jpg" // 替換為你的圖片路徑
-                    alt="圖片"
-                    className="max-h-full max-w-full object-contain"
-                />
+            {/* 放圖片的區域 */}
+
+            <div className="w-screen py-4 relative -mt-5 ">
+            <TicketCarouse />
             </div>
 
-      
 
-         
+
             {/* 註冊按鈕 */}
             <div className="mt-6">
                 <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition">

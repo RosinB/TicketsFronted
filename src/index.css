@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 基礎樣式設置 */
+@layer base {
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* 防止水平滾動條 */
+    }
+}
+
+@layer components {
+    .slick-list {
+        overflow: visible !important;
+    }
+    .slick-dots {
+        position: absolute !important;
+        bottom: 16px !important;
+        display: block !important;
+        text-align: center !important;
+        width: 100% !important;
+        z-index: 10 !important;
+    }
+
+    .slick-dots li {
+        display: inline-block !important;
+        margin: 0 4px !important;
+    }
+
+    .slick-dots li button:before {
+        font-size: 8px !important;
+        color: white !important; /* 點點顏色設為白色 */
+    }
+
+    .slick-dots li.slick-active button:before {
+        color: rgb(120, 120, 120) !important; /* 當前點顏色設為黃色 */
+    }
+    .slick-center img {
+        transform: scale(1.2); /* 中間圖片放大 */
+        transition: transform 0.3s ease; /* 過渡動畫 */
+    }
+}
