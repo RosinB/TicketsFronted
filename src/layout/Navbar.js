@@ -40,11 +40,6 @@ function Navbar() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/eventticket" className="hover:opacity-75 transition">
-                            購票網頁
-                        </Link>
-                    </li>
-                    <li>
                         <Link to="/eventlist" className="hover:opacity-75 transition">
                             購票列表
                         </Link>
