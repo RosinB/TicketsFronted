@@ -10,7 +10,7 @@ function ConcertList() {
     useEffect(() => {
         const fetchEvent = async () => {
             try {
-                const response = await ApiClient.get("/event/all");
+                const response = await ApiClient.get("/event/ticketAllPic");
                 setAllEvent(response.data.data); // 假設 API 返回的活動資料在 response.data.data
             } catch (err) {
                 console.log(err);

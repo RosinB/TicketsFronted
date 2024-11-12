@@ -1,9 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import { useNavigate } from "react-router-dom";
+import ApiClient from "../api/ApiClient";
+import { useState } from "react";
 function TicketCarouse() {
+
+    const [allEvent, setAllEvent] = useState([]);
+    const navigate = useNavigate();
+
+    // 從後端獲取活動資料
+    useEffect(() => {
+        const fetchEvent = async () => {
+            try {
+                const response = await ApiClient.get("/event/ticketAllPic");
+                setAllEvent(response.data.data); // 假設 API 返回的活動資料在 response.data.data
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        fetchEvent();
+    }, []);
+
+    const handleClick=(eventName)=>{
+
+        navigate("/eventticket", { state: { eventName } });
+
+    }
+    console.log(allEvent);
+
     const settings = {
         dots: true,
         infinite: true,
@@ -16,37 +43,38 @@ function TicketCarouse() {
         centerPadding: "-50px", // 中心模式的水平間隔
     };
 
+
+
+
+
     return (
         <div className="w-full h-full -mt-7 -mb-5 ">
             <Slider {...settings}>
-            <div className="">
-            <img
-                        src="/img/list2.jpg"
-                        className="w-full h-full object-cover mr-4"
-                        alt="Example image"
-                    />
+
+        {allEvent.map((event) => (
+                <div key={event.eventId} // 每個卡片需要唯一的 key
+                >
+                    {/* 圖片和跳轉連結 */}
+                        <img
+                            src={event.eventTicketPic} // 圖片來自 API 返回的資料
+                            alt={event.eventName} // 使用活動名稱作為圖片的替代文字
+                            className="w-full h-80 object-cover mr-4 transition-transform duration-300 ease-in-out hover:scale-105"
+                            onClick={() => handleClick(event.eventName)}
+
+                        />
+                
                 </div>
-                <div className="">
-                <img
-                        src="/img/list2.jpg"
-                        className="w-full h-full object-cover "
-                        alt="Example image"
-                    />
-                </div>
-                <div className="">
-                <img
-                        src="/img/list2.jpg"
-                        className="w-full h-full object-cover "
-                        alt="Example image"
-                    />
-                </div>
-                <div className="">
-                <img
-                        src="/img/list2.jpg"
-                        className="w-full h-full object-cover "
-                        alt="Example image"
-                    />
-                </div>
+            ))}
+
+
+
+
+
+
+
+
+
+
             </Slider>
             <style>
                 {`
