@@ -39,6 +39,7 @@ function Navbar() {
                             首頁
                         </Link>
                     </li>
+                   
                     <li>
                         <Link to="/eventlist" className="hover:opacity-75 transition">
                             購票列表

@@ -10,7 +10,6 @@ import EventTicket from "../pages/EventTicket"
 import EventList from "../pages/EventList";
 
 
-
 function Body(){
     return (
         <main className="flex-grow bg-gray-50 py-8">
