@@ -25,6 +25,12 @@ function TicketCarouse() {
         fetchEvent();
     }, []);
 
+
+
+
+
+    
+
     const handleClick = (eventId) => {
         navigate("/eventticket", { state: { eventId } });
 

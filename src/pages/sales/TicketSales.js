@@ -7,21 +7,76 @@ function TicketSales() {
     const [tickets, setTickets] = useState(null); // 初始值為 null
     const [loading, setLoading] = useState(true);
 
+    const fetchTicket = async () => {
+        try {
+            const response = await ApiService.fetchTicket(eventId);
+            setTickets(response.data.data);
+        } catch (error) {
+            console.error("TicketSales的資料沒有get到", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const salesTicket = async()=>{
+        try {
+            
+
+
+
+
+
+        } catch (error) {
+            
+        }
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     useEffect(() => {
-        const fetchTicket = async () => {
-            try {
-                const response = await ApiService.fetchTicket(eventId);
-                setTickets(response.data.data);
-            } catch (error) {
-                console.error("TicketSales的錯誤", error);
-            } finally {
-                setLoading(false);
-
-            }
-        };
-
+        
         fetchTicket();
     }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     if (loading) {
         return <LoadingSpinner />
     }
