@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import apiClient from "../api/ApiClient";
+import ApiService from "../../api/ApiService";
 
-function Register () {
+function Register() {
+    // console.log("當前路徑:", window.location.pathname);
     const [userName, setuserName] = useState("");
     const [userPhone, setuserPhone] = useState("");
     const [password, setpassword] = useState("");
@@ -19,27 +20,21 @@ function Register () {
         e.preventDefault(); // 防止默認表單提交行為
         try {
             // 發送 POST 請求到後端
-            const response = await apiClient.post("/user/register", {
+            const response = await ApiService.registerUser({
                 userName,
                 userPhone,
                 password,
                 userIdCard,
                 userEmail,
-                userBirthDate
-            });
+                userBirthDate});
             console.log(response);
-            setuserName(""); // 清空輸入框
-            setuserPhone(""); // 清空輸入框
-            setpassword(""); // 清空輸入框
-            setuserIdCard(""); // 清空輸入框
-            setuserEmail(""); // 清空輸入框
-            setuserBirthDate(""); // 清空輸入框
+            clearState();
             setSuccessMessage("註冊成功");
-            
+
         } catch (err) {
             if (err.response) {
-                console.error("錯誤訊息:", err.response.data.message); 
-                console.error("詳細錯誤資訊:", err.response.data.data); 
+                console.error("錯誤訊息:", err.response.data.message);
+                console.error("詳細錯誤資訊:", err.response.data.data);
                 setFieldErrors(err.response.data.data || {}); // 將錯誤存入狀態
                 setSuccessMessage("註冊失敗");
 
@@ -48,9 +43,17 @@ function Register () {
             }
         }
 
- 
-    };
 
+    };
+    const clearState=()=>{
+        setuserName(""); // 清空輸入框
+        setuserPhone(""); // 清空輸入框
+        setpassword(""); // 清空輸入框
+        setuserIdCard(""); // 清空輸入框
+        setuserEmail(""); // 清空輸入框
+        setuserBirthDate(""); // 清空輸入框
+
+    }
 
 
 
@@ -63,7 +66,7 @@ function Register () {
 
             <form className="mt-2" onSubmit={handleSubmit}>
                 <div className="mb-4">
-                    <label  className="block text-gray-700 text-sm font-semibold mb-2">
+                    <label className="block text-gray-700 text-sm font-semibold mb-2">
                         帳號:(字符數量4~10)
                     </label>
                     <input
@@ -98,7 +101,7 @@ function Register () {
                         type="text"
                         className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         value={userPhone}
-                        onChange={(e) => {setuserPhone(e.target.value)}}
+                        onChange={(e) => { setuserPhone(e.target.value) }}
                         placeholder="請輸入電話"
                         required
                     />

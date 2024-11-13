@@ -3,19 +3,20 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
-import ApiClient from "../api/ApiClient";
 import { useState } from "react";
+import ApiService from "../api/ApiService";
+
 function TicketCarouse() {
 
     const [allEvent, setAllEvent] = useState([]);
     const navigate = useNavigate();
 
-    // 從後端獲取活動資料
     useEffect(() => {
+
         const fetchEvent = async () => {
             try {
-                const response = await ApiClient.get("/event/ticketAllPic");
-                setAllEvent(response.data.data); // 假設 API 返回的活動資料在 response.data.data
+                const response = await ApiService.fetchAllPic();
+                setAllEvent(response.data.data);
             } catch (err) {
                 console.log(err);
             }
@@ -24,12 +25,10 @@ function TicketCarouse() {
         fetchEvent();
     }, []);
 
-    const handleClick=(eventName)=>{
-
-        navigate("/eventticket", { state: { eventName } });
+    const handleClick = (eventId) => {
+        navigate("/eventticket", { state: { eventId } });
 
     }
-    console.log(allEvent);
 
     const settings = {
         dots: true,
@@ -51,27 +50,20 @@ function TicketCarouse() {
         <div className="w-full h-full -mt-7 -mb-5 ">
             <Slider {...settings}>
 
-        {allEvent.map((event) => (
-                <div key={event.eventId} // 每個卡片需要唯一的 key
-                >
-                    {/* 圖片和跳轉連結 */}
+                {allEvent.map((event) => (
+                    <div key={event.eventId} // 每個卡片需要唯一的 key
+                    >
+                        {/* 圖片和跳轉連結 */}
                         <img
                             src={event.eventTicketPic} // 圖片來自 API 返回的資料
                             alt={event.eventName} // 使用活動名稱作為圖片的替代文字
                             className="w-full h-80 object-cover mr-4 transition-transform duration-300 ease-in-out hover:scale-105"
-                            onClick={() => handleClick(event.eventName)}
+                            onClick={() => handleClick(event.eventId)}
 
                         />
-                
-                </div>
-            ))}
 
-
-
-
-
-
-
+                    </div>
+                ))}
 
 
 

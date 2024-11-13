@@ -8,8 +8,9 @@ function Navbar() {
     const navigate = useNavigate();
 
     useEffect(() => {
+
         const token = localStorage.getItem("token");
-        setIsLoggedIn(!!token); 
+        setIsLoggedIn(!!token);
         // 如果有 token，設置為已登錄
     }, []);
 
@@ -18,7 +19,7 @@ function Navbar() {
         // 清除 token
         localStorage.removeItem("token");
         setIsLoggedIn(false); // 登出後更新狀態
-        
+
         navigate("/login"); // 跳轉到登入頁
 
     };
@@ -39,7 +40,7 @@ function Navbar() {
                             首頁
                         </Link>
                     </li>
-                   
+
                     <li>
                         <Link to="/eventlist" className="hover:opacity-75 transition">
                             購票列表
@@ -78,7 +79,7 @@ function Navbar() {
             </div>
         </nav>
     );
-    
+
 };
 
 export default Navbar;

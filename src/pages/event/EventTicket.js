@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import apiClient from "../api/ApiClient";
+import ApiService from "../../api/ApiService";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 function EventTicket() {
+  // console.log("當前路徑:", window.location.pathname);
     const location = useLocation();
-    const { eventName } = location.state || {};
+    const { eventId } = location.state || {};
     const [event,setEvent]=useState([]);
+    const [loading, setLoading] = useState(true); // 加載狀態
 
     useEffect(() => {
-
         const fetchEvent=async()=>{
-          console.log("接收到的活動名稱：", eventName);
             try{
-            const response = await apiClient.get("/event/ticket",{params:{eventName}});
+
+            const response = await ApiService.fetchTicketsEvent(eventId);
+            
             setEvent(response.data.data);
           }
             catch(err){
               console.log(err);
+            }finally{
+                setLoading(false);
             }
         }
         fetchEvent(); 
-    }, [eventName]) //我只會執行一次
-
-    console.log(event);
-
+    }, [eventId]) 
+    
+    if(loading){
+      return <LoadingSpinner/>
+    }
 
 
 
@@ -31,11 +37,11 @@ function EventTicket() {
 
 
 return (
-  <div className="flex flex-col items-center pt-0 space-y-6 -mt-8">
+  <div className="flex flex-col items-center pt-0 space-y-6 -mt-10">
     {/* Hero 區塊：展示圖片和標題 */}
     <div className="bg-gradient-to-r from-orange-500 to-red-500 w-full h-96 flex justify-center items-center relative rounded-md shadow-lg mt-2"
     
-    style={{ width: "1500px" }}
+    style={{ width: "1700px" ,height: '490px' }}
     >
       <img
         src={event.eventTicketPic}

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import apiClient from "../api/ApiClient";
+import ApiService from "../../api/ApiService";
 // import { useNavigate } from "react-router-dom";
 
 function Login() {
+    // console.log("當前路徑:", window.location.pathname);
 
     const [userName, setUserName] = useState(""); // 儲存帳號
     const [password, setPassword] = useState(""); // 儲存密碼
@@ -11,32 +12,33 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // 防止默認表單提交行為
+
         setErrorMessage(""); // 清空之前的錯誤訊息
 
         try {
-            const response = await apiClient.post("/user/login", {
-                userName,
-                password,
-            });
+            const response = await ApiService.loginUser(userName,password);
 
             // 提取 Token 和其他數據
             const { token, userName: tokenUserName } = response.data.data;
+
             console.log("登入的使用者UserName:", tokenUserName);
             localStorage.setItem("token", token);
 
             window.location.href = "/";
-
 
         }
         catch (err) {
             // 處理登入失敗
             if (err.response) {
                 console.error("登入失敗：", err.response.data.message);
+
                 setErrorMessage(err.response.data.message || "登入失敗，請檢查您的帳號密碼！"); // 顯示後端返回的錯誤訊息
+            
                 setPassword("");//清空密碼input
             } else {
                 console.error("請求失敗：", err);
                 setErrorMessage("系統錯誤，請稍後再試！");
+                
             }
         }
     };

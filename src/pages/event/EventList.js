@@ -1,31 +1,40 @@
 import React, { useEffect, useState } from "react";
-import ApiClient from "../api/ApiClient";
 import { useNavigate } from "react-router-dom";
-
-function ConcertList() {
+import ApiService from "../../api/ApiService";
+import LoadingSpinner from "../../components/LoadingSpinner";
+function EventList() {
+    // console.log("當前路徑:", window.location.pathname);
     const [allEvent, setAllEvent] = useState([]);
+    const [loading, setLoading] = useState(true); // 加載狀態
     const navigate = useNavigate();
 
+
+    
     // 從後端獲取活動資料
     useEffect(() => {
         const fetchEvent = async () => {
             try {
-                const response = await ApiClient.get("/event/ticketAllPic");
+                const response = await ApiService.fetchAllPic();
+
                 setAllEvent(response.data.data); // 假設 API 返回的活動資料在 response.data.data
             } catch (err) {
                 console.log(err);
+            } finally {
+                setLoading(false); // 無論成功或失敗都結束加載
             }
         };
 
         fetchEvent();
     }, []);
 
-    const handleClick=(eventName)=>{
-
-        navigate("/eventticket", { state: { eventName } });
+    const handleClick=(eventId)=>{
+        navigate("/eventticket",{state:{eventId}});
 
     }
-
+    
+    if (loading) {
+        return <LoadingSpinner />;
+    }
 
 
     return (
@@ -37,10 +46,10 @@ function ConcertList() {
                 >
                     {/* 圖片和跳轉連結 */}
                         <img
-                            src={event.image} // 圖片來自 API 返回的資料
+                            src={event.eventTicketList} // 圖片來自 API 返回的資料
                             alt={event.eventName} // 使用活動名稱作為圖片的替代文字
                             className="rounded-t-md w-full h-48 object-cover hover:scale-105 hover:brightness-110 active:scale-95 active:opacity-80 transition duration-300 cursor-pointer"
-                            onClick={() => handleClick(event.eventName)}
+                            onClick={() => handleClick(event.eventId)}
 
                         />
                     {/* 活動資訊 */}
@@ -54,4 +63,4 @@ function ConcertList() {
     );
 }
 
-export default ConcertList;
+export default EventList;

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import apiClient from "../api/ApiClient";
+import ApiService from "../../api/ApiService";
 
 function UserUpdate  () {
+    // console.log("當前路徑:", window.location.pathname);
     const [User, setUser] = useState({}); // 從後端獲取的資料
     const [userPhone, setUserPhone] = useState(""); // 電話
     const [userEmail, setUserEmail] = useState(""); // 電子郵件
@@ -14,7 +15,7 @@ function UserUpdate  () {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await apiClient.get("/user/userUpdate"); 
+                const response = await ApiService.fetchUserUpdate(); 
 
                 const userdata=response.data.data;
                 setUser(userdata); // 將回應資料存入 state
@@ -35,8 +36,7 @@ function UserUpdate  () {
         e.preventDefault();
 
         try{     
-                const response =await apiClient.post("/user/userUpdate",
-                                                    {userName,userPhone,userEmail,userBirthDate} )
+                const response =await ApiService.updateUser({userName,userPhone,userEmail,userBirthDate});
                     console.log(response);
                     setMessage("更新成功");}
         catch(err){

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import apiClient from "../api/ApiClient";
+import ApiService from "../../api/ApiService";
 
 const Member = () => {
-    
+    // console.log("當前路徑:", window.location.pathname);
     const [members, setMembers] = useState([]); // 儲存從後端獲取的資料
     const [loading, setLoading] = useState(true); // 加載狀態
     const [error, setError] = useState(null); // 錯誤訊息
@@ -13,7 +13,7 @@ const Member = () => {
         const fetchMembers = async () => {
         
             try {
-                const response = await apiClient.get("/user/all"); 
+                const response = await ApiService.fetchAllMember(); 
                 console.log("查詢的用戶資料:", response.data);
                 setMembers(response.data.data); // 將回應資料存入 state
                 

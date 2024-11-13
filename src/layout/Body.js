@@ -1,13 +1,13 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Homes"
-import Register from "../pages/Register";
-import Members from "../pages/Members";
-import Login from "../pages/Login";
+import Register from "../pages/user/Register";
+import Members from "../pages/user/Members";
+import Login from "../pages/user/Login";
 import ProtectedRoute from "../api/ProtectedRoute";
-import UserUpdate from "../pages/UserUpdate";
-import EventTicket from "../pages/EventTicket"
-import EventList from "../pages/EventList";
+import UserUpdate from "../pages/user/UserUpdate";
+import EventTicket from "../pages/event/EventTicket"
+import EventList from "../pages/event/EventList";
 
 
 function Body() {
@@ -16,9 +16,9 @@ function Body() {
             <div className="w-full">
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/eventticket" element={<EventTicket />} />
+                    <Route path="/eventticket/" element={<EventTicket />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/eventlist" element={<EventList />} />
+                    <Route path="/eventlist/" element={<EventList />} />
                     <Route path="/members"
                         element={
                             <ProtectedRoute>
