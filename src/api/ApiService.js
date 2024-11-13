@@ -36,9 +36,9 @@ const ApiService = {
 
     //===============================銷售相關=====================================
     
-    fetchTicket: (eventId) => ApiClient.get(`/sales/goticket/${eventId}`)
+    fetchTicket: (eventId) => ApiClient.get(`/sales/goticket/${eventId}`),
 
-
+    buyTicket:(userId,eventId,quantity) => ApiClient.post("/goticket/buy",{userId,eventId,quantity})
 
 
 

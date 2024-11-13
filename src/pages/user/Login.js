@@ -23,6 +23,7 @@ function Login() {
 
             console.log("登入的使用者UserName:", tokenUserName);
             localStorage.setItem("token", token);
+            localStorage.setItem("userName", tokenUserName);
 
             window.location.href = "/";
 

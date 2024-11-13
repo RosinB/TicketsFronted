@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import ApiService from "../../api/ApiService";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
@@ -7,15 +7,17 @@ function EventTicket() {
   // console.log("當前路徑:", window.location.pathname);
     const location = useLocation();
     const { eventId } = location.state || {};
+    
     const [event,setEvent]=useState([]);
     const [loading, setLoading] = useState(true); // 加載狀態
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchEvent=async()=>{
             try{
 
-            const response = await ApiService.fetchTicketsEvent(eventId);
-            
+            const response = await ApiService.fetchTicketsEvent(eventId);         
             setEvent(response.data.data);
           }
             catch(err){
@@ -25,12 +27,15 @@ function EventTicket() {
             }
         }
         fetchEvent(); 
-    }, [eventId]) 
+    }, [event]) 
     
     if(loading){
       return <LoadingSpinner/>
     }
-
+    const goToTicketSales = () => {
+      console.log(eventId);
+      navigate("/goticket", { state: { eventId, quantity: 1 } });
+    };
 
 
 
@@ -69,7 +74,9 @@ return (
           <span className="font-normal w-1/4">{event.eventName}</span>
           <span className="font-normal w-1/4">{event.eventLocation}</span>
           <span className="font-normal w-1/4">{event.eventDate}</span>
-          <button className="bg-white text-blue-600 py-1 px-3 rounded hover:bg-gray-200 transition w-1/4">
+          <button className="bg-white text-blue-600 py-1 px-3 rounded hover:bg-gray-200 transition w-1/4"
+                        onClick={goToTicketSales}
+>
             立即購票
           </button>
         </div>

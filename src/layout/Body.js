@@ -20,7 +20,12 @@ function Body() {
                     <Route path="/eventticket/" element={<EventTicket />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/eventlist/" element={<EventList />} />
-                    <Route path="/ticket" element={<TicketSales/>}/>
+                    <Route path="/goticket" element={
+                            <ProtectedRoute>
+                                <TicketSales />
+                            </ProtectedRoute>
+
+                    } />
                     <Route path="/members"
                         element={
                             <ProtectedRoute>
