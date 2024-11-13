@@ -38,7 +38,7 @@ const ApiService = {
     
     fetchTicket: (eventId) => ApiClient.get(`/sales/goticket/${eventId}`),
 
-    buyTicket:(userId,eventId,quantity) => ApiClient.post("/goticket/buy",{userId,eventId,quantity})
+    buyTicket:(userName,eventId,quantity) => ApiClient.post("/sales/goticket/buy",{userName,eventId,quantity})
 
 
 

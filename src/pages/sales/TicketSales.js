@@ -14,8 +14,8 @@ function TicketSales() {
     let quantity = 1;
 
 
-
     const salesTicket = useCallback(async () => {
+
         try {
             const response = await ApiService.buyTicket(userName, eventId, quantity);
             console.log("購票成功:", response);
