@@ -30,7 +30,17 @@ const ApiService = {
     fetchUserUpdate:() => ApiClient.get("/user/userUpdate"),
 
     updateUser:({userName,userPhone,userEmail,userBirthDate} ) => ApiClient.post("/user/userUpdate",
-        {userName,userPhone,userEmail,userBirthDate})
+        {userName,userPhone,userEmail,userBirthDate}),
+
+
+
+    //===============================銷售相關=====================================
+    
+    fetchTicket: (eventId) => ApiClient.get(`/sales/goticket/${eventId}`)
+
+
+
+
 
 
 };

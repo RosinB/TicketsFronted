@@ -8,6 +8,7 @@ import ProtectedRoute from "../api/ProtectedRoute";
 import UserUpdate from "../pages/user/UserUpdate";
 import EventTicket from "../pages/event/EventTicket"
 import EventList from "../pages/event/EventList";
+import TicketSales from "../pages/sales/TicketSales";
 
 
 function Body() {
@@ -19,6 +20,7 @@ function Body() {
                     <Route path="/eventticket/" element={<EventTicket />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/eventlist/" element={<EventList />} />
+                    <Route path="/ticket" element={<TicketSales/>}/>
                     <Route path="/members"
                         element={
                             <ProtectedRoute>
