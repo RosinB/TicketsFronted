@@ -81,15 +81,15 @@ function TicketSection() {
             alert("請至少購買一張票！");
             return;
         }
-        const selectedTickets = tickets
+        const ticketSectionQuantity = tickets
             .filter((ticket) => ticket.quantity > 0) // 只選取數量大於 0 的票
             .map((ticket) => ({
-                zone: ticket.zone,
-                price: ticket.price,
+                eventName: ticket.zone,
+                // price: ticket.price,
                 quantity: ticket.quantity,
             }));
 
-        navigate("/goticket", { state: { eventId, selectedTickets } });
+        navigate("/goticket", { state: { eventId, ticketSectionQuantity } });
     };
 
     return (
