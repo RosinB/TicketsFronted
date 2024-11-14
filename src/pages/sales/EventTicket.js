@@ -27,7 +27,8 @@ function EventTicket() {
             }
         }
         fetchEvent(); 
-    }, [event]) 
+
+    }, [eventId]) 
     
     if(loading){
       return <LoadingSpinner/>
@@ -49,7 +50,7 @@ return (
     {/* Hero 區塊：展示圖片和標題 */}
     <div className="bg-gradient-to-r from-orange-500 to-red-500 w-full h-96 flex justify-center items-center relative rounded-md shadow-lg mt-2"
     
-    style={{ width: "1700px" ,height: '490px' }}
+    style={{ width: "1350px" ,height: '300px' }}
     >
       <img
         src={event.eventTicketPic}
