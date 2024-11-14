@@ -6,10 +6,10 @@ import Members from "../pages/user/Members";
 import Login from "../pages/user/Login";
 import ProtectedRoute from "../api/ProtectedRoute";
 import UserUpdate from "../pages/user/UserUpdate";
-import EventTicket from "../pages/event/EventTicket"
+import EventTicket from "../pages/sales/EventTicket"
 import EventList from "../pages/event/EventList";
 import TicketSales from "../pages/sales/TicketSales";
-
+import TicketSection from "../pages/sales/TicketSection";
 
 function Body() {
     return (
@@ -26,6 +26,14 @@ function Body() {
                             </ProtectedRoute>
 
                     } />
+                    <Route path="/ticktsection" element={
+                            <ProtectedRoute>
+                                <TicketSection />
+                            </ProtectedRoute>
+
+                    } />
+
+
                     <Route path="/members"
                         element={
                             <ProtectedRoute>

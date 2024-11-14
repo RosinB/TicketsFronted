@@ -11,6 +11,7 @@ function TicketCarouse() {
     const [allEvent, setAllEvent] = useState([]);
     const navigate = useNavigate();
 
+    
     useEffect(() => {
 
         const fetchEvent = async () => {
@@ -29,7 +30,7 @@ function TicketCarouse() {
 
 
 
-    
+
 
     const handleClick = (eventId) => {
         navigate("/eventticket", { state: { eventId } });

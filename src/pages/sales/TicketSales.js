@@ -25,6 +25,7 @@ function TicketSales() {
     }, [userName, eventId, quantity]); // 確保依賴項穩定
 
     const fetchTicket = useCallback(async () => {
+
         try {
             console.log("這是請求一次");
             const response = await ApiService.fetchTicket(eventId);
@@ -38,7 +39,7 @@ function TicketSales() {
     }, [eventId]); // 確保依賴項穩定
 
     useEffect(() => {
-        salesTicket();
+        // salesTicket();
         fetchTicket();
     }, [salesTicket, fetchTicket,eventId]); // 正確加入依賴項
 
@@ -68,11 +69,11 @@ function TicketSales() {
                     </tr>
                     <tr>
                         <td className="border border-gray-300 px-4 py-2">活動總票數</td>
-                        <td className="border border-gray-300 px-4 py-2">{tickets.eventTotalTickets}</td>
+                        {/* <td className="border border-gray-300 px-4 py-2">{tickets.eventTotalTickets}</td> */}
                     </tr>
                     <tr>
                         <td className="border border-gray-300 px-4 py-2">剩餘票數</td>
-                        <td className="border border-gray-300 px-4 py-2">{tickets.salesRemaining}</td>
+                        {/* <td className="border border-gray-300 px-4 py-2">{tickets.salesRemaining}</td> */}
                     </tr>
                     <tr>
                         <td className="border border-gray-300 px-4 py-2">活動狀態</td>

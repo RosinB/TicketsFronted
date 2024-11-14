@@ -8,10 +8,6 @@ function EventList() {
     const [loading, setLoading] = useState(true); // 加載狀態
     const navigate = useNavigate();
 
-
-    
-    // 從後端獲取活動資料
-    useEffect(() => {
         const fetchEvent = async () => {
             try {
                 const response = await ApiService.fetchAllPic();
@@ -23,6 +19,10 @@ function EventList() {
                 setLoading(false); // 無論成功或失敗都結束加載
             }
         };
+    
+    // 從後端獲取活動資料
+    useEffect(() => {
+
 
         fetchEvent();
     }, []);
@@ -35,6 +35,7 @@ function EventList() {
     if (loading) {
         return <LoadingSpinner />;
     }
+
 
 
     return (

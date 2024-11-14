@@ -5,7 +5,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 const ProtectedRoute = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true); // 標記檢查是否完成
     const [isAuthenticated, setIsAuthenticated] = useState(false); // 標記是否有 Token
-
+    
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {

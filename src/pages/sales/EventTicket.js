@@ -32,9 +32,12 @@ function EventTicket() {
     if(loading){
       return <LoadingSpinner/>
     }
+
+
+    
     const goToTicketSales = () => {
-      console.log(eventId);
-      navigate("/goticket", { state: { eventId, quantity: 1 } });
+      console.log("sale網頁的:"+eventId);
+      navigate("/ticktsection", { state: { eventId} });
     };
 
 
