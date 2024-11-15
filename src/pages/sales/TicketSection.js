@@ -11,6 +11,7 @@ function TicketSection() {
     const [tickets, setTickets] = useState([]); // 票價信息
     const navigate = useNavigate();
 
+    const userName = localStorage.getItem("userName");
 
 
     useEffect(() => {
@@ -44,6 +45,7 @@ function TicketSection() {
                         quantity: 0, // 初始化數量為 0
                     }))
                 );
+
             } catch (error) {
                 console.log("演唱會區域價位沒有加載到");
                 console.log(error);
@@ -61,6 +63,7 @@ function TicketSection() {
     if (loading) {
         return <LoadingSpinner />;
     }
+
     if (!event) {
         return <div className="text-center text-red-500">活動數據加載失敗！</div>;
     }
@@ -68,29 +71,37 @@ function TicketSection() {
 
     const handleQuantityChange = (index, value) => {
         setTickets((prevTickets) => {
-            const updatedTickets = [...prevTickets];
-            updatedTickets[index].quantity = value; // 更新數量
+            const updatedTickets = prevTickets.map((ticket, i) => ({
+                ...ticket,
+                quantity: i === index ? value : 0, // 只允許當前索引更新數量，其它區域數量歸零
+            }));
             return updatedTickets;
         });
     };
 
+
+
     const handleCheckout = () => {
-        // zone
-        const totalQuantity = tickets.reduce((sum, ticket) => sum + ticket.quantity, 0);
-        if (totalQuantity === 0) {
-            alert("請至少購買一張票！");
+        const selectedTicket = tickets.find((ticket) => ticket.quantity > 0);
+    
+        if (!selectedTicket) {
+            alert("請選擇一個票區並輸入數量！");
             return;
         }
-        const ticketSectionQuantity = tickets
-            .filter((ticket) => ticket.quantity > 0) // 只選取數量大於 0 的票
-            .map((ticket) => ({
-                eventName: ticket.zone,
-                // price: ticket.price,
-                quantity: ticket.quantity,
-            }));
 
-        navigate("/goticket", { state: { eventId, ticketSectionQuantity } });
+        const ticketInfo = {
+            eventId, // 演唱會 ID
+            section: selectedTicket.zone, // 票區名稱
+            quantity: selectedTicket.quantity, // 選擇的票數
+            userName: userName // 替換為實際的使用者名稱變數
+        };
+
+
+        console.log("票務資訊"+JSON.stringify(ticketInfo));
+
+        navigate("/goticket", { state: ticketInfo });
     };
+    
 
     return (
         <div className="p-4">
