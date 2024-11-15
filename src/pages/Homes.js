@@ -24,6 +24,8 @@ function Home() {
                 <h3 className="text-2xl font-semibold mb-4">最新消息</h3>
                 <p className="text-lg">
                     這裡還不知道要幹嘛
+                    lottie-react
+                    tsParticles
                 </p>
             </div>
         </div>

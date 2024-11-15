@@ -43,9 +43,11 @@ const ApiService = {
     buyTicket:(ticketInfo) => ApiClient.post("/sales/goticket/area/buy",ticketInfo),
 
     //透過演唱會id去顯示票種區域和價位
-    getTicketSection:(eventId) => ApiClient.get(`/sales/goticket/area/${eventId}`)
+    getTicketSection:(eventId) => ApiClient.get(`/sales/goticket/area/${eventId}`),
 
 
+//======================================= 訂單相關===================================
+    fetchOrder:(userName)=>ApiClient.get(`/user/orders/${userName}`)
 
 };
 

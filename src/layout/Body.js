@@ -10,6 +10,7 @@ import EventTicket from "../pages/sales/EventTicket"
 import EventList from "../pages/event/EventList";
 import TicketSales from "../pages/sales/TicketSales";
 import TicketSection from "../pages/sales/TicketSection";
+import TicketOrders from "../pages/orders/TicketOrders";
 
 function Body() {
     return (
@@ -21,18 +22,22 @@ function Body() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/eventlist/" element={<EventList />} />
                     <Route path="/goticket" element={
-                            <ProtectedRoute>
-                                <TicketSales />
-                            </ProtectedRoute>
-
+                        <ProtectedRoute>
+                            <TicketSales />
+                        </ProtectedRoute>
                     } />
+                    <Route path="/goticketorders" element={
+                        <ProtectedRoute>
+                            <TicketOrders />
+                        </ProtectedRoute>
+                    } />
+
                     <Route path="/ticktsection" element={
-                            <ProtectedRoute>
-                                <TicketSection />
-                            </ProtectedRoute>
+                        <ProtectedRoute>
+                            <TicketSection />
+                        </ProtectedRoute>
 
                     } />
-
 
                     <Route path="/members"
                         element={
