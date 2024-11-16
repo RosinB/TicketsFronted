@@ -47,7 +47,7 @@ const ApiService = {
 
 
     //======================================= 訂單相關===================================
-    fetchOrder: (ticketInfo) => ApiClient.post("/sales/goticket/orders",  ticketInfo )
+    fetchOrder: (orderId) => ApiClient.get("/sales/goticket/orders",  orderId )
 
 };
 

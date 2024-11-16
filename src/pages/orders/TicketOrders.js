@@ -6,16 +6,18 @@ import { useLocation } from "react-router-dom";
 function TicketOrders() {
 
     const location=useLocation();
-    const ticketInfo=location.state|| {};
+    const { orderId } = location.state || {}; // 從 state 解構出 orderId
     const [order, setOrder] = useState([]);
     const [loading, setLoading] = useState(true);
+    console.log("location.state:", location.state);
 
+    console.log("訂單號碼"+orderId);
 
     const fetchOrder = async () => {
 
         try {
-            console.log("我有接到資訊"+ticketInfo)
-            const response = await ApiService.fetchOrder(ticketInfo);
+            console.log("我有接到資訊"+orderId)
+            const response = await ApiService.fetchOrder(orderId);
             setOrder(response.data.data);
         } catch (error) {
             console.log(error);
@@ -34,7 +36,7 @@ function TicketOrders() {
 
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ticketInfo]);
+    }, [orderId]);
 
     console.log(order);
 
