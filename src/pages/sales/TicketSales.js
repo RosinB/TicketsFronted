@@ -25,7 +25,7 @@ function TicketSales() {
       const response = await ApiService.buyTicket(ticketInfo);
       console.log("購票成功:", response);
       setTickets(response.data.data);
-      navigate("/goticketorders");
+      navigate("/goticketorders",{  state : ticketInfo }  );
 
     } catch (error) {
       console.log("購票失敗:", error);
