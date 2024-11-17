@@ -40,6 +40,11 @@ function Navbar() {
                             首頁
                         </Link>
                     </li>
+                    <li>
+                        <Link to="/userOrder" className="hover:opacity-75 transition">
+                            訂單列表
+                        </Link>
+                    </li>
 
                     <li>
                         <Link to="/eventlist" className="hover:opacity-75 transition">

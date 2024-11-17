@@ -24,8 +24,15 @@ function Login(onSuccess) {
             console.log("登入的使用者UserName:", tokenUserName);
             localStorage.setItem("token", token);
             localStorage.setItem("userName", tokenUserName);
-
-            window.location.href = "/";
+            console.log(userName);
+            
+            if (userName === "admin") {
+                localStorage.setItem("role", "admin");
+                window.location.href = "/admin";
+            } else {
+                localStorage.setItem("role", "user");
+                window.location.href = "/";
+            }
 
         }
         catch (err) {

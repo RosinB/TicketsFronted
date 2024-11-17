@@ -8,11 +8,10 @@ function TicketSales() {
   const location = useLocation();
   const ticketInfo = location.state || {};
   // const [repo,setRepo] =useState("");
-  const [orderId, setOrderId] = useState(null); // 初始值為 null
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const userName = localStorage.getItem("userName");
+  // const userName = localStorage.getItem("userName");
 
 
 
@@ -23,9 +22,10 @@ function TicketSales() {
 
     try {
       const response = await ApiService.buyTicket(ticketInfo);
+
       console.log("購票成功:", response);
-      setOrderId(response.data.data);
-      console.log("我的orderId"+orderId);
+
+
       navigate("/goticketorders",{  state:{ orderId: response.data.data  } }  );
 
     } catch (error) {
@@ -35,7 +35,6 @@ function TicketSales() {
     }
 
   };
-  console.log("我的訂單號碼"+orderId);
 
   useEffect(() => {
     salesTicket();

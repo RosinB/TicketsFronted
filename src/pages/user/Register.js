@@ -101,7 +101,14 @@ function Register() {
                         type="text"
                         className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         value={userPhone}
-                        onChange={(e) => { setuserPhone(e.target.value) }}
+                        onChange={(e) => { 
+                            const value=e.target.value
+                            if (/^[A-Z\d]{0,10}$/.test(value)) { // 允許 0 到 10 位字母或數字
+                                setuserPhone(value);
+                            }
+
+
+                        }}
                         placeholder="請輸入電話"
                         required
                     />

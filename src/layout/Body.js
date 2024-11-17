@@ -11,8 +11,17 @@ import EventList from "../pages/event/EventList";
 import TicketSales from "../pages/sales/TicketSales";
 import TicketSection from "../pages/sales/TicketSection";
 import TicketOrders from "../pages/orders/TicketOrders";
-
+import UserOrder from "../pages/orders/UserOrder";
 function Body() {
+
+
+
+
+
+
+
+
+    
     return (
         <main className="flex-grow bg-gray-50 py-8">
             <div className="w-full">
@@ -52,6 +61,19 @@ function Body() {
                             </ProtectedRoute>
 
                         } />
+                    <Route  path="/userOrder"
+                        element={
+                            <ProtectedRoute>
+                                <UserOrder/>
+                            </ProtectedRoute>
+                        }
+                    
+                    
+                    
+                  
+                    />
+
+
                     <Route path="/login" element={<Login />} />
                 </Routes>
             </div>

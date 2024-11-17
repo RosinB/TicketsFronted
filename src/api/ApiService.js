@@ -18,8 +18,6 @@ const ApiService = {
 
 
 
-
-
     //===============================登入註冊相關=====================================
     //登入使用者
     loginUser: (userName, password) => ApiClient.post("/user/login", { userName, password }),
@@ -47,7 +45,26 @@ const ApiService = {
 
 
     //======================================= 訂單相關===================================
-    fetchOrder: (orderId) => ApiClient.get("/sales/goticket/orders",  orderId )
+    fetchOrder: (orderId,userName) => ApiClient.get(`/sales/goticket/orders`, {params: { orderId, userName }}),
+
+    fetchUserOrder:(userName)=>ApiClient.get(`/user/order/${userName}`),
+
+
+
+
+
+
+
+
+// =======================================後台管理者相關================================
+
+    fetchAdminHost :()=> ApiClient.get("/admin/hosts")
+
+
+
+
+
+
 
 };
 
