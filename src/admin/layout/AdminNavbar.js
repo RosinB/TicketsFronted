@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 function AdminNavbar() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const handleLogout = () => {
         // 清除 localStorage 中的 token 和 role
@@ -11,9 +11,9 @@ function AdminNavbar() {
         localStorage.removeItem("userName");
 
 
-        // 跳轉到首頁
-        navigate("/");
-        window.location.reload(); // 強制刷新頁面
+        //跳轉刷新
+        window.location.assign("/");
+
 
     };
 
@@ -29,12 +29,9 @@ function AdminNavbar() {
                     <Link to="/admin/hosts" className="hover:text-lime-400 transition">
                         新增主辦
                     </Link>
-                    <Link to="/admin/tickets" className="hover:text-lime-400 transition">
-                        票務管理
-                    </Link>
-                    <Link to="/admin/orders" className="hover:text-lime-400 transition">
-                        訂單管理
-                    </Link>
+
+
+                
                     <button
                         onClick={handleLogout}
                         className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"

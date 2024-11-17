@@ -58,9 +58,9 @@ const ApiService = {
 
 // =======================================後台管理者相關================================
 
-    fetchAdminHost :()=> ApiClient.get("/admin/hosts")
+    fetchAdminHost :()=> ApiClient.get("/admin/hosts"),
 
-
+    postAdminHost:(hostData)=>ApiClient.post("/admin/hosts",hostData),
 
 
 
