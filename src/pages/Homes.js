@@ -1,5 +1,6 @@
 import React from "react";
 import TicketCarouse from '../components/TicketCarousel'
+import EventCalendar from "./home/EventCalenar";
 
 function Home() {
     // console.log("當前路徑:", window.location.pathname);
@@ -12,12 +13,6 @@ function Home() {
                 </div>
             </div>
     
-            {/* 註冊按鈕 */}
-            <div className="mt-4">
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition">
-                    註冊會員 
-                </button>
-            </div>
     
             {/* 消息區 */}
             <div className="bg-gray-100 text-gray-800 p-6 mt-8 rounded-md shadow-lg max-w-4xl mx-auto">
@@ -28,6 +23,8 @@ function Home() {
                     tsParticles
                 </p>
             </div>
+            
+            <EventCalendar/>
         </div>
     );
 }
