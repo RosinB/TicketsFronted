@@ -64,7 +64,7 @@ function TicketCarouse() {
                         <img
                             src={event.eventTicketPic} // 圖片來自 API 返回的資料
                             alt={event.eventName} // 使用活動名稱作為圖片的替代文字
-                            className="w-full h-80 object-cover mr-4 transition-transform duration-300 ease-in-out hover:scale-105"
+                            className="w-full h-80 object-cover mr-4 transition-transform rounded-b-sm duration-300 ease-in-out hover:scale-105"
                             onClick={() => handleClick(event.eventId)}
 
                         />

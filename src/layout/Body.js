@@ -20,9 +20,9 @@ function Body() {
 
 
 
-    
+
     return (
-        <main className="flex-grow bg-gray-50 py-8">
+        <main className="flex-grow bg-gray-100 py-8">
             <div className="w-full">
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -49,7 +49,7 @@ function Body() {
 
                     } />
 
-                  
+
                     <Route path="/user/update"
                         element={
                             <ProtectedRoute>
@@ -57,16 +57,16 @@ function Body() {
                             </ProtectedRoute>
 
                         } />
-                    <Route  path="/user/orders"
+                    <Route path="/user/orders"
                         element={
                             <ProtectedRoute>
-                                <UserOrder/>
+                                <UserOrder />
                             </ProtectedRoute>
                         }
-                    
-                    
-                    
-                  
+
+
+
+
                     />
 
 
