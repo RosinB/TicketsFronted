@@ -5,10 +5,10 @@ const ApiService = {
     // 獲取所有活動的圖片，寫在輪播圖，TicketList
     fetchAllPic: () => ApiClient.get("/event/ticketAllPic"),
 
-    // 獲取所有活動的圖片，寫在
+    // 獲取所有活動
     fetchAllEvents: () => ApiClient.get("/event/all"),
 
-    //獲取購票網站的資訊 裡面啥都有
+    //獲取購票網站的資訊  EventTicket.js /event/ticket/
     fetchTicketsEvent: (eventName) => ApiClient.get(`/event/ticket/${eventName}`),
 
 

@@ -26,10 +26,11 @@ function TicketSales() {
       console.log("購票成功:", response);
 
 
-      navigate("/goticketorders",{  state:{ orderId: response.data.data  } }  );
+      navigate("/event/ticket/orderabs",{  state:{ orderId: response.data.data  } }  );
 
     } catch (error) {
       console.log("購票失敗:", error);
+
     } finally {
       setLoading(false);
     }

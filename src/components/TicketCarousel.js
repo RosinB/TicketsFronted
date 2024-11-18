@@ -33,7 +33,7 @@ function TicketCarouse() {
 
 
     const handleClick = (eventId) => {
-        navigate("/eventticket", { state: { eventId } });
+        navigate("/event/ticket/", { state: { eventId } });
 
     }
 

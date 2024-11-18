@@ -29,7 +29,11 @@ function AdminNavbar() {
                     <Link to="/admin/hosts" className="hover:text-lime-400 transition">
                         新增主辦
                     </Link>
-
+                    <li>
+                        <Link to="/admin/members" className="hover:opacity-75 transition">
+                            顯示會員資料
+                        </Link>
+                    </li>
 
                 
                     <button

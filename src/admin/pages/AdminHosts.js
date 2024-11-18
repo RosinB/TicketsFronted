@@ -32,7 +32,7 @@ function AdminHosts() {
     },[]);
     console.log(AllHost);
     
-       
+
     if(loading){
         return <LoadingSpinner></LoadingSpinner>
     }

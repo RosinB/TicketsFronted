@@ -41,13 +41,13 @@ function Navbar() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/userOrder" className="hover:opacity-75 transition">
+                        <Link to="/user/orders" className="hover:opacity-75 transition">
                             訂單列表
                         </Link>
                     </li>
 
                     <li>
-                        <Link to="/eventlist" className="hover:opacity-75 transition">
+                        <Link to="/event/list" className="hover:opacity-75 transition">
                             購票列表
                         </Link>
                     </li>
@@ -57,15 +57,11 @@ function Navbar() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/members" className="hover:opacity-75 transition">
-                            顯示會員資料
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/userupdate" className="hover:opacity-75 transition">
+                        <Link to="/user/update" className="hover:opacity-75 transition">
                             更新會員資料
                         </Link>
                     </li>
+
                     <li>
                         {isLoggedIn ? (
                             <button

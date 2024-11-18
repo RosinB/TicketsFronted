@@ -38,7 +38,7 @@ function EventTicket() {
     
     const goToTicketSales = () => {
       console.log("sale網頁的:"+eventId);
-      navigate("/ticktsection", { state: { eventId} });
+      navigate("/event/ticket/section", { state: { eventId} });
     };
 
 

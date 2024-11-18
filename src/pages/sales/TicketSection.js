@@ -99,7 +99,7 @@ function TicketSection() {
 
         console.log("票務資訊"+JSON.stringify(ticketInfo));
 
-        navigate("/goticket", { state: ticketInfo });
+        navigate("/event/ticket/section/buy", { state: ticketInfo });
     };
     
 
