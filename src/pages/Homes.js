@@ -1,8 +1,8 @@
 import React from "react";
-import TicketCarouse from '../components/TicketCarousel'
-import NewsSection from "./home/NewsSection";
+import TicketCarouse from '../components/home/TicketCarousel'
+import NewsSection from "../components/home/NewsSection";
 function Home() {
-    // console.log("當前路徑:", window.location.pathname);
+
     return (
         <div className="text-center">
             {/* 放圖片的區域 */}
@@ -10,16 +10,9 @@ function Home() {
                 <div className="absolute top-0 left-0 w-full h-full">
                     <TicketCarouse />
                 </div>
-                
             </div>
-            <div className="w-full h-2 bg-gray-700 mx-auto -mt-4 "></div>
 
-    
-            {/* 消息區 */}
-                <NewsSection  />
-
-               
-
+            <NewsSection />
         </div>
     );
 }

@@ -29,8 +29,8 @@
         display: block !important;
         text-align: center !important;
         width: 100% !important;
-        z-index: 10 !important;
-    }
+    z-index: 5 !important;
+}
 
     .slick-dots li {
         display: inline-block !important;

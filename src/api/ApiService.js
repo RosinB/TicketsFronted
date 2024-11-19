@@ -22,13 +22,11 @@ const ApiService = {
     //登入使用者
     loginUser: (userName, password) => ApiClient.post("/user/login", { userName, password }),
     //註冊使用者
-    registerUser: ({ userName, userPhone, password, userIdCard, userEmail, userBirthDate }) => ApiClient.post("/user/register",
-        { userName, userPhone, password, userIdCard, userEmail, userBirthDate }),
+    registerUser: (submitData) => ApiClient.post("/user/register",submitData),
     //獲取需要更新使用者的資料
     fetchUserUpdate: () => ApiClient.get("/user/userUpdate"),
 
-    updateUser: ({ userName, userPhone, userEmail, userBirthDate }) => ApiClient.post("/user/userUpdate",
-        { userName, userPhone, userEmail, userBirthDate }),
+    updateUser: (submitData) => ApiClient.post("/user/userUpdate", submitData),
 
 
 

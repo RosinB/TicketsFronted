@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import ApiService from "../api/ApiService";
+import ApiService from "../../api/ApiService";
 
 function TicketCarouse() {
 

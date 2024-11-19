@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import ApiService from "../../api/ApiService";
+import ApiService from "../api/ApiService";
 // import { useNavigate } from "react-router-dom";
 
-function Login(onSuccess) {
+function Login(s) {
     // console.log("當前路徑:", window.location.pathname);
 
     const [userName, setUserName] = useState(""); // 儲存帳號

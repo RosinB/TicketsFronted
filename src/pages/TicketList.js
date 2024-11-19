@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ApiService from "../../api/ApiService";
-import LoadingSpinner from "../../components/LoadingSpinner";
+import ApiService from "../api/ApiService";
+import LoadingSpinner from "../components/LoadingSpinner";
 function EventList() {
     // console.log("當前路徑:", window.location.pathname);
     const [allEvent, setAllEvent] = useState([]);

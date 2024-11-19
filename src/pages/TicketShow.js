@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
-import ApiService from "../../api/ApiService";
-import LoadingSpinner from "../../components/LoadingSpinner";
+import ApiService from "../api/ApiService";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 function EventTicket() {
   // console.log("當前路徑:", window.location.pathname);

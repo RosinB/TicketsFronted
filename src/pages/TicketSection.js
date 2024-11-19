@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import ApiService from "../../api/ApiService";
-import LoadingSpinner from "../../components/LoadingSpinner";
+import ApiService from "../api/ApiService";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function TicketSection() {
