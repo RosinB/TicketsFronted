@@ -12,7 +12,6 @@ function EventTicket() {
     const [loading, setLoading] = useState(true); // 加載狀態
     const navigate = useNavigate();
 
-
     useEffect(() => {
         const fetchEvent=async()=>{
             try{
@@ -36,8 +35,9 @@ function EventTicket() {
 
 
     
-    const goToTicketSales = () => {
+    const goToTicketSales = async() => {
       console.log("sale網頁的:"+eventId);
+
       navigate("/event/ticket/section", { state: { eventId} });
     };
 

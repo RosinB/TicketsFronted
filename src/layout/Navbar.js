@@ -32,7 +32,7 @@ function Navbar() {
     };
 
     return (
-        <nav className="bg-gradient-to-r from-black via-gray-800 to-gray-900 sticky top-0 z-10 shadow-2xl">
+        <nav className="bg-gradient-to-r from-blue-700 via-teal-600 to-teal-800 sticky top-0 z-10 shadow-lg">
             <div className="container mx-auto flex justify-between items-center py-4 px-6">
                 {/* Logo */}
                 <h1 className="text-2xl font-bold text-white">

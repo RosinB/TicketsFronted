@@ -23,7 +23,7 @@ function TicketSection() {
             console.log("我的號碼是" + eventId);
 
             try {
-                const response = await ApiService.getTicketSection(eventId);
+                const response = await ApiService.getTicketSection(eventId, userName);
                 const data = response.data.data;
 
                 // 將後端返回的數據分配給相應的狀態
@@ -41,14 +41,25 @@ function TicketSection() {
                     data.ticketDto.map((ticket) => ({
                         zone: ticket.ticketName,
                         price: ticket.ticketPrice,
-                        status: ticket.ticketIsAvailable ? "熱賣中" : "售罄",
+                        status: ticket.ticketIsAvailable ? "熱賣中" : "售完",
                         quantity: 0, // 初始化數量為 0
+                        remaining: ticket.ticketRemaining
                     }))
                 );
 
             } catch (error) {
-                console.log("演唱會區域價位沒有加載到");
-                console.log(error);
+                if (error.response) {
+                    const { status, data } = error.response; // 確保從 error.response 中提取正確的內容
+                    const errorMessage = data.message;
+
+                    if (status === 400 && errorMessage === "使用者沒有認證") {
+                        alert("使用者未認證，請檢查您的帳號狀態。");
+                        navigate("/user/update");
+                    }
+
+                    console.log("演唱會區域價位沒有加載到");
+                }
+
             } finally {
                 setLoading(false);
             }
@@ -83,7 +94,7 @@ function TicketSection() {
 
     const handleCheckout = () => {
         const selectedTicket = tickets.find((ticket) => ticket.quantity > 0);
-    
+
         if (!selectedTicket) {
             alert("請選擇一個票區並輸入數量！");
             return;
@@ -97,11 +108,11 @@ function TicketSection() {
         };
 
 
-        console.log("票務資訊"+JSON.stringify(ticketInfo));
+        console.log("票務資訊" + JSON.stringify(ticketInfo));
 
         navigate("/event/ticket/section/buy", { state: ticketInfo });
     };
-    
+
 
     return (
         <div className="p-4">
@@ -155,10 +166,8 @@ function TicketSection() {
                                         </span>
 
                                         <span
-                                            className={`px-2 py-0.5 text-xs sm:text-sm rounded-md font-medium ${ticket.status === '熱賣中'
-                                                ? 'bg-green-500 text-white'
-                                                : 'bg-red-500 text-white'
-                                                }`}
+                                            className={`px-2 py-0.5 text-xs sm:text-sm rounded-md font-medium 
+                                                ${ticket.status === '熱賣中' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}
                                         >
                                             {ticket.status}
                                         </span>
@@ -169,16 +178,24 @@ function TicketSection() {
                                         <span className="font-bold text-green-600 whitespace-nowrap mb-1">
                                             ${ticket.price}
                                         </span>
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            value={ticket.quantity}
-                                            onChange={(e) =>
-                                                handleQuantityChange(index, parseInt(e.target.value, 10) || 0)
-                                            }
-                                            className="w-16 border border-gray-400 rounded-md text-center text-sm focus:ring focus:ring-blue-300 focus:outline-none shadow-md"
-                                        />
+                                        {ticket.status === '熱賣中' ? (
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={ticket.quantity}
+                                                onChange={(e) =>
+                                                    handleQuantityChange(index, parseInt(e.target.value, 10) || 0)
+                                                }
+                                                className="w-16 border border-gray-400 rounded-md text-center text-sm focus:ring focus:ring-blue-300 focus:outline-none shadow-md"
+                                            />
+                                        ) : (
+                                            <span className="text-red-500 text-sm font-semibold">售完</span>
+                                        )}
                                     </div>
+
+                                    { ticket.remaining < 30 ?(<p>{ticket.remaining}</p>) :(<p>1</p>)
+
+                                    }
                                 </li>
                             ))}
                         </ul>
