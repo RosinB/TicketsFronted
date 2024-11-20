@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import ApiService from "../api/ApiService";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 
-function EventTicket() {
-  // console.log("當前路徑:", window.location.pathname);
+function TicketShow() {
     const location = useLocation();
     const { eventId } = location.state || {};
-    
+
+
     const [event,setEvent]=useState([]);
     const [loading, setLoading] = useState(true); // 加載狀態
     const navigate = useNavigate();
@@ -15,29 +15,28 @@ function EventTicket() {
     useEffect(() => {
         const fetchEvent=async()=>{
             try{
-
             const response = await ApiService.fetchTicketsEvent(eventId);         
             setEvent(response.data.data);
+            console.log("Ticket-show的演唱會資訊",response.data.data);
+
           }
             catch(err){
-              console.log(err);
+              console.log("抓取演唱會資料失敗",err);
             }finally{
                 setLoading(false);
             }
         }
         fetchEvent(); 
 
+            // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [eventId]) 
-    
-    if(loading){
-      return <LoadingSpinner/>
-    }
+  
+    if(loading) return <LoadingSpinner/>
 
 
-    
+
+    //進到演唱會銷售網頁
     const goToTicketSales = async() => {
-      console.log("sale網頁的:"+eventId);
-
       navigate("/event/ticket/section", { state: { eventId} });
     };
 
@@ -45,47 +44,46 @@ function EventTicket() {
 
 
 
-return (
-  <div className="flex flex-col items-center pt-0 space-y-6 -mt-10">
-    {/* Hero 區塊：展示圖片和標題 */}
-    <div className="bg-gradient-to-r from-orange-500 to-red-500 w-full h-96 flex justify-center items-center relative rounded-md shadow-lg mt-2"
-    
-    style={{ width: "1350px" ,height: '300px' }}
-    >
-      <img
-        src={event.eventTicketPic}
-        alt="圖片"
-        className="h-full object-cover w-full rounded-md"
-      />
-    
-    </div>
+  return (
+    //演唱會圖片區
+      <div className="flex flex-col items-center pt-0 space-y-6 -mt-10">
+        <div className=" w-full h-96 flex justify-center  relative  shadow-lg  mt-2">
+          <img
+              src={event.eventTicketPic}
+              alt="演唱會圖片"
+              className="h-full object-cover w-full "/>
+      </div>
 
-    {/* 資訊區塊 */}
-    <div className="bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-800 w-full py-4 text-white rounded-md shadow-lg">
-      <div className="max-w-4xl mx-auto px-4">
-        {/* 標題與值 */}
-        <div className="flex justify-between text-center border-b-2 border-solid border-white pb-2 mb-4">
+
+
+    {/* 橫向資訊區塊 */}
+      <div className=" bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-800  w-9/12 rounded-md py-6 text-white shadow-lg">
+        <div className="max-w-4xl min-w-64 mx-auto ">
+
+
           {/* 標題 */}
-          <span className="font-bold w-1/4">名稱</span>
-          <span className="font-bold w-1/4">場地</span>
-          <span className="font-bold w-1/4">時間</span>
-          <span className="font-bold w-1/4">購票</span>
-        </div>
+          <div className="flex justify-between text-center border-b-2 border-solid border-white pb-2 mb-4">
+            <ColumnHeader name="演唱會名稱"/>
+            <ColumnHeader name="場地"/>
+            <ColumnHeader name="日期"/>
+            <ColumnHeader name="時間"/>
+            <ColumnHeader name="購票"/>
+          </div>
 
         {/* 資料 */}
-        <div className="flex justify-between text-center">
-          {/* 值 */}
-          <span className="font-normal w-1/4">{event.eventName}</span>
-          <span className="font-normal w-1/4">{event.eventLocation}</span>
-          <span className="font-normal w-1/4">{event.eventDate}</span>
-          <button className="bg-white text-blue-600 py-1 px-3 rounded hover:bg-gray-200 transition w-1/4"
-                        onClick={goToTicketSales}
->
-            立即購票
-          </button>
+          <div className="flex justify-between text-center">
+            <ColumnContent value={event.eventName}/>
+            <ColumnContent value={event.eventLocation}/>
+            <ColumnContent value={event.eventDate}/>
+            <ColumnContent value={event.eventTime}/>
+
+            <button 
+                  className="bg-white text-blue-600 py-1 px-3 rounded hover:bg-gray-200 transition w-1/4"
+                  onClick={goToTicketSales}>  
+                  立即購票</button>
+          </div>
         </div>
       </div>
-    </div>
 
 
     {/* 描述與額外資訊 */}
@@ -101,4 +99,19 @@ return (
 );
 }
 
-export default EventTicket;
+export default TicketShow;
+
+
+
+
+// 把css提出來
+const ColumnHeader=({name})=>{
+
+  return (<span className="font-bold w-1/4">{name}</span>)
+
+}
+const ColumnContent=({value})=>{
+
+  return (<span className="font-normal w-1/4">{value}</span>)
+
+}

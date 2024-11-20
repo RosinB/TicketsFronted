@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import HostList from "./components/HostList";
-import HostAdd from "./components/HostAdd";
+import HostList from "./Host/components/HostList";
+import HostAdd from "./Host/components/HostAdd";
 function AdminHosts() {
     // 狀態管理當前顯示的內容
     const [selectedTab, setSelectedTab] = useState("list");

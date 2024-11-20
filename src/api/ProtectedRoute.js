@@ -1,7 +1,7 @@
 import React, { useState, useEffect, } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginModal from "../components/LoginModal";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoginModal from "../components/ui/LoginModal";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 const ProtectedRoute = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true); // 標記檢查是否完成

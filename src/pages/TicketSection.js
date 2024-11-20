@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ApiService from "../api/ApiService";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function TicketSection() {
@@ -10,17 +10,20 @@ function TicketSection() {
     const [event, setEvent] = useState(null); // 活動信息
     const [tickets, setTickets] = useState([]); // 票價信息
     const navigate = useNavigate();
-
     const userName = localStorage.getItem("userName");
 
 
+
     useEffect(() => {
+
         if (!eventId) {
             console.error("eventId 不存在！");
+            alert("ID不存在");
+            navigate("/");
             return;
         }
+
         const fetchTicketSection = async () => {
-            console.log("我的號碼是" + eventId);
 
             try {
                 const response = await ApiService.getTicketSection(eventId, userName);
@@ -36,7 +39,7 @@ function TicketSection() {
                     organizer: data.hostName,
                     imageUrl: data.ticketPicList,
                 });
-
+                // 這是ticketDto
                 setTickets(
                     data.ticketDto.map((ticket) => ({
                         zone: ticket.ticketName,
@@ -58,6 +61,7 @@ function TicketSection() {
                     }
 
                     console.log("演唱會區域價位沒有加載到");
+                    return <div className="text-center text-red-500">活動數據加載失敗！</div>;
                 }
 
             } finally {
@@ -71,13 +75,10 @@ function TicketSection() {
     }, [eventId]);
 
 
-    if (loading) {
-        return <LoadingSpinner />;
-    }
+    if (loading) return <LoadingSpinner />;
+    
 
-    if (!event) {
-        return <div className="text-center text-red-500">活動數據加載失敗！</div>;
-    }
+
 
 
     const handleQuantityChange = (index, value) => {
@@ -91,7 +92,7 @@ function TicketSection() {
     };
 
 
-
+    //檢查購票狀態
     const handleCheckout = () => {
         const selectedTicket = tickets.find((ticket) => ticket.quantity > 0);
 
@@ -106,71 +107,60 @@ function TicketSection() {
             quantity: selectedTicket.quantity, // 選擇的票數
             userName: userName // 替換為實際的使用者名稱變數
         };
-
-
-        console.log("票務資訊" + JSON.stringify(ticketInfo));
-
+        
         navigate("/event/ticket/section/buy", { state: ticketInfo });
     };
 
 
-    return (
-        <div className="p-4">
-            {/* 上部分 */}
-            <div className="relative flex flex-col items-center bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 w-full  -mt-12 min-h-[50px]">
-                <div className="grid grid-cols-3 gap-3 mb-3 max-w-4xl mx-auto ">
-                    {/* 左側圖片 */}
-                    <div
-                        className="bg-cover bg-center rounded-lg shadow-lg w-32 aspect-square mx-auto mt-3 mb-2 mx-9"
-                        style={{ backgroundImage: `url(${event.imageUrl})` }}
-                    ></div>
 
-                    {/* 右側活動資訊 */}
-                    <div className="col-span-2 bg-white p-2 rounded-lg shadow-lg">
-                        <h1 className="text-lg font-bold mb-2">{event.name}</h1>
-                        <p className="text-gray-700 mb-1">演出者：{event.performer} </p>
-                        <p className="text-gray-700 mb-1">📅 {event.date} | 🕗 {event.time} 📍 | {event.location}</p>
-                        <p className="text-gray-700">主辦單位：{event.organizer}</p>
-                    </div>
-                </div>
-            </div>
+    return (
+        <div className="pt-4">
+            {/* 上部分 */}
+            <EventInfoCard event={event} />
+
 
             {/* 下部分 */}
-            <div className="flex flex-col items-center h-[80vh] ">
+            <div className="flex flex-col items-center h-[60vh] ">
+                
                 <div className="max-w-4xl w-full grid grid-cols-2 gap-4 h-full">
                     {/* 場地平面圖 */}
                     <div>
                         <img
                             src={event.imageUrl}
                             alt="場地平面圖"
-                            className="w-full h-full rounded-lg shadow-lg"
-                        />
+                            className="w-full h-full rounded-lg shadow-lg"/>
                     </div>
-                    <div className="bg-white  rounded-lg shadow-lg border border-gray-200">
-                        <h2
-                            className="text-sm sm:text-base font-medium text-white    text-center bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 pb-1 pt-1 pt- shadow-sm w-full"
-                        >
+
+                    
+                    <div className="bg-white  rounded-lg shadow-lg  border border-gray-200">
+                        <h2 className="text-base font-medium text-white   text-center bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 pb-1 pt-1  shadow-sm ">
                             票區一覽
                         </h2>
-                        <ul className="space-y-4">
+
+                        <ul className="">
                             {tickets.map((ticket, index) => (
                                 <li
                                     key={index}
-                                    className="flex justify-between items-center rounded-sm p-4  -mb-4 shadow-sm border border-gray-300 hover:shadow-lg transition-shadow"
+                                    className="flex justify-between items-center  p-4   border-b border-gray-200  hover:shadow-lg transition-shadow">
 
-                                >
+
                                     {/* 票區名稱和狀態 */}
-                                    <div className="flex items-center w-1/3 space-x-3">
+                                    <div className="flex items-center w-1/3 space-x-2">
                                         <span className="font-medium text-sm sm:text-base text-gray-800">
-                                            {ticket.zone}
-                                        </span>
+                                            {ticket.zone}</span>
 
                                         <span
                                             className={`px-2 py-0.5 text-xs sm:text-sm rounded-md font-medium 
-                                                ${ticket.status === '熱賣中' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}
-                                        >
-                                            {ticket.status}
-                                        </span>
+                                                ${ticket.status === "熱賣中" && ticket.remaining > 0 && ticket.remaining < 100
+                                                    ?   "bg-orange-500 text-white" // 剩餘票數橙色
+                                                    :   ticket.status === "熱賣中" 
+                                                    ?   "bg-green-500 text-white" // 熱賣中綠色
+                                                    :   "bg-red-500 text-white"   // 售完紅色
+                                                }`}>
+                                                    {ticket.status === "熱賣中" &&   ticket.remaining < 100 
+                                                    ?   `剩餘 ${ticket.remaining} 張` : 
+                                                        ticket.status}</span>
+
                                     </div>
 
                                     {/* 票價和數量選擇器 */}
@@ -184,21 +174,18 @@ function TicketSection() {
                                                 min="0"
                                                 value={ticket.quantity}
                                                 onChange={(e) =>
-                                                    handleQuantityChange(index, parseInt(e.target.value, 10) || 0)
-                                                }
-                                                className="w-16 border border-gray-400 rounded-md text-center text-sm focus:ring focus:ring-blue-300 focus:outline-none shadow-md"
+                                                handleQuantityChange(index, parseInt(e.target.value, 4) || 0)}
+
+                                                className="w-16 border border-gray-400 rounded text-center text-sm focus:ring focus:ring-blue-300 focus:outline-none shadow-md"
                                             />
                                         ) : (
                                             <span className="text-red-500 text-sm font-semibold">售完</span>
                                         )}
-                                    </div>
-
-                                    { ticket.remaining < 30 ?(<p>{ticket.remaining}</p>) :(<p>1</p>)
-
-                                    }
+                                    </div>    
                                 </li>
                             ))}
                         </ul>
+
 
                         {/* 購票按鈕 */}
                         <div className="text-center mt-6">
@@ -213,9 +200,6 @@ function TicketSection() {
 
 
 
-
-
-
                 </div>
             </div>
         </div>
@@ -223,3 +207,30 @@ function TicketSection() {
 }
 
 export default TicketSection;
+
+
+
+
+
+const EventInfoCard = ({ event }) => {
+    return (
+            <div className="relative flex flex-col items-center bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 w-full -mt-12 min-h-[50px]">
+                <div className="grid grid-cols-3 gap-3 mb-3 max-w-4xl mx-auto">
+                    {/* 左側圖片 */}
+                    <div
+                        className="bg-cover bg-center rounded-lg shadow-lg w-32 aspect-square mx-auto mt-3 mb-2 mx-9"
+                        style={{ backgroundImage: `url(${event.imageUrl})` }}/>
+
+                    {/* 右側活動資訊 */}
+                    <div className="col-span-2 bg-white p-2 rounded-lg shadow-lg">
+                        <h1 className="text-lg font-bold mb-2">{event.name}</h1>
+                        <p className="text-gray-700 mb-1">演出者：{event.performer}</p>
+                        <p className="text-gray-700 mb-1">
+                        📅 {event.date} | 🕗 {event.time} 📍 {event.location}
+                        </p>
+                        <p className="text-gray-700">主辦單位：{event.organizer}</p>
+                    </div>
+                </div>
+        </div>
+    );
+};

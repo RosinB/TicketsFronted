@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import ApiService from "../api/ApiService";
 import { useNavigate } from "react-router-dom"; // 引入 useNavigate
-import InputField from "../components/user/InputField";
+
+
+
 
 
 function Register() {
+    
     const [user, setUser] = useState({
         userName: "",
         userPhone: "",
@@ -13,13 +16,12 @@ function Register() {
         userBirthDate: "",
         userIdCard: ""
     });
-
-
-
+    
     const [fieldErrors, setFieldErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState("");
     const navigate = useNavigate(); 
 
+    //註冊帳號的data 要post的
     const submitData=
     {
         userName        :   user.userName,
@@ -30,17 +32,20 @@ function Register() {
         userIdCard      :   user.userIdCard
     }
 
-console.log(submitData);
+
+    //註冊資料給後端的post
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         try {
             const response = await ApiService.registerUser(submitData);
-            console.log(response);
+            console.log(response.data.data+"註冊成功");
             setSuccessMessage("註冊成功，一秒後跳轉到登入頁面");
-
             setTimeout(() => {
                 navigate("/login");
             }, 1000);
+
+
         } catch (err) {
             if (err.response) {
                 setFieldErrors(err.response.data.data || {});
@@ -51,10 +56,30 @@ console.log(submitData);
         }
     };
 
+    //註冊資料的正規表達OnChange
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setUser(prevUser => ({ ...prevUser, [name]: value }));
+
+        const validationRules = {
+            userName: /^[A-Za-z\d]{0,10}$/,  // 大小寫 最多可以輸入10位
+            userPhone: /^\d{0,10}$/,        //  10 位數字
+            userIdCard: /^[A-Z]{0,1}\d{0,9}$/ 
+        };
+
+
+        if (validationRules[name]) {
+            const processedValue = name === "userIdCard" ? value.toUpperCase() : value;
+            if (validationRules[name].test(processedValue)) {
+                setUser((prevUser) => ({ ...prevUser, [name]: processedValue }));
+        }
+        } else {
+            setUser((prevUser) => ({ ...prevUser, [name]: value }));
+        } 
     };
+    
+
+
+
     return (
         <div className="bg-white shadow-md rounded-lg p-8 max-w-lg mx-auto -mt-4">
             <h2 className="text-3xl font-bold text-center text-gray-800">會員註冊</h2>
@@ -69,7 +94,6 @@ console.log(submitData);
                     onChange={handleInputChange}
                     placeholder="請輸入帳號"
                     errorMessage={fieldErrors.userName}
-                    pattern={/^[A-Za-z\d]{0,10}$/} // 限制輸入4~10位字符
                     required
                 />
                 <InputField
@@ -83,13 +107,12 @@ console.log(submitData);
                 />
                 <InputField
                     label="電話:(10位數)"
-                    type="text"
+                    type="tel"
                     name="userPhone"
                     value={user.userPhone}
                     onChange={handleInputChange}
                     placeholder="請輸入電話"
                     errorMessage={fieldErrors.userPhone}
-                    pattern={/^\d{0,10}$/} // 僅允許10位數字
                     required
                 />
                 <InputField
@@ -110,7 +133,6 @@ console.log(submitData);
                     onChange={handleInputChange}
                     placeholder="請輸入身分證"
                     errorMessage={fieldErrors.userIdCard}
-                    pattern={/^[A-Z\d]{0,10}$/} // 限制輸入0到10位大寫字母或數字
                     required
                 />
                 <InputField
@@ -130,3 +152,25 @@ console.log(submitData);
 }
 
 export default Register;
+
+
+
+const InputField=({ label, type,name, value, onChange, placeholder, errorMessage, pattern, required })=>{
+    return (
+        <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-semibold mb-2">{label}</label>
+            <input
+                type={type}
+                className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                name={name} 
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+                pattern={pattern}
+                required={required}
+
+            />
+            {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+        </div>
+    );
+};

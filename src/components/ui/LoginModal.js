@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import ApiService from "../api/ApiService";
+import ApiService from "../../api/ApiService";
 
 function LoginModal({ isOpen, onClose, onSuccess }) {
     const [userName, setUserName] = useState(""); // 儲存帳號
     const [password, setPassword] = useState(""); // 儲存密碼
-    // const [errorMessage, setErrorMessage] = useState(""); // 錯誤訊息
+     const [errorMessage, setErrorMessage] = useState(""); // 錯誤訊息
 
     
     const handleSubmit = async (e) => {
@@ -25,10 +25,9 @@ function LoginModal({ isOpen, onClose, onSuccess }) {
                 onSuccess(role);
             }
         } catch (err) {
-            console.error("Login failed", err); 
+            console.error("登入失敗", err); 
 
-            //eslint-disable-next-line
-            // setErrorMessage("登入失敗，請檢查帳號或密碼！");
+            setErrorMessage("登入失敗，請檢查帳號或密碼！");
 
         }
     };
@@ -42,7 +41,7 @@ function LoginModal({ isOpen, onClose, onSuccess }) {
                 
                 <h2 className="text-2xl font-bold text-center mb-4">登入</h2>
 
-                {/* {errorMessage && <div className="text-red-500 text-center mb-4">{errorMessage}</div>} */}
+                {errorMessage && <div className="text-red-500 text-center mb-4">{errorMessage}</div>}
                 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">

@@ -19,7 +19,7 @@ function TicketCarouse() {
                 const response = await ApiService.fetchAllPic();
                 setAllEvent(response.data.data);
             } catch (err) {
-                console.log(err);
+                console.log("輪播圖讀取圖片錯誤",err);
             }
         };
 
@@ -33,7 +33,7 @@ function TicketCarouse() {
 
 
     const handleClick = (eventId) => {
-        navigate("/event/ticket/", { state: { eventId } });
+        navigate("/event/ticket-show", { state: { eventId } });
 
     }
 

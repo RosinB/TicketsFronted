@@ -10,7 +10,6 @@ const Member = () => {
         const fetchMembers = async () => {
             try {
                 const response = await ApiService.fetchAllMember();
-                console.log("查詢的用戶資料:", response.data);
                 setMembers(response.data.data);
             } catch (err) {
                 setError("用戶資料讀取失敗");
@@ -23,14 +22,15 @@ const Member = () => {
         fetchMembers();
     }, []);
 
-    if (loading) {
-        return <div className="text-white">Loading...</div>;
-    }
+
+    if (loading) return <div className="text-white">Loading...</div>;
+    
 
     if (error) {
         return <div className="text-red-500">Error: {error}</div>;
     }
-    console.log(members)
+
+    
     return (
         <div className="p-4 bg-gray-900 text-white min-h-screen">
             <h2 className="text-2xl font-bold mb-4">會員列表</h2>
@@ -70,3 +70,5 @@ const Member = () => {
 };
 
 export default Member;
+
+

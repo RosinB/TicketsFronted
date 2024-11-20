@@ -58,12 +58,13 @@ const ApiService = {
 
 
 // ======================================後台host相關====================================
-    fetchAdminHost :()=> ApiClient.get("/admin/hosts"),
+    fetchAdminHost :()=> ApiClient.get("/admin/host/all"),
 
-    postAdminHost:(hostData)=>ApiClient.post("/admin/hosts",hostData),
+    postAdminHost:(hostData)=>ApiClient.post("/admin/host/add",hostData),
 
     updateHost:(hostData)=>ApiClient.post("/admin/hosts/update",hostData),
-//========================================================================================
+//=========================================後台演唱會=====================================
+    fetchAdminAllEvent:()=>ApiClient.get("/admin/event")
 
 
 };
