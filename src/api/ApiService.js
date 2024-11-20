@@ -64,7 +64,7 @@ const ApiService = {
 
     updateHost:(hostData)=>ApiClient.post("/admin/hosts/update",hostData),
 //=========================================後台演唱會=====================================
-    fetchAdminAllEvent:()=>ApiClient.get("/admin/event")
+    fetchAdminAllEvent:()=>ApiClient.get("/admin/event/all")
 
 
 };

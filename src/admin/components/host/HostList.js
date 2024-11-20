@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import LoadingSpinner from "../../../../components/ui/LoadingSpinner";
-import ApiService from "../../../../api/ApiService";
+import LoadingSpinner from '../../../components/ui/LoadingSpinner'
+import ApiService from "../../../api/ApiService";
 
 function HostList() {
     const [loading, setLoading] = useState(true);
