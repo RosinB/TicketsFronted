@@ -17,7 +17,7 @@ const ProtectedRoute = ({ children }) => {
         } else {
             setIsLoginOpen(true); // 沒有 Token 時顯示模態框
         }
-        setIsLoading(false); // 完成檢查
+        setIsLoading(false); 
     }, []);
 
 
@@ -48,7 +48,7 @@ const ProtectedRoute = ({ children }) => {
     if (!isAuthenticated) {
         // 如果未登入，顯示模態框，暫時不渲染子內容
         return (
-           <LoginModal
+        <LoginModal
                 isOpen={isLoginOpen}
                 onClose={() => setIsLoginOpen(false)} // 點擊關閉模態框
                 onSuccess={(role) => {

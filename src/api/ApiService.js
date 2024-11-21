@@ -11,12 +11,9 @@ const ApiService = {
     //獲取購票網站的資訊  EventTicket.js /event/ticket/
     fetchTicketsEvent: (eventName) => ApiClient.get(`/event/ticket/${eventName}`),
 
-
     //==============================使用者相關===============================
     //獲取全部使用者資料
     fetchAllMember: () => ApiClient.get("/user/all"),
-
-
 
     //===============================登入註冊相關=====================================
     //登入使用者
@@ -27,8 +24,6 @@ const ApiService = {
     fetchUserUpdate: () => ApiClient.get("/user/userUpdate"),
 
     updateUser: (submitData) => ApiClient.post("/user/userUpdate", submitData),
-
-
 
     //===============================銷售相關=====================================
 
@@ -50,10 +45,6 @@ const ApiService = {
 
 
 
-
-
-
-
 // =======================================後台管理者相關================================
 
 
@@ -64,8 +55,11 @@ const ApiService = {
 
     updateHost:(hostData)=>ApiClient.post("/admin/hosts/update",hostData),
 //=========================================後台演唱會=====================================
-    fetchAdminAllEvent:()=>ApiClient.get("/admin/event/all")
+    fetchAdminAllEvent:()=>ApiClient.get("/admin/event/all"),
 
+    fetchAdminEventById:(eventId)=>ApiClient.get(`/admin/event/${eventId}`),
+
+    addEvent:(postTicket)=>ApiClient.post("/admin/event/add",postTicket)
 
 };
 

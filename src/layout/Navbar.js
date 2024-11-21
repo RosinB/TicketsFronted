@@ -8,6 +8,7 @@ function Navbar() {
     const [isLoginOpen, setIsLoginOpen] = useState(false); // 控制模態框顯示
     const [role, setRole] = useState(localStorage.getItem("role") || "user");
     const navigate = useNavigate();
+    const [popoverTimeout, setPopoverTimeout] = useState(null); // 保存延遲計時器
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -22,10 +23,17 @@ function Navbar() {
         setIsLoggedIn(false);
         navigate("/"); // 登出後回到首頁
     };
-
-    const togglePopover = (state) => {
-        setShowPopover(state);
+    const handleMouseEnter = () => {
+        clearTimeout(popoverTimeout); // 清除隱藏的延遲計時器
+        setShowPopover(true); // 立即顯示
     };
+    const handleMouseLeave = () => {
+        const timeout = setTimeout(() => {
+            setShowPopover(false);
+        }, 100); 
+        setPopoverTimeout(timeout);
+    };
+
 
     const handleLoginSuccess = (newRole) => {
         setRole(newRole); // 更新角色
@@ -58,8 +66,8 @@ function Navbar() {
                     {/* 會員專區 */}              
                         <li
                             className="relative"
-                            onMouseEnter={() => togglePopover(true)}
-                            onMouseLeave={() => togglePopover(false)}
+                            onMouseEnter={handleMouseEnter} 
+                            onMouseLeave={handleMouseLeave} 
                         >
                             <button className="hover:opacity-75 transition">會員專區</button>
                             {showPopover && (

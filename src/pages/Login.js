@@ -28,7 +28,7 @@ function Login(s) {
             
             if (userName === "admin") {
                 localStorage.setItem("role", "admin");
-                window.location.href = "/admin";
+                window.location.href = "/admin/event";
             } else {
                 localStorage.setItem("role", "user");
                 window.location.href = "/";

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import ApiService from "../../api/ApiService";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import EventManagement from "../components/event/EventManagement";
-import TicketInfo from "../components/event/TicketInfo";
 import ImageGallery from "../components/event/ImageGallery";
+import EventForm from "../components/event/EventForm";
 function AdminEvent() {
     const [selectedTab, setSelectedTab] = useState("event");
     const [data, setData] = useState([]);
@@ -12,13 +12,14 @@ function AdminEvent() {
     const fetchEvent = async () => {
         try {
             const response = await ApiService.fetchAdminAllEvent();
-            setData(response.data.data); // 提取 JSON 中的 data
+            setData(response.data.data); 
         } catch (error) {
             console.error("後台演唱會資訊沒有抓到", error);
         } finally {
             setLoading(false);
         }
     };
+
 
     useEffect(() => {
         fetchEvent();
@@ -31,13 +32,14 @@ function AdminEvent() {
             case "event":
                 return <EventManagement data={data} />;
             case "ticket":
-                return <TicketInfo data={data} />;
+                return <EventForm data={data} />;
             case "image":
                 return <ImageGallery data={data} />;
             default:
                 return null;
         }
     };
+
 
     return (
         <div className="flex h-full min-h-screen bg-gray-900 text-white">
@@ -55,7 +57,7 @@ function AdminEvent() {
                                 : "bg-gray-700 hover:bg-gray-600"
                             }`}
                     >
-                        後台演唱會管理
+                        演唱會資訊展示
                     </button>
                     <button
                         onClick={() => setSelectedTab("ticket")}
@@ -64,7 +66,7 @@ function AdminEvent() {
                                 : "bg-gray-700 hover:bg-gray-600"
                             }`}
                     >
-                        票務資訊
+                        新增演唱會
                     </button>
                     <button
                         onClick={() => setSelectedTab("image")}
@@ -73,7 +75,7 @@ function AdminEvent() {
                                 : "bg-gray-700 hover:bg-gray-600"
                             }`}
                     >
-                        圖片
+                        更新演唱會資訊
                     </button>
                 </nav>
             </aside>
