@@ -4,8 +4,8 @@ import ApiService from "../../../api/ApiService";
 function EventForm() {
     const [event, setEvent] = useState({
         eventName: "", eventPerformer: "", eventDescription: "", eventLocation: "",
-        eventDate: "", eventTime: "", hostName: "", eventType: "",
-        eventStatus: "", salesStatus: "", picEventTicket: "", picEventList: "", picEventEvent: ""
+        eventDate: "", eventTime: "", hostName: "", eventType: "演唱會",
+        eventStatus: "", salesStatus: "", picEventTicket: "", picEventList: "", picEventSection: ""
     });
     const [tickets, setTickets] = useState([{ section: "", price: "", quantity: "" }]);
     
@@ -159,7 +159,7 @@ function EventForm() {
                     <h2 className="text-2xl font-semibold mb-4">新增圖片</h2>
                     <div className="grid grid-cols-1 gap-4">
                         <InputForm
-                            title="票價區圖片"
+                            title="首頁區圖片"
                             type="text"
                             name="picEventTicket"
                             value={event.picEventTicket || ""}
@@ -177,8 +177,8 @@ function EventForm() {
                         <InputForm
                             title="活動圖片"
                             type="text"
-                            name="picEventEvent"
-                            value={event.picEventEvent || ""}
+                            name="picEventSection"
+                            value={event.picEventSection || ""}
                             onChange={handleEventChange}
 
                         />
