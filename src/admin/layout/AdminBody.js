@@ -6,6 +6,7 @@ import AdminHosts from "../pages/AdminHosts";
 import AdminMembers from "../pages/AdminMembers";
 import AdminEvent from "../pages/AdminEvent";
 import AdEventDetail from "../components/event/AdEventDetail"
+import AdminOrder from "../pages/AdminOrder";
 function AdminBody() {
     // 路由配置
     const adminRoutes = [
@@ -13,6 +14,7 @@ function AdminBody() {
         { path: "/admin/hosts", element: <AdminHosts /> },
         { path: "/admin/members", element: <AdminMembers /> },
         { path: "/admin/event", element: <AdminEvent /> },
+        { path: "/admin/order", element: <AdminOrder /> },
         { path: "/admin/event/details/:eventId", element: <AdEventDetail /> },
 
     ];

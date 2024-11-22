@@ -20,6 +20,10 @@ const ProtectedRoute = ({ children }) => {
         setIsLoading(false); 
     }, []);
 
+    const handleLoginCancel = () => {
+        setIsLoginOpen(false); // 關閉模態框
+        navigate("/"); // 跳轉回首頁
+    };
 
 
 
@@ -50,9 +54,8 @@ const ProtectedRoute = ({ children }) => {
         return (
         <LoginModal
                 isOpen={isLoginOpen}
-                onClose={() => setIsLoginOpen(false)} // 點擊關閉模態框
+                onClose={handleLoginCancel} // 點擊關閉模態框時跳轉到首頁
                 onSuccess={(role) => {
-                    console.log("onSuccess called with role989856:", role); // 確認回調是否被觸發
                      handleLoginSuccess(role); // 確保進入 handleLoginSuccess
                 }}
             />

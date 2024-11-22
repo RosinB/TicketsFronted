@@ -59,7 +59,12 @@ const ApiService = {
 
     fetchAdminEventById:(eventId)=>ApiClient.get(`/admin/event/${eventId}`),
 
-    addEvent:(postTicket)=>ApiClient.post("/admin/event/add",postTicket)
+    addEvent:(postTicket)=>ApiClient.post("/admin/event/add",postTicket),
+
+    updateEventById:(eventData)=>ApiClient.post("/admin/event/update",eventData),
+//=========================================後台訂單查詢=====================================
+    fetchOrdersById:(eventId)=>ApiClient.get(`/admin/orders/${eventId}`)
+
 
 };
 

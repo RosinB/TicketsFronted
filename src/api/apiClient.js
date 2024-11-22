@@ -16,21 +16,33 @@ ApiClient.interceptors.request.use(
         }
         return config;
     },
-    (error) => Promise.reject(error)
+    (error) => {
+        console.error("請求攔截器異常：", error);
+        return Promise.reject(error);
+    }
 );
 
-// 設置響應攔截器
+//請求攔截器
 ApiClient.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response && error.response.status === 401) {
-            console.error("Token 過期或無效");
+        if (error.response) {
+            if (error.response.status === 401) {
+                console.warn("未授權：可能是 Token 無效或過期");
 
-            // 清除 Token 並跳轉到登入頁
-            localStorage.removeItem("token");
-            
-            window.location.href = "/login";  
+                // 提示用戶並清除 Token
+                alert("您的登入憑證已過期，請重新登入");
+                localStorage.removeItem("token");
+
+                // 跳轉到登入頁
+                window.location.href = "/login";
+            } else {
+                console.error("API 錯誤響應：", error.response);
+            }
+        } else {
+            console.error("無法連接到後端伺服器：", error.message);
         }
+
         return Promise.reject(error);
     }
 );

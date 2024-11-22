@@ -31,7 +31,7 @@ function EventList() {
         }, []);
 
         const handleClick=(eventId)=>{
-        navigate("/event/ticket-show",{state:{eventId}});
+        navigate("/event/show",{state:{eventId}});
         }
 
         if (loading) return <LoadingSpinner />;

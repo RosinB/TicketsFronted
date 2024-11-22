@@ -21,7 +21,6 @@ function TicketOrders() {
 
 
         try {
-            console.log("我有接到資訊"+orderId)
             const response = await ApiService.fetchOrder(orderId,userName);
             setOrder(response.data.data);
         } catch (error) {

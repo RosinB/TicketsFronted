@@ -20,8 +20,8 @@ const tabs = [
 
 export default function NewsSection() {
     return (
-        <div className="relative p-6 mt-5 rounded-lg shadow-lg max-w-4xl mx-auto bg-gradient-to-b from-gray-700 via-gray-800 to-black text-white">
-            {/* 光暈效果 */}
+<div className="relative p-6 mt-5 rounded-lg shadow-lg max-w-4xl mx-auto bg-gradient-to-b from-blue-800 via-teal-700 to-teal-900 text-white">
+{/* 光暈效果 */}
 
             <h3 className="text-2xl font-semibold mb-4 text-white">最新消息</h3>
             <TabGroup>
