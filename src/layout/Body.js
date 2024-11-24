@@ -11,6 +11,7 @@ import TicketSection from "../pages/TicketSection";
 import TicketOrders from "../pages/TicketOrders";
 import UserOrder from "../pages/UserOrder";
 import Login from "../pages/Login";
+import TicketPending from "../pages/TicketPending";
 
 function Body() {
 
@@ -27,6 +28,7 @@ function Body() {
     // 受保護路由配置
     const protectedRoutes = [
         { path: "/event/ticket/section/buy", element: <TicketSales /> },
+        { path: "/event/ticket/pending", element: <TicketPending/> },
         { path: "/event/ticket/orderabs", element: <TicketOrders /> },
         { path: "/event/ticket/section", element: <TicketSection /> },
         { path: "/user/update", element: <UserUpdate /> },

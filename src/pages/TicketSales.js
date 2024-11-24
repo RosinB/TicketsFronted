@@ -5,48 +5,43 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 
 function TicketSales() {
-    const location = useLocation();
-    const ticketInfo = location.state || {};
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+  const location = useLocation();
+  const ticketInfo = location.state || {};
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-    const salesTicket = async () => {
-
+  const salesTicket = async () => {
       if (!ticketInfo) {
-        console.error("ticketInfo 不存在！");
-        navigate("/");
-        return; 
-        
-    }
-    
-      console.log('發送的數據:' + JSON.stringify(ticketInfo));
+          console.error("ticketInfo 不存在！");
+          navigate("/");
+          return;
+      }
+
+      console.log("發送的數據:", JSON.stringify(ticketInfo));
       try {
           const response = await ApiService.buyTicket(ticketInfo);
-          console.log("購票成功:", response);
-          navigate("/event/ticket/orderabs",{  state:{ orderId: response.data.data  } }  );
+          const requestId = response.data.data; // 獲取返回的 requestId
+          console.log("購票請求已提交，RequestID:", requestId);
 
+          // 跳轉到購票處理中頁面
+          navigate("/event/ticket/pending", { state: { requestId } });
       } catch (error) {
-          console.log("購票失敗:", error);
-          alert("票卷餘票不足，即將跳轉到首頁");
+          console.error("購票請求失敗:", error);
+          alert("購票失敗，請稍後再試！");
           navigate("/");
       } finally {
           setLoading(false);
       }
-    };
+  };
 
-
-    useEffect(() => {
+  useEffect(() => {
       salesTicket();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); 
+       // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-
-
-
-    if (loading)return <LoadingSpinner />
-  return (
-    <div className="overflow-x-auto">購票轉移中</div>
-  );
+  if (loading) return <LoadingSpinner />;
+  return <div className="overflow-x-auto">購票請求中...</div>;
 }
+
 
 export default TicketSales;

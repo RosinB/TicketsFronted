@@ -31,7 +31,7 @@ ApiClient.interceptors.response.use(
                 console.warn("未授權：可能是 Token 無效或過期");
 
                 // 提示用戶並清除 Token
-                alert("您的登入憑證已過期，請重新登入");
+                alert("請重新登入");
                 localStorage.removeItem("token");
 
                 // 跳轉到登入頁

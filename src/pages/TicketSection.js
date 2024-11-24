@@ -38,6 +38,7 @@ function TicketSection() {
                     location: data.eventLoaction,
                     organizer: data.hostName,
                     imageUrl: data.ticketPicList,
+                    section:data.ticketPicSection
                 });
                 // 這是ticketDto
                 setTickets(
@@ -79,7 +80,7 @@ function TicketSection() {
     
 
 
-
+    console.log("演唱會資訊",event)
 
     const handleQuantityChange = (index, value) => {
         setTickets((prevTickets) => {
@@ -120,15 +121,15 @@ function TicketSection() {
 
 
             {/* 下部分 */}
-            <div className="flex flex-col items-center h-[60vh] ">
+            <div className="flex flex-col items-center  ">
                 
                 <div className="max-w-4xl w-full grid grid-cols-2 gap-4 h-full">
                     {/* 場地平面圖 */}
-                    <div>
+                    <div className="overflow-hidden flex justify-center items-center">
                         <img
-                            src={event.imageUrl}
+                            src={event.section}
                             alt="場地平面圖"
-                            className="w-full h-full rounded-lg shadow-lg"/>
+                            className=" rounded-lg shadow-lg"/>
                     </div>
 
                     

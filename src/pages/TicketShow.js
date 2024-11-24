@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import ApiService from "../api/ApiService";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
+import TicketDetails from "../components/ticketshow/TicketDetails.js";
 
 function TicketShow() {
     const location = useLocation();
     const { eventId } = location.state || {};
 
+    const [currentPage, setCurrentPage] = useState(0);
 
     const [event,setEvent]=useState([]);
     const [loading, setLoading] = useState(true); // 加載狀態
@@ -41,7 +43,20 @@ function TicketShow() {
     };
 
 
-
+    const pages = [
+      {
+        title: "活動詳情",
+        content: <TicketDetails event={event} />,
+      },
+      {
+        title: "須知",
+        content: event.eventRules || "暫無須知",
+      },
+      {
+        title: "退款說明",
+        content: event.eventRefundPolicy || "暫無退款說明",
+      },
+    ];
 
 
   return (
@@ -86,15 +101,34 @@ function TicketShow() {
       </div>
 
 
-    {/* 描述與額外資訊 */}
-    <div className="bg-gray-100 w-full py-12 flex justify-center items-center rounded-md shadow-lg">
-      <div className="max-w-4xl text-center text-gray-700">
-        <h3 className="text-2xl font-semibold mb-4">活動詳情</h3>
-        <p className="text-sm">
-              {event.eventDescription}
-        </p>
+      {/* 描述與額外資訊 (加入多頁切換功能) */}
+      <div className="bg-white w-9/12 flex flex-col  rounded-md shadow-lg">
+        {/* 上方按鈕 */}
+        <div className="flex justify-start items-center w-3/5 ">
+          
+            {pages.map((tab, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentPage(index)}
+                  className={`px-4 py-2  font-bold ${
+                    currentPage === index
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 hover:bg-gray-400"
+                  }`}
+                >
+                  {tab.title}
+                </button>
+              ))}
+        </div>
+        <hr className="w-full border-t border-gray-300 " />
+
+          {/* 分頁內容 */}
+          <div className="max-w-4xl text-center text-gray-700">
+            <h3 className="text-2xl font-semibold mb-4">{pages[currentPage].title}</h3>
+            <div className="text-sm">{pages[currentPage].content}</div>
+          </div>
       </div>
-    </div>
+    
   </div>
 );
 }

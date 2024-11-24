@@ -1,33 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import ApiService from "../../api/ApiService";
 
-function TicketCarouse() {
 
-    const [allEvent, setAllEvent] = useState([]);
+function TicketCarouse({allEvent}) {
+
     const navigate = useNavigate();
-
-    
-    useEffect(() => {
-
-        const fetchEvent = async () => {
-            try {
-                const response = await ApiService.fetchAllPic();
-                setAllEvent(response.data.data);
-            } catch (err) {
-                console.log("輪播圖讀取圖片錯誤",err);
-            }
-        };
-
-        fetchEvent();
-    }, []);
-
-
-
 
 
 
@@ -51,7 +31,7 @@ function TicketCarouse() {
 
 
 
-
+    console.log("首頁的圖片資料",allEvent);
 
     return (
         <div className="w-full h-full -mt-7 -mb-5 ">

@@ -9,7 +9,7 @@ const ApiService = {
     fetchAllEvents: () => ApiClient.get("/event/all"),
 
     //獲取購票網站的資訊  EventTicket.js /event/ticket/
-    fetchTicketsEvent: (eventName) => ApiClient.get(`/event/ticket/${eventName}`),
+    fetchTicketsEvent: (eventId) => ApiClient.get(`/event/ticket/${eventId}`),
 
     //==============================使用者相關===============================
     //獲取全部使用者資料
@@ -36,7 +36,7 @@ const ApiService = {
     //透過演唱會id去顯示票種區域和價位
     getTicketSection: (eventId,userName) => ApiClient.get(`/sales/goticket/area`,{params:{eventId,userName}}),
 
-
+    checkTicketStatus:(requestId) =>ApiClient.get(`/sales/goticket/area/status/${requestId}`),
     //======================================= 訂單相關===================================
     fetchOrder: (orderId,userName) => ApiClient.get(`/sales/goticket/orders`, {params: { orderId, userName }}),
 
