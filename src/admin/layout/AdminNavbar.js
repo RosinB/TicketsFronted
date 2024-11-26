@@ -24,6 +24,7 @@ function AdminNavbar() {
                         <CustomLink to={"/admin/members"}>會員資料</CustomLink>
                         <CustomLink to={"/admin/event"}>演唱會資訊</CustomLink>
                         <CustomLink to={"/admin/order"}>演唱會訂單</CustomLink>
+                        <CustomLink to={"/admin/status"}>演唱會狀況</CustomLink>
 
                         <button
                             onClick={handleLogout}

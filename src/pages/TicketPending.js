@@ -13,6 +13,7 @@ function TicketPending() {
         try {
             const response = await ApiService.checkTicketStatus(requestId); // 查詢購票狀態
             const status = response.data.data.status; // 假設後端返回的狀態字段
+            console.log(requestId)
             console.log(response)
             console.log(status);
             if (status === "COMPLETED") {

@@ -7,6 +7,7 @@ import AdminMembers from "../pages/AdminMembers";
 import AdminEvent from "../pages/AdminEvent";
 import AdEventDetail from "../components/event/AdEventDetail"
 import AdminOrder from "../pages/AdminOrder";
+import TicketStatus from "../../pages/TicketStatus";
 function AdminBody() {
     // 路由配置
     const adminRoutes = [
@@ -16,6 +17,9 @@ function AdminBody() {
         { path: "/admin/event", element: <AdminEvent /> },
         { path: "/admin/order", element: <AdminOrder /> },
         { path: "/admin/event/details/:eventId", element: <AdEventDetail /> },
+        { path: "/admin/status", element: <TicketStatus /> },
+
+        
 
     ];
 
