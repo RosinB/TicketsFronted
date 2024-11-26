@@ -6,6 +6,7 @@ const TicketStatus = () => {
     const [isConnected, setIsConnected] = useState(false); // 是否已連接
     const [error, setError] = useState(null); // 儲存錯誤信息
 
+
     // 建立 WebSocket 連接
     const connectWebSocket = () => {
         if (socket) {
@@ -74,6 +75,10 @@ const TicketStatus = () => {
         };
     }, [socket]);
 
+
+
+
+    
     return (
         <div className="flex flex-col items-center justify-center min-h-screen text-white">
             <h1 className="text-4xl font-bold mb-6">實時票務狀況</h1>
