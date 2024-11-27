@@ -18,7 +18,20 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const TrafficStatsChart = () => {
     const [loading, setLoading] = useState(true);
-    const [chartData, setChartData] = useState(null);
+    const [chartData, setChartData] = useState({
+        labels: [],
+        datasets: [
+            {
+                label: "每秒流量",
+                data: [],
+                borderColor: "#3B82F6",
+                backgroundColor: "rgba(59, 130, 246, 0.2)",
+                pointBackgroundColor: "#FFF",
+                pointBorderColor: "#3B82F6",
+                tension: 0.4, // 增加平滑度
+            },
+        ],
+    });
     const [error, setError] = useState(null);
 
     const fetchTrafficData = async () => {
@@ -27,29 +40,37 @@ const TrafficStatsChart = () => {
             const start = now - 60; // 過去 60 秒
             const end = now;
 
-            const response = await ApiService.fetchTrafficPerSecond(start, end); // 調用秒級流量 API
-            const data = response.data;
+            const response = await ApiService.fetchTrafficPerSecond(start, end);
+            const data = response.data.data;
+
+            // 補全缺失數據
+            const completeData = (start, end, data) => {
+                const allTimestamps = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+                return allTimestamps.reduce((acc, ts) => {
+                    acc[ts] = data[ts] || 0; // 填補缺失數據為 0
+                    return acc;
+                }, {});
+            };
+
+            const filledData = completeData(start, end, data);
+
+            // 過濾極端值
+            const filteredValues = Object.values(filledData); // 不限制最大值
 
             // 處理數據
-            const labels = Object.keys(data).map((ts) =>
+            const labels = Object.keys(filledData).map((ts) =>
                 new Date(ts * 1000).toLocaleTimeString()
             );
-            const values = Object.values(data);
 
             // 更新圖表數據
-            setChartData({
+            setChartData((prev) => ({
+                ...prev,
                 labels,
-                datasets: [
-                    {
-                        label: "每秒流量",
-                        data: values,
-                        borderColor: "#3B82F6",
-                        backgroundColor: "rgba(59, 130, 246, 0.2)",
-                        pointBackgroundColor: "#FFF",
-                        pointBorderColor: "#3B82F6",
-                    },
-                ],
-            });
+                datasets: prev.datasets.map((dataset) => ({
+                    ...dataset,
+                    data: filteredValues,
+                })),
+            }));
         } catch (err) {
             console.error("獲取流量數據失敗:", err);
             setError("無法加載每秒流量數據，請稍後再試！");
@@ -80,12 +101,13 @@ const TrafficStatsChart = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-6 text-white">
+        <div className="container h-full mx-auto px-4 py-6 text-white">
             <h1 className="text-center text-xl font-bold mb-6">每秒流量統計圖表</h1>
-            <div className="bg-gray-800 p-4 rounded-md shadow-lg">
-                <Line
+            <div className="bg-gray-800 p-4 rounded-md shadow-lg h-[450px]">
+            <Line
                     data={chartData}
                     options={{
+                        
                         plugins: {
                             legend: {
                                 labels: {
@@ -102,19 +124,29 @@ const TrafficStatsChart = () => {
                             x: {
                                 ticks: {
                                     color: "#FFF",
+                                    maxTicksLimit: 5, // 最多顯示 10 個標籤
+
                                 },
                                 grid: {
                                     color: "rgba(255, 255, 255, 0.1)",
                                 },
                             },
                             y: {
+                                min: 0,
                                 ticks: {
                                     color: "#FFF",
+                                    
                                 },
                                 grid: {
                                     color: "rgba(255, 255, 255, 0.1)",
                                 },
                             },
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 1000,
+                            easing: "easeInOutQuad",
                         },
                     }}
                 />
