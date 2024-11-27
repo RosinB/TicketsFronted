@@ -24,7 +24,8 @@ function AdminNavbar() {
                         <CustomLink to={"/admin/members"}>會員資料</CustomLink>
                         <CustomLink to={"/admin/event"}>演唱會資訊</CustomLink>
                         <CustomLink to={"/admin/order"}>演唱會訂單</CustomLink>
-                        <CustomLink to={"/admin/status"}>演唱會狀況</CustomLink>
+                        <CustomLink to={"/admin/"}>演唱會狀況</CustomLink>
+                        <CustomLink to={"/admin/traffic"}>流量分析測試</CustomLink>
 
                         <button
                             onClick={handleLogout}
@@ -36,7 +37,7 @@ function AdminNavbar() {
             </div>
 
 
-            <div className="h-1 bg-gradient-to-br  via-gray-600 "></div>
+            <div className="h-1 -mt-2 bg-gradient-to-br  via-gray-600 "></div>
 
         </nav>
     );

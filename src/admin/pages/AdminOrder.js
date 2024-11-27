@@ -94,7 +94,7 @@ const AdminOrder = () => {
                                     <ColumnData value={order.orderQuantity}/>
                                     <td
                                         className={`px-4 py-2 border border-gray-600 ${
-                                            order.orderStatus === "已完成"
+                                            order.orderStatus === "COMPLETED"
                                                 ? "text-green-400"
                                                 : "text-red-400"
                                         }`}

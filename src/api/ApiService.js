@@ -63,8 +63,25 @@ const ApiService = {
 
     updateEventById:(eventData)=>ApiClient.post("/admin/event/update",eventData),
 //=========================================後台訂單查詢=====================================
-    fetchOrdersById:(eventId)=>ApiClient.get(`/admin/orders/${eventId}`)
+    fetchOrdersById:(eventId)=>ApiClient.get(`/admin/orders/${eventId}`),
 
+//=========================================後台票務狀況查詢=================================
+    fetchOnSaleEvent:()=>ApiClient.get("/admin/event/onsale"),
+
+    fetchRealTimeTicket:(eventId)=>ApiClient.get(`/admin/event/onsale/${eventId}`),
+
+
+
+//=========================================後台APi=================================
+    lockTicket: (locked) =>ApiClient.post(`/admin/event/api/lock`, locked),
+
+
+//========================================流量分析================================ 
+fetchTrafficPerSecond: (start, end) => {
+    return ApiClient.get("/api/traffic/per-second", {
+        params: { start, end },
+    });
+},
 
 };
 

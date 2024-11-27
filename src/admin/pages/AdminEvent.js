@@ -42,7 +42,7 @@ function AdminEvent() {
 
 
     return (
-        <div className="flex h-full min-h-screen bg-gray-900 text-white">
+        <div className="container flex  mx-auto px-4 py-6 text-white">
 
           {/* 側邊欄 */}
             <aside className="w-64 bg-gray-800 text-white py-6 px-4 shadow-lg">

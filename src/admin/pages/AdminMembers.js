@@ -32,7 +32,7 @@ const Member = () => {
 
     
     return (
-        <div className="p-4 bg-gray-900 text-white min-h-screen">
+        <div className="container  p-4 bg-gray-900 text-white min-h-screen">
             <h2 className="text-2xl font-bold mb-4">會員列表</h2>
             <table className="table-auto border-collapse border border-gray-500 w-full text-gray-200">
                 <thead>
