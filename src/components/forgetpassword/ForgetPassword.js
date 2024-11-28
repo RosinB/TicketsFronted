@@ -17,11 +17,11 @@ function ForgetPassword() {
         try {
             const response = await ApiService.forgetPassword(userName, email);
             setSuccessMessage("寄送成功請查詢Email")
-            alert("寄送成功請查詢Email");
+            // alert("寄送成功請查詢Email");
             console.log(response.data.data);
+        
         } catch (err) {
             console.error("密碼不匹配", err);
-            alert("請確認userName和Email有沒有正確");
             setErrorMessage("請確認userName和Email有沒有正確");
         }
     };

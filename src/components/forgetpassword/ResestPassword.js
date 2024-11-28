@@ -41,6 +41,10 @@ function ResestPassword() {
             setErrorMessage("密碼不一致，請重新確認。");
             return;
         }
+        
+
+
+
 
 
     };
@@ -89,6 +93,7 @@ function ResestPassword() {
                             />
                         </div>
                     </div>
+
 
                     <button
                         type="submit"
