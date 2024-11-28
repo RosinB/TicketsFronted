@@ -76,8 +76,10 @@ function Navbar() {
                                     style={{ left: "50%", transform: "translateX(-50%)" }}>
 
                                     <div className="p-2">
-                                        <Link to="/user/orders" className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 rounded-md">訂單列表</Link>
-                                        <Link to="/user/update" className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 rounded-md">更新會員資料</Link>
+                                        <MemberLink to="/user/orders" title="訂單列表"/>
+                                        <MemberLink to="/user/update" title="更新會員資料"/>
+                                        <MemberLink to="/user/email" title= "驗證信箱"/>
+
                                     </div>
 
                                 </div>
@@ -111,3 +113,11 @@ function Navbar() {
 }
 
 export default Navbar;
+
+
+const MemberLink=({to,title})=>{
+
+    return(<Link to={to} className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 rounded-md">{title}</Link>)
+
+
+}

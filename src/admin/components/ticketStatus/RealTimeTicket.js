@@ -40,6 +40,20 @@ function RealTimeTicket() {
             .catch((err) => alert(`鎖票失敗: ${err.message}`));
     };
 
+    const handleBalanceTicket =async(section)=>{
+
+        try {
+            const response = await ApiService.blanceTicket(eventId,section);
+            console.log(response.data.data);
+        } catch (error) {
+            if (error.response) {
+                console.error("API Error Response:", error.response.data);
+            } else {
+                console.error("Unexpected Error:", error.message);
+            }        }
+
+
+    };
 
 
 
@@ -155,6 +169,13 @@ function RealTimeTicket() {
                                             {ticket.ticketIsAvailable ? "鎖票" : "放票"}
                                         </button>
                                     </td>
+                                    <td className="border border-gray-700 px-6 py-4 text-center">
+                                        <button
+                                            onClick={() =>  handleBalanceTicket(ticket.ticketName)}
+                                          className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-blue-600" // 增加樣式，讓按鈕看起來更明顯                                           
+                                            >整理
+                                        </button>
+                                    </td>
                                 </tr>
                             ))
                         ) : (
@@ -188,8 +209,8 @@ const TableName = () => {
             <th className="border border-gray-700 px-6 py-4">總票數</th>
             <th className="border border-gray-700 px-6 py-4">票卷狀況</th>
             <th className="border border-gray-700 px-6 py-4">剩餘票數</th>
-            <th className="border border-gray-700 px-6 py-4">已完成訂單數</th>
             <th className="border border-gray-700 px-6 py-4">鎖票</th>
+            <th className="border border-gray-700 px-6 py-4">整理票</th>
 
         </tr>
     </thead>)

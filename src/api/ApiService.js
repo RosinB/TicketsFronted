@@ -25,6 +25,27 @@ const ApiService = {
 
     updateUser: (submitData) => ApiClient.post("/user/userUpdate", submitData),
 
+
+  
+
+//=================================驗證信箱==========================
+    //獲得信箱
+    getEmail:(userName)=>ApiClient.get(`/user/email/get/${userName}`),
+    //獲得驗證碼
+    getCAPTCHA:(userName)=>ApiClient.get(`/user/email/getCAPTCHA/${userName}`),
+
+    verifEmail:(userName,code)=>ApiClient.post(`/user/email/verification`, null,{params: {userName,code}}),
+
+
+//=============================忘記密碼===================================
+   //忘記密碼 
+    forgetPassword:(userName,email)=>ApiClient.post(`/user/forget/password`,null,{params:{userName,email}}),
+    //驗證網址token 
+    checkToken:(token)=>ApiClient.get(`/user/forget/password/${token}`),
+
+
+
+
     //===============================銷售相關=====================================
 
     //透過演唱會id抓取票種資訊
@@ -74,14 +95,10 @@ const ApiService = {
 
 //=========================================後台APi=================================
     lockTicket: (locked) =>ApiClient.post(`/admin/event/api/lock`, locked),
-
+    blanceTicket:(eventId,section)=>ApiClient.post("/admin/event/api/balance", null,{params: {eventId,section}}),
 
 //========================================流量分析================================ 
-fetchTrafficPerSecond: (start, end) => {
-    return ApiClient.get("/api/traffic/per-second", {
-        params: { start, end },
-    });
-},
+    fetchTrafficPerSecond: (start, end) =>  ApiClient.get("/api/traffic/per-second", {params: { start, end }})
 
 };
 

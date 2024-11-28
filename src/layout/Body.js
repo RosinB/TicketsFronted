@@ -12,7 +12,9 @@ import TicketOrders from "../pages/TicketOrders";
 import UserOrder from "../pages/UserOrder";
 import Login from "../pages/Login";
 import TicketPending from "../pages/TicketPending";
-
+import UserEmail from "../pages/UserEmail"
+import ForgetPassword from "../components/forgetpassword/ForgetPassword";
+import ResestPassword from "../components/forgetpassword/ResestPassword"
 function Body() {
 
     // 非保護路由配置
@@ -22,6 +24,9 @@ function Body() {
         { path: "/register", element: <Register /> },
         { path: "/event/list", element: <EventList /> },
         { path: "/login", element: <Login /> },
+        { path: "/forgetpassword", element: <ForgetPassword /> },
+        { path: "/forgetpassword/reset/:token", element: <ResestPassword /> },
+
     ];
 
     
@@ -33,6 +38,9 @@ function Body() {
         { path: "/event/ticket/section", element: <TicketSection /> },
         { path: "/user/update", element: <UserUpdate /> },
         { path: "/user/orders", element: <UserOrder /> },
+        { path: "/user/email", element: <UserEmail /> },
+
+    
     ];
 
 

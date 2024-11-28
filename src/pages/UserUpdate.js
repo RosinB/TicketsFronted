@@ -15,8 +15,7 @@ function UserUpdate() {
 
     const [message, setMessage] = useState(null); // 提示訊息
     const [fieldErrors, setFieldErrors] = useState({});
-    const [showModal, setShowModal] = useState(false); // 控制模態窗口的狀態
-    const [verificationCode, setVerificationCode] = useState(""); // 認證碼
+
 
 
     //抓取使用者要更新的資料
@@ -148,7 +147,7 @@ function UserUpdate() {
 
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">
-                        有無認證
+                        信箱是否認證
                     </label>
                     <div className="flex items-center space-x-4">
                         <input
@@ -158,13 +157,7 @@ function UserUpdate() {
                             onChange={(e) => setUser({...user,userIsVerified: e.target.value})}
                         />
 
-                        <button
-                            type="button"
-                            className="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition tracking-widest text-sm"
-                            onClick={() => setShowModal(true)}
-                        >
-                            認&nbsp;證
-                        </button>
+                      
                     </div>
                 </div>
                 <button className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">
@@ -175,40 +168,6 @@ function UserUpdate() {
 
 
 
-
-            {/* 模態窗口 */}
-            {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
-                        <h3 className="text-lg font-bold text-gray-800 mb-4">認證</h3>
-                        <div>
-                            <label className="block text-gray-700 text-sm font-semibold mb-2">認證碼</label>
-                            <input
-                                type="text"
-                                className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                                value={verificationCode}
-                                onChange={(e) => setVerificationCode(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="flex justify-end space-x-4 mt-4">
-                            <button
-                                onClick={() => setShowModal(false)}
-                                className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
-                            >
-                                取消
-                            </button>
-
-                            <button
-                                // onClick={handleVerification}
-                                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-                            >
-                                確認
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
 
 
 

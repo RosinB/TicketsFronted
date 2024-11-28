@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import ApiService from "../../api/ApiService";
+import { useNavigate } from "react-router-dom"; // 用於頁面跳轉
+
 
 function LoginModal({ isOpen, onClose, onSuccess }) {
     const [userName, setUserName] = useState(""); // 儲存帳號
     const [password, setPassword] = useState(""); // 儲存密碼
      const [errorMessage, setErrorMessage] = useState(""); // 錯誤訊息
+     const navigate = useNavigate(); // 用來控制頁面跳轉
 
     
     const handleSubmit = async (e) => {
@@ -30,6 +33,10 @@ function LoginModal({ isOpen, onClose, onSuccess }) {
             setErrorMessage("登入失敗，請檢查帳號或密碼！");
 
         }
+    };
+    const handleForgotPassword = () => {
+        onClose(); // 關閉模態框
+        navigate("/forgetpassword"); // 跳轉到忘記密碼頁面
     };
 
     if (!isOpen) return null; // 如果模態框未打開，返回 null
@@ -86,6 +93,15 @@ function LoginModal({ isOpen, onClose, onSuccess }) {
                         
                     </div>
                 </form>
+                <div className="text-center mt-4">
+                    <button
+                        onClick={handleForgotPassword}
+                        className="text-blue-600 hover:text-blue-800 text-sm"
+                        
+                    >
+                        忘記密碼？
+                    </button>
+                </div>
             </div>
         </div>
     );
