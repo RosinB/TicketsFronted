@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ApiService from "../api/ApiService";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import SeatSectionModal from "../components/ui/SeatSectionModal"
 function TicketSection() {
     const location = useLocation();
     const { eventId } = location.state || {};
@@ -12,7 +12,18 @@ function TicketSection() {
     const navigate = useNavigate();
     const userName = localStorage.getItem("userName");
 
+    const [isModalOpen, setIsModalOpen] = useState(false); // 控制彈窗的狀態
+    const [selectedZone, setSelectedZone] = useState(null); // 當前選擇的票區
 
+    const handleSeatSelection = async (zone) => {
+        setSelectedZone(zone); // 設置當前選擇的票區
+        setIsModalOpen(true); // 打開彈窗
+
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedZone(null);
+    };
 
     useEffect(() => {
 
@@ -146,7 +157,7 @@ function TicketSection() {
 
 
                                     {/* 票區名稱和狀態 */}
-                                    <div className="flex items-center w-1/3 space-x-2">
+                                    <div className="flex items-center w-1/2 space-x-2">
                                         <span className="font-medium text-sm sm:text-base text-gray-800">
                                             {ticket.zone}</span>
 
@@ -161,8 +172,16 @@ function TicketSection() {
                                                     {ticket.status === "熱賣中" &&   ticket.remaining < 100 
                                                     ?   `剩餘 ${ticket.remaining} 張` : 
                                                         ticket.status}</span>
-
+                                                    <button
+                                                    className="px-2 py-0.5 text-xs sm:text-sm rounded-md font-medium bg-yellow-400 text-gray-500 border hover:bg-yellow-300"
+                                                    onClick={() => handleSeatSelection(ticket.zone)}
+                                                    >
+                                                        自選座位
+                                                    </button>
+    
+  
                                     </div>
+                                    
 
                                     {/* 票價和數量選擇器 */}
                                     <div className="flex flex-col items-end w-1/3">
@@ -202,7 +221,15 @@ function TicketSection() {
 
 
                 </div>
-            </div>
+            </div>   {/* 彈窗 */}
+            
+              {/* 模態框 */}
+              <SeatSectionModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                eventId={eventId}
+                zone={selectedZone}
+            />
         </div>
     );
 }

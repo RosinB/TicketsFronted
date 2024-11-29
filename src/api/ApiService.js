@@ -63,8 +63,11 @@ const ApiService = {
 
     fetchUserOrder:(userName)=>ApiClient.get(`/user/order/${userName}`),
 
+    //庫款後更新訂單狀況
+    updateOrderStatus:(orderId)=> ApiClient.post(`/sales/goticket/pay/${orderId}`),
 
-
+    //取消訂單
+    cancelOrder:(orderId)=>ApiClient.post(`/sales/goticket/pay/cancel/${orderId}`),
 
 // =======================================後台管理者相關================================
 

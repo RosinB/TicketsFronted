@@ -11,9 +11,9 @@ function TicketOrders() {
     const [loading, setLoading] = useState(true);
     const userName=localStorage.getItem("userName")
     const navigate = useNavigate();
-
     const fetchOrder = async () => {
-        
+        console.log("我是"+orderId);
+
         if (!orderId) {
             console.error("orderId 不存在！");
             navigate("/");
@@ -50,11 +50,13 @@ function TicketOrders() {
             <table className="min-w-full border-collapse bg-white">
             
                 <tbody className="text-gray-700 text-sm">
-                    <CoulmnOrder name={"購買者名稱: "} value={order.userName}/>
                     <CoulmnOrder name={"訂單編號  : "} value={order.orderId}/>
                     <CoulmnOrder name={"演唱會名稱: "} value={order.eventName}/>
-                    <CoulmnOrder name={"訂單時間    "} value={formattedDateTime}/>
+                    <CoulmnOrder name={"購買者名稱: "} value={order.userName}/>
+                    <CoulmnOrder name={"座位:       "} value={order.seat}/>
                     <CoulmnOrder name={"票區:       "} value={order.orderSection}/>
+                    <CoulmnOrder name={"票價:       "} value={order.orderPrice}/>
+                    <CoulmnOrder name={"訂單時間    "} value={formattedDateTime}/>
                     <CoulmnOrder name={"訂單狀態:   "} value={order.orderStatus}/>
                 </tbody>
             </table>

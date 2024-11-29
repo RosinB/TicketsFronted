@@ -108,6 +108,8 @@ function RealTimeTicket() {
     // 發送訂閱數據，確保只執行一次
     useEffect(() => {
         if (!wsInitialized && socket && event.dto.length > 0) {
+            if (socket.readyState === WebSocket.OPEN) {
+
             event.dto.forEach((ticket) => {
                 const subscriptionData = {
                     eventId: parseInt(eventId),
@@ -117,6 +119,9 @@ function RealTimeTicket() {
                 console.log("已發送訂閱條件:", subscriptionData);
             });
             setWsInitialized(true); // 標記已初始化
+        }else {
+            console.warn("WebSocket 尚未連接，無法發送訂閱數據");
+        }
         }
     }, [socket, event.dto, eventId, wsInitialized]);
 
