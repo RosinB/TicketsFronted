@@ -58,6 +58,10 @@ const ApiService = {
     getTicketSection: (eventId,userName) => ApiClient.get(`/sales/goticket/area`,{params:{eventId,userName}}),
 
     checkTicketStatus:(requestId) =>ApiClient.get(`/sales/goticket/area/status/${requestId}`),
+
+    getSeatStatus:(eventId,section)=>ApiClient.get(`/sales/goticket/area/seat`,  {params:{eventId,section} } ),
+
+
     //======================================= 訂單相關===================================
     fetchOrder: (orderId,userName) => ApiClient.get(`/sales/goticket/orders`, {params: { orderId, userName }}),
 
