@@ -4,26 +4,24 @@ import NewsSection from "../components/home/NewsSection";
 import { useState } from "react";
 import { useEffect } from "react";
 import ApiService from "../api/ApiService";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 function Home() {
     const [allEvent, setAllEvent] = useState([]);
-
+    const [loading,  setLoading]  = useState(true);
     
+    const fetchEvent = ()=>{
+        ApiService.fetchAllPic()
+            .then((res)=> {setAllEvent(res.data.data)})
+            .catch((err)=>{console.log("輪播圖讀取圖片錯誤",err)})
+            .finally(()=>{setLoading(false)})
+    };
+
     useEffect(() => {
-
-        const fetchEvent = async () => {
-            try {
-                const response = await ApiService.fetchAllPic();
-                setAllEvent(response.data.data);
-            } catch (err) {
-                console.log("輪播圖讀取圖片錯誤",err);
-            }
-        };
-
         fetchEvent();
     }, []);
 
-
+    if(loading) return <LoadingSpinner/>
 
 
 

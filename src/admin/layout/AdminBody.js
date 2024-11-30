@@ -6,7 +6,6 @@ import AdminMembers from "../pages/AdminMembers";
 import AdminEvent from "../pages/AdminEvent";
 import AdEventDetail from "../components/event/AdEventDetail"
 import AdminOrder from "../pages/AdminOrder";
-import TicketStatus from "../../pages/TicketStatus";
 import AdminTicket from "../pages/AdminTicket";
 import RealTimeTicket from "../components/ticketStatus/RealTimeTicket"
 import TrafficStatsChart from "../traffic/TrafficStatsChart";
@@ -20,7 +19,6 @@ function AdminBody() {
         { path: "/admin/event", element: <AdminEvent /> },
         { path: "/admin/order", element: <AdminOrder /> },
         { path: "/admin/event/details/:eventId", element: <AdEventDetail /> },
-        { path: "/admin/status", element: <TicketStatus /> },
         { path: "/admin/status/realtime/:eventId", element: <RealTimeTicket /> },
         { path: "/admin/traffic", element: <TrafficStatsChart /> },
 

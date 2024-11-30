@@ -1,5 +1,4 @@
 import { useState } from "react";
-import TicketStatus from "../../pages/TicketStatus";
 import AdminOnSale from "../components/ticketStatus/AdminOnSale";
 
 
@@ -17,7 +16,6 @@ function AdminTicket() {
             case "onsale":
                 return <AdminOnSale />;
             case "history":
-                return <TicketStatus  />;
             default:
                 return null;
         }
