@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiService from "../api/ApiService";
-import LoadingSpinner from "../components/ui/LoadingSpinner";
+import LoadingSpinner from "../components/modal/LoadingSpinner";
+import { Search, Calendar, ArrowUpDown, Music2, Clock, MapPin } from "lucide-react";
+
 function EventList() {
     const navigate = useNavigate();
 
@@ -55,18 +57,19 @@ function EventList() {
     if (loading) return <LoadingSpinner />;
 
     return (
-        //搜尋
-        <div className="p-4">
-            <div className="flex justify-center -mt-5 items-center gap-2 mb-6">
-                {/* 搜尋框 */}
-                <SearchInput  value={searchQuery} onChange={handleSearch}/>
-                {/* 排序按鈕 */}
-                <SortButton   onClick={handleSortByDate}isAscending={isAscending}/>
-            </div>  
+        <div className="max-w-7xl mx-auto -mt-1 ">
+            <div className="bg-white rounded-lg shadow-lg p-4 mb-4">
+                <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+                    {/* 搜尋框 */}
+                    <SearchInput value={searchQuery} onChange={handleSearch} />
+                    {/* 排序按鈕 */}
+                    <SortButton onClick={handleSortByDate} isAscending={isAscending} />
+                </div>
+            </div>
+            
             {/* 活動列表 */}
-            <EventGrid events={filteredEvents} onEventClick={handleClick}/>
+            <EventGrid events={filteredEvents} onEventClick={handleClick} />
         </div>
-
     );
 }
 
@@ -76,49 +79,96 @@ export default EventList;
 
 const SearchInput = ({ value, onChange }) => {
     return (
-        <input 
-            type="text"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder="搜尋活動名稱或日期..."
-            className="p-2 w-4/12 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
+        <div className="relative w-full md:w-4/12">
+            <input 
+                type="text"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="搜尋活動名稱或日期..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+            />
+            <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+        </div>
     );
 };
+
 const SortButton = ({ onClick, isAscending }) => {
     return (
         <button
             onClick={onClick}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md"
         >
-            {isAscending ? "按日期升序" : "按日期降序"}
+            <ArrowUpDown className="h-4 w-4" />
+            {isAscending ? "演出日期由近到遠" : "演出日期由遠到近"}
         </button>
     );
 };
 
-// list的卡片
 const EventCard = ({ event, onClick }) => (
-    <div className="flex flex-col items-center bg-white shadow-md rounded-md">
-        <img
-            src={event.eventTicketList}
-            alt={event.eventName}
-            className="rounded-t-md w-full h-48 object-cover hover:scale-105 hover:brightness-110 active:scale-95 active:opacity-80 transition duration-300 cursor-pointer"
-            onClick={onClick}
-        />
-        <div className="p-3 text-center">
-            <p className="text-gray-500 text-xs">{event.eventDate}</p>
-            <h3 className="text-sm font-bold text-gray-800 mt-1">{event.eventName}</h3>
+    <div className="group bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+        <div className="relative">
+            <img
+                src={event.eventTicketList}
+                alt={event.eventName}
+                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                onClick={onClick}
+            />
+            {/* 售票狀態標籤 */}
+            <div className="absolute top-3 right-3 px-3 py-1 bg-blue-500 text-white text-sm rounded-full shadow-md">
+                {new Date(event.eventSalesDate) > new Date() ? "即將開賣" : "熱賣中"}
+            </div>
+        </div>
+        
+        <div className="p-4">
+            {/* 演出日期 */}
+            <div className="flex items-center gap-2 text-gray-500 text-sm mb-2">
+                <Calendar className="h-4 w-4" />
+                <span>{event.eventDate}</span>
+            </div>
+            
+            {/* 演出名稱 */}
+            <div className="flex items-start gap-2 mb-2">
+                <Music2 className="h-4 w-4 mt-1 text-blue-500 flex-shrink-0" />
+                <h3 className="font-bold text-gray-800 line-clamp-2">
+                    {event.eventName}
+                </h3>
+            </div>
+
+            {/* 演出資訊 */}
+            <div className="space-y-1 mb-4">
+                <div className="flex items-center gap-2 text-gray-600 text-sm">
+                    <Clock className="h-4 w-4" />
+                    <span>{event.eventTime}</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-600 text-sm">
+                    <MapPin className="h-4 w-4" />
+                    <span>{event.eventLocation || "演出地點"}</span>
+                </div>
+            </div>
+
+            {/* 查看詳情按鈕 */}
+            <button
+                onClick={onClick}
+                className="w-full py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 flex items-center justify-center gap-2"
+            >
+                查看詳情
+            </button>
         </div>
     </div>
 );
-//排序方式
+
 const EventGrid = ({ events, onEventClick }) => {
     if (!events?.length) {
-        return <p className="text-gray-500 text-center col-span-3">無符合搜尋條件的活動</p>;
+        return (
+            <div className="text-center py-12">
+                <Music2 className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                <p className="text-gray-500">無符合搜尋條件的活動</p>
+            </div>
+        );
     }
 
     return (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map(event => (
                 <EventCard
                     key={event.eventId}

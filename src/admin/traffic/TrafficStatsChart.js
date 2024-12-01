@@ -11,7 +11,7 @@ import {
     Legend,
 } from "chart.js";
 import ApiService from "../../api/ApiService";
-import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import LoadingSpinner from "../../components/modal/LoadingSpinner";
 
 // 註冊 Chart.js 組件
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);

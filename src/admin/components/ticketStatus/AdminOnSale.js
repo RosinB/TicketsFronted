@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ApiService from "../../../api/ApiService";
-import LoadingSpinner from "../../../components/ui/LoadingSpinner";
+import LoadingSpinner from "../../../components/modal/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 
 

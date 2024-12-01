@@ -4,7 +4,7 @@ import NewsSection from "../components/home/NewsSection";
 import { useState } from "react";
 import { useEffect } from "react";
 import ApiService from "../api/ApiService";
-import LoadingSpinner from "../components/ui/LoadingSpinner";
+import LoadingSpinner from "../components/modal/LoadingSpinner";
 
 function Home() {
     const [allEvent, setAllEvent] = useState([]);

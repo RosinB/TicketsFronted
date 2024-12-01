@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import ApiService from "../api/ApiService";
-import LoadingSpinner from "../components/ui/LoadingSpinner";
+import LoadingSpinner from "../components/modal/LoadingSpinner";
 import { useLocation, useNavigate } from "react-router-dom";
-import SeatSectionModal from "../components/ui/SeatSectionModal"
+import SeatSectionModal from "../components/modal/SeatSectionModal"
+import { Music2, Calendar, Clock, MapPin, Users } from 'lucide-react';
 
 function TicketSection() {
     const location = useLocation();
@@ -200,71 +201,105 @@ const VenueMap = ({ imageUrl }) => (
 
 const EventInfoCard = ({ event }) => {
     return (
-            <div className="relative flex flex-col items-center bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 w-full -mt-12 min-h-[50px]">
-                <div className="grid grid-cols-3 gap-3 mb-3 max-w-4xl mx-auto">
-                    {/* 左側圖片 */}
-                    <div
-                        className="bg-cover bg-center rounded-lg shadow-lg w-32 aspect-square mx-auto mt-3 mb-2 mx-9"
-                        style={{ backgroundImage: `url(${event.imageUrl})` }}/>
+        <div className="relative flex flex-col items-center bg-white w-full -mt-12 ">
+            <div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto p-3">
+            {/* 左側圖片 */}
+                <div className="overflow-hidden rounded-lg shadow-md border border-gray-100">
+                    <img 
+                        src={event.imageUrl}
+                        alt={event.name}
+                        className="w-full h-36 object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                </div>
 
-                    {/* 右側活動資訊 */}
-                    <div className="col-span-2 bg-white p-2 rounded-lg shadow-lg">
-                        <h1 className="text-lg font-bold mb-2">{event.name}</h1>
-                        <p className="text-gray-700 mb-1">演出者：{event.performer}</p>
-                        <p className="text-gray-700 mb-1">
-                        📅 {event.date} | 🕗 {event.time} 📍 {event.location}
-                        </p>
-                        <p className="text-gray-700">主辦單位：{event.organizer}</p>
+                {/* 右側活動資訊 */}
+                <div className="col-span-2 bg-white p-3 rounded-lg border-2 border-blue-100">
+                    {/* 標題 */}
+                    <div className="flex items-center gap-2 mb-2">
+                        <Music2 className="w-5 h-5 text-blue-500" />
+                        <h1 className="text-lg font-bold text-gray-800">{event.name}</h1>
+                    </div>
+
+                    {/* 演出資訊列表 */}
+                    <div className="grid grid-cols-2 gap-2">
+                        <div className="flex items-center gap-2">
+                            <Users className="w-4 h-4 text-blue-500" />
+                            <span className="text-gray-600 text-sm">演出者：</span>
+                            <span className="text-gray-800">{event.performer}</span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-blue-500" />
+                            <span className="text-gray-600 text-sm">演出日期：</span>
+                            <span className="text-gray-800">{event.date}</span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-blue-500" />
+                            <span className="text-gray-600 text-sm">演出時間：</span>
+                            <span className="text-gray-800">{event.time}</span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <MapPin className="w-4 h-4 text-blue-500" />
+                            <span className="text-gray-600 text-sm">演出地點：</span>
+                            <span className="text-gray-800">{event.location}</span>
+                        </div>
                     </div>
                 </div>
+            </div>
         </div>
     );
 };
 const TicketZoneInfo = ({ ticket, onSeatSelection, onQuantityChange, index }) => {
     return (
-        <li className="flex justify-between items-center p-4 border-b border-gray-200 hover:shadow-lg transition-shadow">
-            {/* 左側：票區名稱、狀態和自選座位 */}
-            <div className="flex items-center w-1/2 space-x-2">
-                <span className="font-medium text-sm sm:text-base text-gray-800">
-                    {ticket.zone}
-                </span>
-
-                <span className={`px-2 py-0.5 text-xs sm:text-sm rounded-md font-medium 
-                    ${ticket.status === "熱賣中" && ticket.remaining > 0 && ticket.remaining < 100
-                        ? "bg-orange-500 text-white"
-                        : ticket.status === "熱賣中" 
-                        ? "bg-green-500 text-white"
-                        : "bg-red-500 text-white"
+        <div className="border-b border-gray-200 last:border-b-0">
+            <div className="flex justify-between items-center p-4 -mb-3  hover:bg-gray-50 transition-colors">
+                {/* 左側：票區名稱和狀態 */}
+                <div className="flex items-center gap-2">
+                    <span className="font-semibold text-gray-800">
+                        {ticket.zone}
+                    </span>
+                    <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                        ticket.status === "熱賣中" && ticket.remaining > 0 && ticket.remaining < 100
+                            ? "bg-orange-100 text-orange-600"
+                            : ticket.status === "熱賣中" 
+                            ? "bg-green-100 text-green-600"
+                            : "bg-red-100 text-red-600"
                     }`}>
-                    {ticket.status === "熱賣中" && ticket.remaining < 100 
-                        ? `剩餘 ${ticket.remaining} 張` 
-                        : ticket.status}
-                </span>
+                        {ticket.status === "熱賣中" && ticket.remaining < 100 
+                            ? `剩餘 ${ticket.remaining} 張` 
+                            : ticket.status}
+                    </span>
+                </div>
 
-                <button
-                    className="px-2 py-0.5 text-xs sm:text-sm rounded-md font-medium bg-yellow-400 text-gray-500 border hover:bg-yellow-300"
-                    onClick={() => onSeatSelection(ticket.zone)}>
-                    自選座位
+                {/* 右側：票價和數量選擇 */}
+                <div className="flex items-center ">
+                    <span className="font-bold text-blue-600 -mr-6 min-w-[80px]">
+                        ${ticket.price}
+                    </span>
+                    {ticket.status === '熱賣中' && (
+                        <input
+                            type="number"
+                            min="0"
+                            max="4"
+                            value={ticket.quantity}
+                            onChange={(e) => onQuantityChange(index, parseInt(e.target.value, 4) || 0)}
+                            className="w-20 px-3 py-1 border border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-blue-300 outline-none"
+                        />
+                    )}
+                </div>
+            </div>
+            
+            {/* 座位選擇按鈕 */}
+            <div className="px-4 pb-3">
+                <button 
+                    onClick={() => onSeatSelection(ticket.zone)}
+                    className="text-sm text-blue-500 hover:text-blue-600 transition-colors"
+                >
+                    查看座位圖
                 </button>
             </div>
-
-            {/* 右側：票價和數量選擇 */}
-            <div className="flex flex-col items-end w-1/3">
-                <span className="font-bold text-green-600 whitespace-nowrap mb-1">
-                    ${ticket.price}
-                </span>
-                {ticket.status === '熱賣中' ? (
-                    <input
-                        type="number"
-                        min="0"
-                        value={ticket.quantity}
-                        onChange={(e) => onQuantityChange(index, parseInt(e.target.value, 4) || 0)}
-                        className="w-16 border border-gray-400 rounded text-center text-sm focus:ring focus:ring-blue-300 focus:outline-none shadow-md"
-                    />
-                ) : (
-                    <span className="text-red-500 text-sm font-semibold">售完</span>
-                )}
-            </div>
-        </li>
+        </div>
     );
 };

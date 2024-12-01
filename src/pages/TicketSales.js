@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "../api/ApiService";
-import LoadingSpinner from "../components/ui/LoadingSpinner";
+import LoadingSpinner from "../components/modal/LoadingSpinner";
 import { useLocation, useNavigate } from "react-router-dom";
 
 
@@ -20,9 +20,10 @@ function TicketSales() {
         }
 
         ApiService.buyTicket(ticketInfo)
-            .then(({data:{data}})=>{
-                console.log("購票請求已提交，RequestID:", data);
-                navigate("/event/ticket/pending", { state: { data} });
+            .then((res)=>{
+                const requestId=res.data.data
+                console.log("購票請求已提交，RequestID:", requestId);
+                navigate("/event/ticket/pending", { state: { requestId} });
             })
             .catch((error)=>{
                 console.error("購票請求失敗:", error);

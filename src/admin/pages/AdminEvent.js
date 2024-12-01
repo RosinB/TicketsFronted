@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "../../api/ApiService";
-import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import LoadingSpinner from "../../components/modal/LoadingSpinner";
 import EventManagement from "../components/event/EventManagement";
 import ImageGallery from "../components/event/ImageGallery";
 import EventForm from "../components/event/EventForm";
@@ -87,7 +87,6 @@ function AdminEvent() {
 }
 
 export default AdminEvent;
-
 
 
 

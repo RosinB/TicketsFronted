@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ApiService from "../../../api/ApiService";
-import LoadingSpinner from "../../../components/ui/LoadingSpinner";
+import LoadingSpinner from "../../../components/modal/LoadingSpinner";
 
 function AdEventDetail() {
     const { eventId } = useParams();

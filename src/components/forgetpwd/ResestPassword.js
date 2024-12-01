@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import ApiService from "../../api/ApiService";
 import { useEffect, useState } from "react";
-import LoadingSpinner from "../ui/LoadingSpinner";
+import LoadingSpinner from "../modal/LoadingSpinner";
 
 
 function ResestPassword() {

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "../api/ApiService";
-import LoadingSpinner from "../components/ui/LoadingSpinner";
+import LoadingSpinner from "../components/modal/LoadingSpinner";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function TicketPending() {
     const location = useLocation();
     const navigate = useNavigate();
     const { requestId } = location.state || {};
-    
+
     const [loading, setLoading] = useState(true);
 
     const checkTicketStatus = async () => {
@@ -35,6 +35,7 @@ function TicketPending() {
     };
 
     useEffect(() => {
+        console.log(requestId)
         if (requestId) {
             checkTicketStatus(); // 啟動輪詢
         } else {

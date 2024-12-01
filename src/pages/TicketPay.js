@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ApiService from "../api/ApiService";
-import LoadingSpinner from "../components/ui/LoadingSpinner";
+import LoadingSpinner from "../components/modal/LoadingSpinner";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function TicketPay() {
@@ -33,7 +33,10 @@ function TicketPay() {
         { label:"座位: " ,value:formatSeats(order)  },
         { label:"票區: " ,value:order.orderSection },
         { label:"票價: " ,value:order.orderPrice },
-        { label:"訂單時間: " ,value:order.orderDateTime.replace("T", " ")  },
+        {
+            label: "訂單時間: ",
+            value: order.orderDateTime ? order.orderDateTime.replace("T", " ") : "未知"
+        },        
         { label:"訂單狀態: " ,value:order.orderStatus  },
 
 

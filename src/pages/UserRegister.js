@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ApiService from "../api/ApiService";
 import { useNavigate } from "react-router-dom";
+import { User, Phone, Mail, Calendar, CreditCard,Lock, Check, AlertTriangle } from 'lucide-react';
 
 function Register() {
     const navigate = useNavigate();
@@ -72,47 +73,76 @@ function Register() {
     ];
 
     return (
-        <div className="bg-white shadow-md rounded-lg p-8 max-w-lg mx-auto -mt-4">
-            <h2 className="text-3xl font-bold text-center text-gray-800">會員註冊</h2>
-            {message && <div className={`text-${message.includes('成功') ? 'green' : 'red'}-500 text-center`}>{message}</div>}
+        <div className="max-w-4xl mx-auto p-6">
+            <div className="bg-white shadow-lg rounded-lg overflow-hidden -mt-6">
+                {/* 頂部標題區 */}
+                <div className="bg-gradient-to-r from-blue-700 via-teal-600 to-teal-800 px-6 py-4 ">
+                    <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                        <User className="w-6 h-6" />
+                        會員註冊
+                    </h2>
+                </div>
 
-            <form className="mt-2" onSubmit={handleSubmit}>
-                {inputFields.map(field => (
-                    <InputField
-                        key={field.name}
-                        {...field}
-                        value={user[field.name]}
-                        onChange={handleInputChange}
-                        placeholder={`請輸入${field.label.split(':')[0]}`}
-                        errorMessage={fieldErrors[field.name]}
-                        required
-                    />
-                ))}
-                <button className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">
-                    註冊
-                </button>
-            </form>
+                {/* 訊息顯示 */}
+                {message && (
+                    <div className={`p-4 ${message.includes('成功') ? 'bg-green-100 text-green-700 border-l-4 border-green-500' : 'bg-red-100 text-red-700 border-l-4 border-red-500'}`}>
+                        <p className="flex items-center gap-2">
+                            {message.includes('成功') ? <Check className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
+                            {message}
+                        </p>
+                    </div>
+                )}
+
+                <form className="p-6 space-y-6" onSubmit={handleSubmit}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {inputFields.map(field => (
+                            <div key={field.name}>
+                                <label className="block text-gray-700 text-sm font-bold mb-2 flex items-center gap-2">
+                                    {getFieldIcon(field.label)}
+                                    {field.label}
+                                </label>
+                                <input
+                                    type={field.type}
+                                    className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none ${fieldErrors[field.name] ? 'border-red-500' : 'border-gray-300'}`}
+                                    name={field.name}
+                                    value={user[field.name]}
+                                    onChange={handleInputChange}
+                                    placeholder={`請輸入${field.label.split(':')[0]}`}
+                                    required
+                                />
+                                {fieldErrors[field.name] && (
+                                    <p className="mt-1 text-red-500 text-sm">{fieldErrors[field.name]}</p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                    <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                        <Check className="w-5 h-5" />
+                        註冊
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }
 
-
 export default Register;
 
-
-
-const InputField = ({ label, type, name, value, onChange, placeholder, errorMessage, required }) => (
-    <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-semibold mb-2">{label}</label>
-        <input
-            type={type}
-            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            name={name}
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            required={required}
-        />
-        {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
-    </div>
-);
+const getFieldIcon = (label) => {
+    switch (label) {
+        case "帳號:(字符數量4~10)":
+            return <User className="w-4 h-4 text-blue-500" />;
+        case "密碼:":
+            return <Lock className="w-4 h-4 text-blue-500" />;
+        case "電話:(10位數)":
+            return <Phone className="w-4 h-4 text-blue-500" />;
+        case "電子信箱:":
+            return <Mail className="w-4 h-4 text-blue-500" />;
+        case "出生日期:":
+            return <Calendar className="w-4 h-4 text-blue-500" />;
+        case "身分證:":
+            return <CreditCard className="w-4 h-4 text-blue-500" />;
+        default:
+            return null;
+    }
+};
