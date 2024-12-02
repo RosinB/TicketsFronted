@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AdminOnSale from "../components/ticketStatus/AdminOnSale";
+import AdminOnSale from "./ticketStatus/AdminOnSale";
 
 
 

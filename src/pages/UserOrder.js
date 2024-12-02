@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Music2,
     Calendar,
@@ -25,20 +26,22 @@ function UserOrder() {
     const [expandedOrderId, setExpandedOrderId] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [filterStatus, setFilterStatus] = useState("all");
+    const navigate = useNavigate();
 
 
     useEffect(() => {
-        
-    const fetchOrder = async () => {
-        try {
-            const response = await ApiService.fetchUserOrder(userName);
-            setOrders(response.data.data);
-        } catch (error) {
-            console.log("訂單查詢失敗");
-        } finally {
-            setLoading(false);
-        }
-    };
+
+        const fetchOrder = async () => {
+            try {
+                const response = await ApiService.fetchUserOrder(userName);
+                setOrders(response.data.data);
+                console.log(response.data.data)
+            } catch (error) {
+                console.log("訂單查詢失敗");
+            } finally {
+                setLoading(false);
+            }
+        };
         fetchOrder();
     }, [userName]);
 
@@ -50,15 +53,15 @@ function UserOrder() {
         setExpandedOrderId(expandedOrderId === orderId ? null : orderId);
     };
 
- 
+
 
     const getStatusColor = (status) => {
         switch (status) {
-            case 'COMPLETED':
+            case '訂單完成':
                 return 'text-green-600';
-            case 'PENDING':
+            case '付款中':
                 return 'text-yellow-600';
-            case 'CANCELLED':
+            case '訂單取消':
                 return 'text-red-600';
             default:
                 return 'text-gray-600';
@@ -108,9 +111,9 @@ function UserOrder() {
                             className="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                         >
                             <option value="all">全部訂單</option>
-                            <option value="COMPLETED">已完成</option>
-                            <option value="PENDING">待付款</option>
-                            <option value="CANCELLED">已取消</option>
+                            <option value="頂單完成">已完成</option>
+                            <option value="付款中">待付款</option>
+                            <option value="訂單取消">已取消</option>
                         </select>
                     </div>
                 </div>
@@ -181,6 +184,11 @@ function UserOrder() {
                                                     value={`$${order.ticketPrice}`}
                                                 />
                                                 <InfoItem
+                                                    icon={<User className="w-4 h-4 text-green-500" />}
+                                                    label="座位"
+                                                    value={`${order.seatsDisplay}`}
+                                                />
+                                                <InfoItem
                                                     icon={<Calendar className="w-4 h-4 text-orange-500" />}
                                                     label="演出日期"
                                                     value={order.eventDate}
@@ -206,6 +214,24 @@ function UserOrder() {
                                                     value={order.hostName}
                                                 />
                                             </div>
+                                            {/* 付款按鈕區域 */}
+                                            {order.orderStatus === '付款中' && (  // 只在待付款狀態顯示
+                                                <div className="mt-4 flex justify-end">
+                                                    <button
+                                                        onClick={() => navigate(`/event/ticket/pay/${order.requestId}`, {
+                                                            state: {
+                                                                orderId: order.orderId,
+                                                                requestId: order.requestId
+                                                            }
+                                                        })}
+                                                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 
+                             transition-colors duration-200 flex items-center gap-2"
+                                                    >
+                                                        <DollarSign className="w-4 h-4" />
+                                                        立即付款
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </div>

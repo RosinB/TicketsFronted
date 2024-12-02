@@ -11,7 +11,7 @@ const AdminOrder = () => {
 
     const columnName = [
         "訂單編號", "用戶名稱", "演唱會名稱", "表演者", 
-        "訂票區域", "數量", "狀態", "更新時間",
+        "訂票區域","座位", "數量", "狀態", "更新時間",
     ];
 
     // 過濾訂單狀態
@@ -36,6 +36,7 @@ const AdminOrder = () => {
         try {
             const response = await ApiService.fetchOrdersById(eventId);
             setOrders(response.data.data);
+            console.log(response.data.data)
             setCurrentPage(1);
         } catch (error) {
             console.error("無法獲取訂單資料", error);
@@ -124,6 +125,8 @@ const AdminOrder = () => {
                                     <ColumnData value={order.eventName} />
                                     <ColumnData value={order.eventPerformer} />
                                     <ColumnData value={order.orderSection} />
+                                    <ColumnData value={order.seatsDisplay} />
+
                                     <ColumnData value={order.orderQuantity} />
                                     <td className={`px-4 py-2 border border-gray-700 ${
                                         order.orderStatus === "訂單完成" 

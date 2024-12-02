@@ -26,19 +26,19 @@ ApiClient.interceptors.request.use(
 ApiClient.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response) {
-            if (error.response.status === 401) {
-                console.warn("未授權：可能是 Token 無效或過期");
+        if (error.response && error.response.status === 401) {
+            // 靜默處理，不顯示警告
+            localStorage.removeItem("token");
 
-                // 提示用戶並清除 Token
-                alert("請重新登入");
-                localStorage.removeItem("token");
-
-                // 跳轉到登入頁
+            // 使用 setTimeout 確保當前的錯誤處理完成後再跳轉
+            setTimeout(() => {
                 window.location.href = "/login";
-            } else {
-                console.error("API 錯誤響應：", error.response);
-            }
+                // 等頁面開始跳轉後再顯示提示
+                alert("請重新登入");
+            }, 0);
+
+            // 直接返回被拒絕的 Promise，不再繼續處理錯誤
+            return Promise.reject(new Error("silent")); // 使用特殊錯誤訊息
         } else {
             console.error("無法連接到後端伺服器：", error.message);
         }

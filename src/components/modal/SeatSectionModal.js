@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "../../api/ApiService";
+import { useNavigate } from "react-router-dom";
 
 const SeatSectionModal = ({ 
     isOpen, 
@@ -10,7 +11,7 @@ const SeatSectionModal = ({
     const [seats, setSeats] = useState([]); 
     const [selectedSeats, setSelectedSeats] = useState([]); 
     const userName = localStorage.getItem("userName");
-
+    const navigate=useNavigate();
     useEffect(() => {
         if (isOpen) {
             const fetchSeats = async () => {
@@ -50,16 +51,18 @@ const SeatSectionModal = ({
     const handleConfirmSelection = () => {
         if (selectedSeats.length > 0) {
             const ticketInfo = {
-                seats: selectedSeats,
+                poolNumber: selectedSeats,
                 eventId: eventId,
-                zone: zone,
+                section: zone,
                 userName: userName
             };
 
             console.log("訂票資訊：", ticketInfo);
             onClose(ticketInfo);
+            navigate("/event/ticket/section/buy", { state: ticketInfo });
+
         }
-       
+    
     };
 
     const handleClose = () => {

@@ -5,7 +5,34 @@ import { Timer, CalendarDays, Music,TrendingUp } from 'lucide-react'; // 引入�
 
 
 function NewsSection({ allEvent }) {
-    const [timers, setTimers] = useState({}); // 修正變數名稱
+
+    const calculateInitialTimers = () => {
+        const initialTimers = {};
+        const upcomingSales = allEvent
+            .filter(event => new Date(`${event.eventSalesDate} ${event.eventSalesTime}`) > new Date())
+            .sort((a, b) => 
+                new Date(`${a.eventSalesDate} ${a.eventSalesTime}`) - 
+                new Date(`${b.eventSalesDate} ${b.eventSalesTime}`)
+            )
+            .slice(0, 2);
+
+        upcomingSales.forEach(event => {
+            const saleDate = new Date(`${event.eventSalesDate} ${event.eventSalesTime}`);
+            const now = new Date();
+            const difference = saleDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((difference / 1000 / 60) % 60);
+                const seconds = Math.floor((difference / 1000) % 60);
+
+                initialTimers[event.eventId] = { days, hours, minutes, seconds };
+            }
+        });
+        return initialTimers;
+    };
+    const [timers, setTimers] = useState(calculateInitialTimers());
     
     // 取得未來的售票活動（最多3場）
     const upcomingSales = allEvent
@@ -15,7 +42,6 @@ function NewsSection({ allEvent }) {
             new Date(`${b.eventSalesDate} ${b.eventSalesTime}`)
         )
         .slice(0, 2);
-
 
 
     const popularityData = allEvent.map(event => ({
@@ -142,7 +168,7 @@ function NewsSection({ allEvent }) {
                             {Object.entries(timers[event.eventId]).map(([key, value]) => (
                                 <motion.div
                                     key={key}
-                                    className="relative overflow-hidden rounded-lg bg-gradient-to-b from-gray-50 to-gray-100 border border-gray-200 shadow-sm"
+                                    className="relative overflow-hidden rounded-lg bg-white shadow-sm border border-blue-200"
                                     whileHover={{ scale: 1.05 }}
                                     transition={{ type: "spring", stiffness: 300 }}
                                 >
@@ -169,12 +195,12 @@ function NewsSection({ allEvent }) {
                                 {event.eventSalesDate} {event.eventSalesTime}
                             </span>
                         </span>
-                        <span className="text-gray-600">
+                        {/* <span className="text-gray-600">
                             表演者：
                             <span className="text-blue-600 font-medium ml-1">
                                 {event.eventPerformer}
                             </span>
-                        </span>
+                        </span> */}
                     </div>
                 </div>
             ))}

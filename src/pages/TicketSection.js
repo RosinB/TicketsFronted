@@ -123,11 +123,11 @@ function TicketSection() {
             {/* 下部分 */}
             <div className="flex flex-col items-center  ">
                 
-                <div className="max-w-4xl w-full grid grid-cols-2 gap-4 h-full">
+                <div className="max-w-4xl w-full grid grid-cols-2 gap-4 h-full ">
                     {/* 場地平面圖 */}
                     <VenueMap imageUrl={event.section} />
                 
-                    <div className="bg-white  rounded-lg shadow-lg  border border-gray-200">
+                    <div className="bg-white  rounded-lg shadow-lg  border-2 border-blue-200">
                         {/* 標題 */}
                         <SectionTitle />
 
@@ -188,7 +188,7 @@ const SectionTitle = () => (
 
 // 場地平面圖元件
 const VenueMap = ({ imageUrl }) => (
-    <div className="overflow-hidden flex justify-center items-center">
+    <div className="overflow-hidden flex justify-center items-center ">
         <img
             src={imageUrl}
             alt="場地平面圖"
@@ -201,8 +201,8 @@ const VenueMap = ({ imageUrl }) => (
 
 const EventInfoCard = ({ event }) => {
     return (
-        <div className="relative flex flex-col items-center bg-white w-full -mt-12 ">
-            <div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto p-3">
+        <div className="relative flex flex-col items-center bg-white w-full -mt-12  border-2 border-blue-200">
+            <div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto p-3 ">
             {/* 左側圖片 */}
                 <div className="overflow-hidden rounded-lg shadow-md border border-gray-100">
                     <img 
@@ -253,8 +253,8 @@ const EventInfoCard = ({ event }) => {
 };
 const TicketZoneInfo = ({ ticket, onSeatSelection, onQuantityChange, index }) => {
     return (
-        <div className="border-b border-gray-200 last:border-b-0">
-            <div className="flex justify-between items-center p-4 -mb-3  hover:bg-gray-50 transition-colors">
+        <div className="border-b border-gray-200 last:border-b-0 ">
+            <div className="flex justify-between items-center p-4 -mb-3  hover:bg-gray-50 transition-colors ">
                 {/* 左側：票區名稱和狀態 */}
                 <div className="flex items-center gap-2">
                     <span className="font-semibold text-gray-800">

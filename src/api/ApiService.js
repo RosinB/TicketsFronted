@@ -54,6 +54,10 @@ const ApiService = {
     //透過 使用者名子，演唱會id，數量，票價區位去購票
     buyTicket: (ticketInfo) => ApiClient.post("/sales/goticket/area/buy", ticketInfo),
 
+    buyTicketWithSeat:(ticketInfo) => ApiClient.post("/sales/goticket/area/buy/seat", ticketInfo),
+
+
+
     //透過演唱會id去顯示票種區域和價位
     getTicketSection: (eventId,userName) => ApiClient.get(`/sales/goticket/area`,{params:{eventId,userName}}),
 
@@ -63,7 +67,7 @@ const ApiService = {
 
 
     //======================================= 訂單相關===================================
-    fetchOrder: (orderId,userName) => ApiClient.get(`/sales/goticket/orders`, {params: { orderId, userName }}),
+    fetchOrder: (orderId,userName,requestId) => ApiClient.get(`/sales/goticket/orders`, {params: { orderId, userName,requestId }}),
 
     fetchUserOrder:(userName)=>ApiClient.get(`/user/order/${userName}`),
 
@@ -102,7 +106,10 @@ const ApiService = {
 
 //=========================================後台APi=================================
     lockTicket: (locked) =>ApiClient.post(`/admin/event/api/lock`, locked),
+    
     blanceTicket:(eventId,section)=>ApiClient.post("/admin/event/api/balance", null,{params: {eventId,section}}),
+    
+    clearTicket:(eventId,section)=>ApiClient.post("/admin/event/api/clear",null,{params: {eventId,section}}),
 
 //========================================流量分析================================ 
     fetchTrafficPerSecond: (start, end) =>  ApiClient.get("/api/traffic/per-second", {params: { start, end }})

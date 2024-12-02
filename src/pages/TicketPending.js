@@ -18,7 +18,10 @@ function TicketPending() {
         
             if (status === "付款中") {
                 // 購票成功，跳轉到訂單摘要頁面
-                navigate("/event/ticket/pay", { state: { orderId: response.data.data.orderId } });
+                navigate(`/event/ticket/pay/${requestId}`, { state:  
+                    { orderId: response.data.data.orderId, 
+                    requestId
+                } });
                 setLoading(false)
             } else if (status === "錯誤") {
                 // 購票失敗，提示用戶並跳轉到首頁

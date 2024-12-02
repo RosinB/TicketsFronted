@@ -18,23 +18,42 @@ function TicketSales() {
             navigate("/");
             return;
         }
-
-        ApiService.buyTicket(ticketInfo)
-            .then((res)=>{
-                const requestId=res.data.data
-                console.log("購票請求已提交，RequestID:", requestId);
-                navigate("/event/ticket/pending", { state: { requestId} });
-            })
-            .catch((error)=>{
-                console.error("購票請求失敗:", error);
-                alert("購票失敗，請稍後再試！");
-                navigate("/");
-            })
-            .finally(()=>{setLoading(false);
-            })
+        if (ticketInfo.poolNumber != null) {
+            // 呼叫座位票的 API
+            ApiService.buyTicketWithSeat(ticketInfo)
+                .then((res) => {
+                    const requestId = res.data.data;
+                    console.log("座位購票請求已提交，RequestID:", requestId);
+                    navigate("/event/ticket/pending", { state: { requestId } });
+                })
+                .catch((error) => {
+                    console.error("座位購票請求失敗:", error);
+                    alert("購票失敗，請稍後再試！");
+                    navigate("/");
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        } else {
+            // 原本的一般購票 API
+            ApiService.buyTicket(ticketInfo)
+                .then((res) => {
+                    const requestId = res.data.data;
+                    console.log("購票請求已提交，RequestID:", requestId);
+                    navigate("/event/ticket/pending", { state: { requestId } });
+                })
+                .catch((error) => {
+                    console.error("購票請求失敗:", error);
+                    alert("購票失敗，請稍後再試！");
+                    navigate("/");
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        }
 
         console.log("發送的數據:", JSON.stringify(ticketInfo));
-        
+
     };
 
     useEffect(() => {

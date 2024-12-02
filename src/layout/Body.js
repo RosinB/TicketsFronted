@@ -35,7 +35,7 @@ function Body() {
         { path: "/event/ticket/section/buy", element: <TicketSales /> },
         { path: "/event/ticket/pending", element: <TicketPending/> },
         { path: "/event/ticket/orderabs", element: <TicketOrders /> },
-        { path: "/event/ticket/pay", element: <TicketPay /> },
+        { path: "/event/ticket/pay/:requestId", element: <TicketPay /> },
         { path: "/event/ticket/section", element: <TicketSection /> },
         { path: "/user/update", element: <UserUpdate /> },
         { path: "/user/orders", element: <UserOrder /> },

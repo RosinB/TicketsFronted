@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ApiService from "../api/ApiService";
 import LoadingSpinner from "../components/modal/LoadingSpinner";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 function TicketPay() {
     const location = useLocation();
@@ -11,7 +11,7 @@ function TicketPay() {
     const [countdown, setCountdown] = useState(null); // 倒數時間 (以秒為單位)
     const userName = localStorage.getItem("userName");
     const navigate = useNavigate();
-    
+    const {requestId}=useParams();
     // 格式化倒數時間為 mm:ss
     const formatCountdown = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -52,7 +52,7 @@ function TicketPay() {
         }
 
         try {
-            const response = await ApiService.fetchOrder(orderId, userName);
+            const response = await ApiService.fetchOrder(orderId, userName,requestId);
             const orderData = response.data.data;
             setOrder(orderData);
 
@@ -69,6 +69,7 @@ function TicketPay() {
             }
 
         } catch (error) {
+            alert("訂單以超時");
             console.log("訂單摘要有錯誤: " + error);
         } finally {
             setLoading(false);
@@ -104,6 +105,7 @@ function TicketPay() {
     const handlePay=()=>{
         ApiService.updateOrderStatus(orderId)
             .then(()=>{
+                console.log(orderId)
                 alert("付款成功");
                 navigate("/event/ticket/orderabs", { state:  {orderId}  });
             }).catch(()=>{
@@ -137,7 +139,7 @@ function TicketPay() {
                 {/* 訂單資訊 */}
                 <table className="w-full text-left border-collapse">
                     <tbody className="text-sm">
-                        {payInfo.map(item=>  <CoulmnOrder name={item.label} value={item.value} /> )}
+                        {payInfo.map(item=>  <CoulmnOrder        key={item.label} name={item.label} value={item.value} /> )}
                     </tbody>
                 </table>
             </div>

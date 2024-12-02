@@ -7,7 +7,7 @@ import AdminEvent from "../pages/AdminEvent";
 import AdEventDetail from "../components/event/AdEventDetail"
 import AdminOrder from "../pages/AdminOrder";
 import AdminTicket from "../pages/AdminTicket";
-import RealTimeTicket from "../components/ticketStatus/RealTimeTicket"
+import RealTimeTicket from "../pages/ticketStatus/RealTimeTicket"
 import TrafficStatsChart from "../traffic/TrafficStatsChart";
 
 function AdminBody() {
