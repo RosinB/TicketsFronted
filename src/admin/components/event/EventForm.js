@@ -82,7 +82,7 @@ function EventForm() {
 
 
     return (
-        <div className="container mx-auto px-4 py-6 text-white">
+        <div className="container mx-auto px-4 py-6 -mt-6 text-white">
             <h1 className="text-3xl font-bold mb-6">新增演唱會</h1>
             <form onSubmit={handleSubmit}>
                 {/* 演唱會基本資訊 */}

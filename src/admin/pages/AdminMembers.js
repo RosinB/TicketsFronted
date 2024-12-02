@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "../../api/ApiService";
-import { User, Check, X } from "lucide-react";
+import { User, Check, X, Search } from "lucide-react";
 
 const Member = () => {
     const verificationOptions = {
@@ -13,6 +13,7 @@ const Member = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [verificationFilter, setVerificationFilter] = useState(verificationOptions.all);
+    const [searchTerm, setSearchTerm] = useState(''); // 新增搜尋狀態
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -30,15 +31,16 @@ const Member = () => {
         fetchMembers();
     }, []);
 
+    // 過濾會員列表（結合搜尋和驗證狀態）
     const filteredMembers = members.filter(member => {
-        switch (verificationFilter) {
-            case verificationOptions.verified:
-                return member.userIsVerified;
-            case verificationOptions.unverified:
-                return !member.userIsVerified;
-            default:
-                return true;
-        }
+        const matchesSearch = member.userName.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesVerification = verificationFilter === verificationOptions.all
+            ? true
+            : verificationFilter === verificationOptions.verified
+                ? member.userIsVerified
+                : !member.userIsVerified;
+
+        return matchesSearch && matchesVerification;
     });
 
     if (loading) return <div className="text-white">Loading...</div>;
@@ -48,14 +50,29 @@ const Member = () => {
         <div className="container p-6 bg-gray-900 text-white min-h-screen">
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-bold flex items-center gap-2">
-                    <User className="w-6 h-6 text-blue-500" />
+                    <User className="w-8 h-8 text-teal-500" />
                     會員列表
                 </h2>
-                <div className="flex gap-4">
+                <div className="flex items-center gap-4">
+                    {/* 搜尋欄位 */}
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="搜尋會員名稱..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="bg-gray-800 border border-gray-700 px-4 py-2 pl-10 text-white rounded-lg
+                                    focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent
+                                    w-64 transition-all duration-200"
+                        />
+                        <Search className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                    </div>
+                    {/* 驗證狀態過濾器 */}
                     <select
                         value={verificationFilter}
                         onChange={(e) => setVerificationFilter(e.target.value)}
-                        className="bg-gray-800 border border-gray-700 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="bg-gray-800 border border-gray-700 px-4 py-2 text-white rounded-lg
+                                focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                     >
                         <option value={verificationOptions.all}>全部會員</option>
                         <option value={verificationOptions.verified}>已驗證會員</option>

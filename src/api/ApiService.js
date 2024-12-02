@@ -69,6 +69,9 @@ const ApiService = {
     //======================================= 訂單相關===================================
     fetchOrder: (orderId,userName,requestId) => ApiClient.get(`/sales/goticket/orders`, {params: { orderId, userName,requestId }}),
 
+    fetchAsbOrder: (orderId,userName) => ApiClient.get(`/sales/goticket/asborders`, {params: { orderId, userName }}),
+
+
     fetchUserOrder:(userName)=>ApiClient.get(`/user/order/${userName}`),
 
     //庫款後更新訂單狀況

@@ -3,12 +3,12 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "../../api/ProtectedRoute";
 import AdminHosts from "../pages/AdminHosts";
 import AdminMembers from "../pages/AdminMembers";
-import AdminEvent from "../pages/AdminEvent";
 import AdEventDetail from "../components/event/AdEventDetail"
 import AdminOrder from "../pages/AdminOrder";
 import AdminTicket from "../pages/AdminTicket";
 import RealTimeTicket from "../pages/ticketStatus/RealTimeTicket"
 import TrafficStatsChart from "../traffic/TrafficStatsChart";
+import AdminDashboard from "../pages/AdminDashBoard";
 
 function AdminBody() {
     // 路由配置
@@ -16,11 +16,11 @@ function AdminBody() {
         { path: "/admin", element: <AdminTicket /> },
         { path: "/admin/hosts", element: <AdminHosts /> },
         { path: "/admin/members", element: <AdminMembers /> },
-        { path: "/admin/event", element: <AdminEvent /> },
         { path: "/admin/order", element: <AdminOrder /> },
         { path: "/admin/event/details/:eventId", element: <AdEventDetail /> },
         { path: "/admin/status/realtime/:eventId", element: <RealTimeTicket /> },
         { path: "/admin/traffic", element: <TrafficStatsChart /> },
+        { path: "/admin/dashboard", element: <AdminDashboard /> },
 
         
 

@@ -81,7 +81,7 @@ const AdminOrder = () => {
     );
 
     return (
-        <div className="container mx-auto px-4 py-6 text-white">
+        <div className="container mx-auto px-4 py-6 -mt-6 text-white">
             <h1 className="text-3xl font-bold mb-4">演唱會訂單管理</h1>
 
             <div className="flex items-center gap-4 mb-6">

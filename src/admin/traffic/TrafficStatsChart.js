@@ -42,7 +42,7 @@ const TrafficStatsChart = () => {
 
             const response = await ApiService.fetchTrafficPerSecond(start, end);
             const data = response.data.data;
-
+            console.log(response.data.data)
             // 補全缺失數據
             const completeData = (start, end, data) => {
                 const allTimestamps = Array.from({ length: end - start + 1 }, (_, i) => start + i);

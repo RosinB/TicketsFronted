@@ -64,7 +64,7 @@ function HostList() {
 
     return (
         <div className="text-white p-6 -mt-6">
-            <h1 className="text-2xl font-bold mb-6">主辦資訊列表</h1>
+            {/* <h1 className="text-2xl font-bold mb-6">主辦資訊列表</h1> */}
             <div className="overflow-x-auto">
                 <table className="table-auto w-full text-left text-base border-collapse border border-gray-700">
                     <TableHeader />

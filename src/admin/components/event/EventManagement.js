@@ -1,10 +1,29 @@
 import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import ApiService from "../../../api/ApiService";
+import LoadingSpinner from "../../../components/modal/LoadingSpinner";
 
+function EventManagement() {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const fetchEvent = async () => {
+        try {
+            const response = await ApiService.fetchAdminAllEvent();
+            setData(response.data.data); 
+        } catch (error) {
+            console.error("後台演唱會資訊沒有抓到", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
+        fetchEvent();
+    }, []);
 
-function EventManagement({ data }) {
+if(loading) <LoadingSpinner/>
     return (
-        <div className="text-white p-4">
+        <div className="text-white p-4 -mt-6">
             <h1 className="text-2xl font-bold mb-4">演唱會管理</h1>
             <div className="overflow-x-auto">
                 <table className="table-auto w-full text-left text-base border-collapse border border-gray-700">

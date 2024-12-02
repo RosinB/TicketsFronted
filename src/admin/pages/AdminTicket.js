@@ -15,7 +15,6 @@ function AdminTicket() {
         switch (selectedTab) {
             case "onsale":
                 return <AdminOnSale />;
-            case "history":
             default:
                 return null;
         }
@@ -40,15 +39,7 @@ function AdminTicket() {
                     >
                         演唱會售票資訊
                     </button>
-                    <button
-                        onClick={() => setSelectedTab("history")}
-                        className={`block w-full py-2 px-4 rounded-md text-left transition ${selectedTab === "ticket"
-                                ? "bg-blue-600 hover:bg-blue-500"
-                                : "bg-gray-700 hover:bg-gray-600"
-                            }`}
-                    >
-                    歷史演唱會資訊
-                    </button>
+                  
         
                 </nav>
             </aside>

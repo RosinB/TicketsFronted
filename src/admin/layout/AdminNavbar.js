@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Home, Users, LogOut } from 'lucide-react';
+import { Home, Users, LogOut,LayoutDashboard,Building,User } from 'lucide-react';
 
 function AdminNavbar() {
     // 登出
@@ -15,30 +15,33 @@ function AdminNavbar() {
             <div className="container mx-auto flex justify-between items-center py-4 px-6">
                 <h1 className="text-2xl font-bold tracking-wide flex items-center gap-2">
                     <Home className="w-6 h-6" />
-                    <Link to="/admin" className="hover:text-teal-400 transition">管理員後台</Link>
+                    <Link to="/admin/dashboard" className="hover:text-teal-400 transition">管理員後台</Link>
                 </h1>
 
                 <nav className="flex text-xl space-x-8 font-bold mt-2">
+                    <CustomLink to="/admin/dashboard">
+                        <LayoutDashboard className="w-5 h-5 text-teal-500" />
+                    演唱會控台
+                    </CustomLink>
                     <CustomLink to="/admin/hosts">
+                        <Building className="w-5 h-5 text-teal-500" />
+
                         主辦方
                     </CustomLink>
                     <CustomLink to="/admin/members">
-                        會員資料
+                        <User className="w-5 h-5 text-teal-500" />
+
+                        會員
                     </CustomLink>
-                    <CustomLink to="/admin/event">
-                        演唱會資訊
-                    </CustomLink>
-                    <CustomLink to="/admin/order">
-                        演唱會訂單
-                    </CustomLink>
-                    <CustomLink to="/admin/">
-                        <Users className="w-5 h-5" />
-                        演唱會狀況
-                    </CustomLink>
+            
+        
+            
                     <CustomLink to="/admin/traffic">
-                        <Users className="w-5 h-5" />
+                        <Users className="w-5 h-5  text-teal-500" />
                         流量分析測試
                     </CustomLink>
+                 
+
 
                     <button
                         onClick={handleLogout}
