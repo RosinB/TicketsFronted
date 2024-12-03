@@ -26,7 +26,7 @@ const ApiService = {
     updateUser: (submitData) => ApiClient.post("/user/userUpdate", submitData),
 
 
-  
+
 
 //=================================驗證信箱==========================
     //獲得信箱
@@ -79,6 +79,10 @@ const ApiService = {
 
     //取消訂單
     cancelOrder:(orderId)=>ApiClient.post(`/sales/goticket/pay/cancel/${orderId}`),
+
+
+    //寄送訂單到信箱
+    
 
 // =======================================後台管理者相關================================
 

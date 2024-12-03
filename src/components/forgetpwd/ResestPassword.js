@@ -63,45 +63,14 @@ function ResestPassword() {
                 {errorMessage && <div className="text-red-500 text-center mb-4">{errorMessage}</div>}
 
                 {/* 重設密碼表單 */}
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    <h1>{userName}</h1>
-                    <div className="rounded-md shadow-sm -space-y-px">
-                        <div>
-                            <label htmlFor="newPassword" className="sr-only">新密碼</label>
-                            <input
-                                type="password"
-                                id="newPassword"
-                                name="newPassword"
-                                required
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                placeholder="新密碼"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="confirmPassword" className="sr-only">確認新密碼</label>
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                required
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                placeholder="確認新密碼"
-                            />
-                        </div>
-                    </div>
+                <ReseatPassword     newPassword={newPassword} 
+                                    userName={userName} 
+                                    handleSubmit={handleSubmit} 
+                                    setConfirmPassword={setConfirmPassword} 
+                                    confirmPassword={confirmPassword} 
+                                    setNewPassword={setNewPassword}/>
 
 
-                    <button
-                        type="submit"
-                        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        重設密碼
-                    </button>
-                </form>
             </div>
         </div>
     );
@@ -112,3 +81,50 @@ function ResestPassword() {
 }
 
 export default ResestPassword
+
+
+
+const ReseatPassword=({newPassword,userName,handleSubmit,setConfirmPassword,confirmPassword,setNewPassword})=>{
+
+    return(<form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <h1>{userName}</h1>
+        <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+                <label htmlFor="newPassword" className="sr-only">新密碼</label>
+                <input
+                    type="password"
+                    id="newPassword"
+                    name="newPassword"
+                    required
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="新密碼"
+                />
+            </div>
+            <div>
+                <label htmlFor="confirmPassword" className="sr-only">確認新密碼</label>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="確認新密碼"
+                />
+            </div>
+        </div>
+
+
+        <button
+            type="submit"
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+            重設密碼
+        </button>
+    </form>)
+
+
+}

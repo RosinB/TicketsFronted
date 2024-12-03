@@ -36,7 +36,7 @@ function TicketSection() {
             navigate("/");
             return;
         }
-
+    
         ApiService.getTicketSection(eventId, userName)
             .then(({data:{data}})=>{
                 setEvent(formatEventData(data));
@@ -54,6 +54,7 @@ function TicketSection() {
         console.log("演唱會區域價位沒有加載到");
 
     }
+
     //獲得演唱會資訊
     const formatEventData = (data) => ({
         name: data.eventName,
@@ -65,6 +66,7 @@ function TicketSection() {
         imageUrl: data.ticketPicList,
         section: data.ticketPicSection
     });
+
     //獲得演唱會票價位置
     const formatTicketData = (ticketDto) => 
         ticketDto.map(ticket => ({
@@ -75,6 +77,7 @@ function TicketSection() {
             remaining: ticket.ticketRemaining
         }));
 
+    
 
     const handleQuantityChange = (index, value) => {
         setTickets((prevTickets) => {
@@ -121,8 +124,7 @@ function TicketSection() {
 
 
             {/* 下部分 */}
-            <div className="flex flex-col items-center  ">
-                
+            <div className="flex flex-col items-center  ">  
                 <div className="max-w-4xl w-full grid grid-cols-2 gap-4 h-full ">
                     {/* 場地平面圖 */}
                     <VenueMap imageUrl={event.section} />
@@ -139,8 +141,7 @@ function TicketSection() {
                                     ticket={ticket}
                                     index={index}
                                     onSeatSelection={handleSeatSelection}
-                                    onQuantityChange={handleQuantityChange}
-                                />
+                                    onQuantityChange={handleQuantityChange}/>
                             ))}
                         </ul>
                         {/* 購票按鈕 */}

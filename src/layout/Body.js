@@ -20,7 +20,7 @@ function Body() {
     // 非保護路由配置
     const publicRoutes = [
         { path: "/", element: <Home /> },
-        { path: "/event/show", element: <TicketShow /> },
+        { path: "/event/show/:eventId", element: <TicketShow /> },
         { path: "/register", element: <Register /> },
         { path: "/event/list", element: <EventList /> },
         { path: "/login", element: <Login /> },

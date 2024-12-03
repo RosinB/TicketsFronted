@@ -35,7 +35,7 @@ function TicketSales() {
                     setLoading(false);
                 });
         } else {
-            // 原本的一般購票 API
+            // 原一般購票 API
             ApiService.buyTicket(ticketInfo)
                 .then((res) => {
                     const requestId = res.data.data;

@@ -20,12 +20,14 @@ import {
 function TicketPay() {
     const location = useLocation();
     const { orderId } = location.state || {};
-    const [order, setOrder] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [countdown, setCountdown] = useState(null);
     const userName = localStorage.getItem("userName");
     const navigate = useNavigate();
     const {requestId} = useParams();
+
+    const [order, setOrder] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [countdown, setCountdown] = useState(null);
+
 
     const formatCountdown = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -62,11 +64,12 @@ function TicketPay() {
 
         try {
             const response = await ApiService.fetchOrder(orderId, userName, requestId);
-            const orderData = response.data.data;
+            const orderData = response.data.data;  // 獲取新資料
             setOrder(orderData);
-
+    
+            // 使用新獲取的資料計算時間
             const currentTime = new Date().getTime();
-            const orderTime = new Date(orderData.orderDateTime).getTime();
+            const orderTime = new Date(orderData.orderDateTime).getTime();  // 使用新資料
             const elapsedTime = Math.floor((currentTime - orderTime) / 1000);
             const remainingTime = Math.max(10 * 60 - elapsedTime, 0);
             setCountdown(remainingTime);
@@ -134,70 +137,87 @@ function TicketPay() {
     if (loading) return <LoadingSpinner />;
 
     return (
-        <div className="min-h-screen bg-gradient-to-b -mt-8 from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto space-y-8">
+        <div className="min-h-screen bg-gradient-to-b -mt-8 from-gray-50 to-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto space-y-5">
                 {/* 訂單資訊卡片 */}
                 <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-blue-200">
                     {/* 倒數計時器 */}
-                    <div className="bg-blue-500  p-6">
-                        <div className="flex items-center justify-center space-x-3">
-                            <Clock className="text-white animate-pulse" size={24} />
-                            <h1 className="text-2xl font-bold text-white">
-                                付款倒數時間：
-                                <span className="ml-2 text-white bg-white/20 px-3 py-1 rounded-lg">
-                                    {formatCountdown(countdown)}
-                                </span>
-                            </h1>
-                        </div>
-                    </div>
+                    <CountdownComp formatCountdown={formatCountdown} countdown={countdown}/>
 
                     {/* 訂單詳情 */}
-                    <div className="p-6">
-                        <div className="divide-y divide-gray-100">
-                            {payInfo.map((item, index) => (
-                                <div key={index} className="py-4 flex items-center hover:bg-gray-50 transition-colors duration-150 rounded-lg px-4">
-                                    <div className="flex items-center w-1/2 space-x-3">
-                                        {item.icon}
-                                        <span className="font-medium text-gray-700">{item.label}</span>
-                                    </div>
-                                    <div className="w-1/2 text-gray-900">{item.value}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                    <OrderDetail payInfo={payInfo} />
                 </div>
 
                 {/* 付款選項卡片 */}
-                <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                    <h2 className="text-2xl font-semibold text-center mb-8 text-gray-800">
-                        選擇付款方式
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <button className="group flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 hover:shadow-lg">
-                            <CreditCard size={20} className="group-hover:scale-110 transition-transform duration-200" />
-                            <span>信用卡支付</span>
-                        </button>
-                        <button className="group flex items-center justify-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 hover:shadow-lg">
-                            <Smartphone size={20} className="group-hover:scale-110 transition-transform duration-200" />
-                            <span>行動支付</span>
-                        </button>
-                        <button 
-                            onClick={handleCancel}
-                            className="group flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 hover:shadow-lg">
-                            <X size={20} className="group-hover:scale-110 transition-transform duration-200" />
-                            <span>取消訂單</span>
-                        </button>
-                        <button 
-                            onClick={handlePay}
-                            className="group flex items-center justify-center space-x-2 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-medium py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 hover:shadow-lg">
-                            <CheckCircle size={20} className="group-hover:scale-110 transition-transform duration-200" />
-                            <span>確認付款</span>
-                        </button>
-                    </div>
-                </div>
+                <PayInfo handleCancel={handleCancel} handlePay={handlePay}/>
             </div>
         </div>
     );
 }
 
 export default TicketPay;
+
+
+
+const CountdownComp=({formatCountdown,countdown})=>{
+        return(  <div className="bg-blue-500  p-6">
+            <div className="flex items-center justify-center space-x-3">
+                <Clock className="text-white animate-pulse" size={24} />
+                <h1 className="text-2xl font-bold text-white">
+                    付款倒數時間：
+                    <span className="ml-2 text-white bg-white/20 px-3 py-1 rounded-lg">
+                        {formatCountdown(countdown)}
+                    </span>
+                </h1>
+            </div>
+        </div>)
+
+}
+
+const OrderDetail=({payInfo})=>{
+
+    return( 
+    <div className="p-4 -mt-2">
+        <div className="divide-y divide-gray-100">
+            {payInfo.map((item, index) => (
+                <div key={index} className="py-4 flex items-center hover:bg-gray-50 transition-colors duration-150 rounded-lg px-4">
+                    <div className="flex items-center w-1/2 space-x-3">
+                        {item.icon}
+                        <span className="font-medium text-gray-700">{item.label}</span>
+                    </div>
+                    <div className="w-1/2 text-gray-900">{item.value}</div>
+                </div>
+            ))}
+        </div>
+    </div>)
+}
+
+const PayInfo=({handleCancel,handlePay})=>{
+    return(<div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+        <h2 className="text-2xl font-semibold text-center mb-8 text-gray-800">
+            選擇付款方式
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <button className="group flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 hover:shadow-lg">
+                <CreditCard size={20} className="group-hover:scale-110 transition-transform duration-200" />
+                <span>信用卡支付</span>
+            </button>
+            <button className="group flex items-center justify-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 hover:shadow-lg">
+                <Smartphone size={20} className="group-hover:scale-110 transition-transform duration-200" />
+                <span>行動支付</span>
+            </button>
+            <button 
+                onClick={handleCancel}
+                className="group flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 hover:shadow-lg">
+                <X size={20} className="group-hover:scale-110 transition-transform duration-200" />
+                <span>取消訂單</span>
+            </button>
+            <button 
+                onClick={handlePay}
+                className="group flex items-center justify-center space-x-2 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-medium py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 hover:shadow-lg">
+                <CheckCircle size={20} className="group-hover:scale-110 transition-transform duration-200" />
+                <span>確認付款</span>
+            </button>
+        </div>
+    </div>)
+}

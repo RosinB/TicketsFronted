@@ -32,7 +32,7 @@ function AdminHosts() {
 
                 {/* Navigation Tabs */}
                 <div className="border-b border-gray-700">
-                    <nav className="flex space-x-4" aria-label="Tabs">
+                    <nav className="flex   space-x-4" aria-label="Tabs">
                         {tabs.map((tab) => (
                             <button
                                 key={tab.id}

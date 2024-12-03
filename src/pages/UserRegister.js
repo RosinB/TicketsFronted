@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ApiService from "../api/ApiService";
 import { useNavigate } from "react-router-dom";
-import { User, Phone, Mail, Calendar, CreditCard,Lock, Check, AlertTriangle } from 'lucide-react';
+import { User, Phone, Mail, Calendar, CreditCard, Lock, Check, AlertTriangle } from 'lucide-react';
 
 function Register() {
     const navigate = useNavigate();
@@ -35,7 +35,7 @@ function Register() {
 
     const handleInputChange = ({ target: { name, value } }) => {
         const validation = validations[name];
-        
+
         if (validation) {
             const processedValue = validation.process(value);
             if (validation.pattern.test(processedValue)) {
@@ -48,7 +48,7 @@ function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         try {
             await ApiService.registerUser(user);
             setMessage("註冊成功，一秒後跳轉到登入頁面");
@@ -72,59 +72,31 @@ function Register() {
         { label: "出生日期:", type: "date", name: "userBirthDate" }
     ];
 
+
     return (
         <div className="max-w-4xl mx-auto p-6">
             <div className="bg-white shadow-lg rounded-lg overflow-hidden -mt-6">
                 {/* 頂部標題區 */}
-                <div className="bg-gradient-to-r from-blue-700 via-teal-600 to-teal-800 px-6 py-4 ">
-                    <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                        <User className="w-6 h-6" />
-                        會員註冊
-                    </h2>
-                </div>
+                <HeaderTitle />
 
                 {/* 訊息顯示 */}
-                {message && (
-                    <div className={`p-4 ${message.includes('成功') ? 'bg-green-100 text-green-700 border-l-4 border-green-500' : 'bg-red-100 text-red-700 border-l-4 border-red-500'}`}>
-                        <p className="flex items-center gap-2">
-                            {message.includes('成功') ? <Check className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
-                            {message}
-                        </p>
-                    </div>
-                )}
+                <MessageAlert message={message} />
 
                 <form className="p-6 space-y-6" onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {inputFields.map(field => (
-                            <div key={field.name}>
-                                <label className="block text-gray-700 text-sm font-bold mb-2 flex items-center gap-2">
-                                    {getFieldIcon(field.label)}
-                                    {field.label}
-                                </label>
-                                <input
-                                    type={field.type}
-                                    className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none ${fieldErrors[field.name] ? 'border-red-500' : 'border-gray-300'}`}
-                                    name={field.name}
-                                    value={user[field.name]}
-                                    onChange={handleInputChange}
-                                    placeholder={`請輸入${field.label.split(':')[0]}`}
-                                    required
-                                />
-                                {fieldErrors[field.name] && (
-                                    <p className="mt-1 text-red-500 text-sm">{fieldErrors[field.name]}</p>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                    <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
-                        <Check className="w-5 h-5" />
-                        註冊
-                    </button>
+                    <FormRegister
+                        handleSubmit={handleSubmit}
+                        inputFields={inputFields}
+                        fieldErrors={fieldErrors}
+                        handleInputChange={handleInputChange}
+                        user={user}
+                    />                    
+                    <RegisterButton/>
                 </form>
             </div>
         </div>
     );
 }
+
 
 export default Register;
 
@@ -146,3 +118,68 @@ const getFieldIcon = (label) => {
             return null;
     }
 };
+
+const HeaderTitle = () => {
+    return (<div className="bg-blue-500 px-6 py-4 ">
+        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <User className="w-6 h-6" />
+            會員註冊
+        </h2>
+    </div>)
+
+}
+const MessageAlert = ({ message }) => {
+    const isSuccess = message.includes("成功");
+
+    return (
+
+        message && (
+            <div className={`p-4 ${isSuccess
+                ? "bg-green-100 text-green-700 border-l-4 border-green-500"
+                : "bg-red-100 text-red-700 border-l-4 border-red-500"
+                }`}>
+                <p className="flex items-center gap-2">
+                    {isSuccess ? <Check className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
+                    {message}
+                </p>
+            </div>
+        )
+    )
+}
+const FormRegister = ({ handleSubmit, inputFields, fieldErrors, handleInputChange, user }) => {
+    return (
+        <form className="p-6 space-y-6" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {inputFields.map(field => (
+                    <div key={field.name}>
+                        <label className=" text-gray-700 text-sm font-bold mb-2 flex items-center gap-2">
+                            {getFieldIcon(field.label)}
+                            {field.label}
+                        </label>
+                        <input
+                            type={field.type}
+                            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none ${fieldErrors[field.name] ? 'border-red-500' : 'border-gray-300'}`}
+                            name={field.name}
+                            value={user[field.name]}
+                            onChange={handleInputChange}
+                            placeholder={`請輸入${field.label.split(':')[0]}`}
+                            required
+                        />
+                        {fieldErrors[field.name] && (
+                            <p className="mt-1 text-red-500 text-sm">{fieldErrors[field.name]}</p>
+                        )}
+                    </div>
+                ))}
+            </div>
+     
+        </form>)
+
+
+}
+const RegisterButton = ()=>{
+    return( 
+    <button className="w-2/5 mx-auto bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+        <Check className="w-5 h-5" />
+        註冊
+    </button>)
+}

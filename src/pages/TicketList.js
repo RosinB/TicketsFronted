@@ -13,6 +13,7 @@ function EventList() {
     const [isAscending, setIsAscending] = useState(true); // 控制日期排序
     const [loading, setLoading] = useState(true); 
     
+    //api
     const fetchEvent=()=>{
         ApiService.fetchAllPic()
             .then((res)=>{
@@ -26,14 +27,16 @@ function EventList() {
         fetchEvent();
     }, []);
 
+    //轉移頁面
     const handleClick=(eventId)=>{
-        navigate("/event/show",{state:{eventId}});
+        navigate(`/event/show/${eventId}`,{state:{eventId}});
     }
+
 
     
     //搜尋
     const handleSearch = (query) => {
-        const trimmedQuery = query.trim().toLowerCase();; // 去除空白家變小寫
+        const trimmedQuery = query.trim().toLowerCase();; // 去除空白加變小寫
         setSearchQuery(trimmedQuery); // 更新搜尋框輸入值
 
         const filtered = allEvent.filter((event) =>
@@ -67,6 +70,7 @@ function EventList() {
                 </div>
             </div>
             
+
             {/* 活動列表 */}
             <EventGrid events={filteredEvents} onEventClick={handleClick} />
         </div>
@@ -77,6 +81,11 @@ export default EventList;
 
 
 
+
+
+
+
+
 const SearchInput = ({ value, onChange }) => {
     return (
         <div className="relative w-full md:w-4/12">
@@ -84,7 +93,7 @@ const SearchInput = ({ value, onChange }) => {
                 type="text"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                placeholder="搜尋活動名稱或日期..."
+                placeholder="搜尋活動或日期...."
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
             />
             <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
@@ -99,25 +108,18 @@ const SortButton = ({ onClick, isAscending }) => {
             className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md"
         >
             <ArrowUpDown className="h-4 w-4" />
-            {isAscending ? "演出日期由近到遠" : "演出日期由遠到近"}
+            {isAscending ? "演出日期排序(近->遠)" : "演出日期排序(遠->近)"}
         </button>
     );
 };
 
 const EventCard = ({ event, onClick }) => (
     <div className="group bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
-        <div className="relative">
-            <img
-                src={event.eventTicketList}
-                alt={event.eventName}
-                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                onClick={onClick}
-            />
-            {/* 售票狀態標籤 */}
-            <div className="absolute top-3 right-3 px-3 py-1 bg-blue-500 text-white text-sm rounded-full shadow-md">
-                {new Date(event.eventSalesDate) > new Date() ? "即將開賣" : "熱賣中"}
-            </div>
-        </div>
+        
+
+        <EventPic event={event} onClick={onClick}/>
+
+
         
         <div className="p-4">
             {/* 演出日期 */}
@@ -179,3 +181,22 @@ const EventGrid = ({ events, onEventClick }) => {
         </div>
     );
 };
+
+
+const EventPic=({event,onClick})=>{
+    return(<div className="relative">
+        <img
+            src={event.eventTicketList}
+            alt={event.eventName}
+            className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+            onClick={onClick}
+        />
+        {/* 售票狀態標籤 */}
+        <div className="absolute top-3 right-3 px-3 py-1 bg-blue-500 text-white text-sm rounded-full shadow-md">
+            {new Date(event.eventSalesDate) > new Date() ? "即將開賣" : "熱賣中"}
+        </div>
+    </div>)
+
+
+
+}

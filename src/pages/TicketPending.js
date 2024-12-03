@@ -12,8 +12,9 @@ function TicketPending() {
 
     const checkTicketStatus = async () => {
         try {
-            const response = await ApiService.checkTicketStatus(requestId); // 查詢購票狀態
-            const status = response.data.data.status; // 假設後端返回的狀態字段
+            // 查詢購票狀態
+            const response = await ApiService.checkTicketStatus(requestId); 
+            const status = response.data.data.status; 
             console.log("RequestId是:"+requestId+" 狀態是:"+status );
         
             if (status === "付款中") {

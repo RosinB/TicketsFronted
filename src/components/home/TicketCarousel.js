@@ -13,7 +13,7 @@ function TicketCarouse({allEvent}) {
 
 
     const handleClick = (eventId) => {
-        navigate("/event/show", { state: { eventId } });
+        navigate(`/event/show/${eventId}`, { state: { eventId } });
 
     }
 

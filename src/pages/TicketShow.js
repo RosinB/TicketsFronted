@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ApiService from "../api/ApiService";
 import LoadingSpinner from "../components/modal/LoadingSpinner.js";
 import TicketDetails from "../components/ticketshow/TicketDetails.js";
 import { Calendar, Clock, MapPin, Ticket, Info, RotateCcw, Music2 } from 'lucide-react';
 
 function TicketShow() {
-  const location = useLocation();
-  const { eventId } = location.state || {};
+  const { eventId } = useParams() || {};
 
   const [currentPage, setCurrentPage] = useState(0);
   const [event, setEvent] = useState(null);
@@ -75,56 +74,61 @@ function TicketShow() {
       <EventPic src={event.eventTicketPic} />
 
       {/* 橫向資訊區塊 */}
-      <div className="bg-white border-2 border-blue-200 w-9/12 rounded-lg py-6 shadow-lg">
-        <div className="max-w-4xl min-w-64 mx-auto">
-          {/* 標題 */}
-          <div className="flex justify-between text-center border-b-2 border-blue-100 pb-2 mb-4">
-            {infoItems.map(item => (
-              <ColumnHeader
-                key={item.label}
-                name={item.label}
-                icon={item.icon}
-              />
-            ))}
-          </div>
-
-          {/* 資料 */}
-          <div className="flex justify-between text-center">
-            {infoItems.map(item => (
-              item.value === "button"
-                ? <BuyButton key={item.label} onClick={goToTicketSales} />
-                : <ColumnContent key={item.label} value={item.value} />
-            ))}
-          </div>
-        </div>
-      </div>
+      <ColumnData infoItems={infoItems} goToTicketSales={goToTicketSales}/>
 
       {/* 描述與額外資訊 */}
-      <div className="bg-white w-9/12 flex flex-col rounded-lg shadow-lg overflow-hidden">
-        <div className="flex justify-start items-center">
-          {pages.map((tab, index) => (
-            <TabButton
-              key={index}
-              title={tab.title}
-              icon={tab.icon}
-              isActive={currentPage === index}
-              onClick={() => setCurrentPage(index)}
-            />
-          ))}
-        </div>
-
-        <hr className="border-t border-gray-200" />
-
-        <div className="max-w-4xl text-center text-gray-700 p-6">
-          <h3 className="text-2xl font-semibold mb-4">{pages[currentPage].title}</h3>
-          <div className="text-sm">{pages[currentPage].content}</div>
-        </div>
-      </div>
+      <ShowData pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
     </div>
   );
 }
 
+
 export default TicketShow;
+
+
+const ColumnData=({infoItems,goToTicketSales})=>{
+  return(<div className="bg-white border-2 border-blue-200 w-9/12 rounded-lg py-6 shadow-lg">
+    <div className="max-w-4xl min-w-64 mx-auto">
+      {/* 標題 */}
+      <ColTitle infoItems={infoItems}/>
+
+      {/* 資料 */}
+      <ColData infoItems={infoItems} goToTicketSales={goToTicketSales}/>
+    </div>
+  </div>)
+
+
+}
+const ShowData=({pages,currentPage,setCurrentPage})=>{
+  return(<div className="bg-white w-9/12 flex flex-col rounded-lg shadow-lg overflow-hidden">
+    <div className="flex justify-start items-center">
+      {pages.map((tab, index) => (
+        <TabButton
+          key={index}
+          title={tab.title}
+          icon={tab.icon}
+          isActive={currentPage === index}
+          onClick={() => setCurrentPage(index)}
+        />
+      ))}
+    </div>
+
+    <hr className="border-t border-gray-200" />
+
+    <div className="max-w-4xl text-center text-gray-700 p-6">
+      <h3 className="text-2xl font-semibold mb-4">{pages[currentPage].title}</h3>
+      <div className="text-sm">{pages[currentPage].content}</div>
+    </div>
+  </div>
+  )
+
+
+}
+
+
+
+
+
 
 const EventPic = ({ src }) => {
 
@@ -141,8 +145,8 @@ const EventPic = ({ src }) => {
 
 const ColumnHeader = ({ name, icon }) => (
   <span className="font-bold w-1/4 flex items-center justify-center gap-2 text-black">
-      {icon}
-      {name}
+    {icon}
+    {name}
   </span>
 );
 
@@ -150,19 +154,19 @@ const ColumnHeader = ({ name, icon }) => (
 const ColumnContent = ({ value }) => (
   <div className="w-1/4 flex flex-col items-center justify-center">
     <span className="font-bold text-lg text-blue-500">
-{value}
-      </span>
+      {value}
+    </span>
   </div>
 );
 
 // 修改按鈕樣式
-const BuyButton = ({onClick}) => (
+const BuyButton = ({ onClick }) => (
   <button
-      className="bg-blue-500 text-white py-2  rounded-lg hover:bg-blue-600 transition-colors duration-200 w-1/4 flex items-center justify-center gap-2 font-semibold"
-      onClick={onClick}
+    className="bg-blue-500 text-white py-2  rounded-lg hover:bg-blue-600 transition-colors duration-200 w-1/4 flex items-center justify-center gap-2 font-semibold"
+    onClick={onClick}
   >
-      <Ticket className="w-4 h-4" />
-      立即購票
+    <Ticket className="w-4 h-4" />
+    立即購票
   </button>
 );
 
@@ -181,3 +185,27 @@ const TabButton = ({ title, icon, isActive, onClick }) => (
     {title}
   </button>
 );
+
+const ColTitle=({infoItems})=>{
+
+  return(<div className="flex justify-between text-center border-b-2 border-blue-100 pb-2 mb-4">
+    {infoItems.map(item => (
+      <ColumnHeader
+        key={item.label}
+        name={item.label}
+        icon={item.icon}
+      />
+    ))}
+  </div>)
+}
+
+const ColData=({infoItems,goToTicketSales})=>{
+  return(<div className="flex justify-between text-center">
+    {infoItems.map(item => (
+      item.value === "button"
+        ? <BuyButton key={item.label} onClick={goToTicketSales} />
+        : <ColumnContent key={item.label} value={item.value} />
+    ))}
+  </div>)
+
+}

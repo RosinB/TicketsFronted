@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false); // 標記是否有 Token
     const [isLoginOpen, setIsLoginOpen] = useState(false); // 控制模態框顯示
     const navigate = useNavigate(); // 初始化導航功能
-    const [role, setRole] = useState(localStorage.getItem("role") || "user");
+    // const [role, setRole] = useState(localStorage.getItem("role") || "user");
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -28,16 +28,16 @@ const ProtectedRoute = ({ children }) => {
 
 
     const handleLoginSuccess = (newRole) => {
-        setRole(newRole); // 更新角色
+        // setRole(newRole); // 更新角色
         localStorage.setItem("role", newRole); // 同步本地存儲
         setIsLoginOpen(false); // 關閉模態框
 
-        if (role === "admin") {
-            navigate("/admin"); // 導航到管理員頁面
-            window.location.reload()
+        if (newRole === "admin") {
+            navigate("/admin/dashboard"); // 使用 navigate 而不是 window.location
         } else {
-            navigate("/"); // 導航到普通用戶首頁
-            window.location.reload()
+            window.location.href = '/';
+            navigate("/");
+
         }
     };
 

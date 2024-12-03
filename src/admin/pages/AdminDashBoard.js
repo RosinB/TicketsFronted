@@ -42,20 +42,16 @@ function AdminDashboard() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-900">
+        <div className="min-h-screen bg-gray-900 px-4 py-6">
             {/* Header */}
-            <header className=" border-b border-gray-700">
-                <div className="mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center gap-3">
+                <header className="mx-auto sm:px-6 lg:px-8">
+                        <div className="flex items-center gap-3 mb-6">
                             <List className="w-6 h-6 text-teal-500" />
-                            <h1 className="text-xl font-semibold text-white">
+                            <h1 className="text-2xl font-semibold text-white">
                                 活動管理系統
                             </h1>
-                        </div>
                     </div>
-                </div>
-            </header>
+                </header>
 
             {/* Navigation Tabs */}
             <div className="border-b border-gray-700">
