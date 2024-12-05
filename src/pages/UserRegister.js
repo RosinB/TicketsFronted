@@ -148,7 +148,7 @@ const MessageAlert = ({ message }) => {
 }
 const FormRegister = ({ handleSubmit, inputFields, fieldErrors, handleInputChange, user }) => {
     return (
-        <form className="p-6 space-y-6" onSubmit={handleSubmit}>
+        <div className="p-6 space-y-6" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {inputFields.map(field => (
                     <div key={field.name}>
@@ -172,7 +172,7 @@ const FormRegister = ({ handleSubmit, inputFields, fieldErrors, handleInputChang
                 ))}
             </div>
      
-        </form>)
+        </div>)
 
 
 }

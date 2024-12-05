@@ -40,17 +40,25 @@ function TicketSection() {
         ApiService.getTicketSection(eventId, userName)
             .then(({data:{data}})=>{
                 setEvent(formatEventData(data));
-                setTickets(formatTicketData(data.ticketDto));})
-            .catch((error)=>{handleError(error)})
-            .finally(()=>{setLoading(false)})
+                setTickets(formatTicketData(data.ticketDto));
+                setLoading(false);
+            }         
+    
+            )
+            .catch((error)=>{
+                handleError(error)
+                setLoading(false)
+                return;  // 確保錯誤時不會繼續執行
+            })
     };
     //封裝回傳錯誤
     const handleError=(error)=>{
         if (error?.response?.status === 400 && 
             error.response.data.message === "使用者沒有認證") {
             alert("使用者未認證，請檢查您的帳號狀態。");
-            navigate("/user/update");
-        }
+            setTimeout(() => {
+                navigate("/user/update");
+            }, 100);        }
         console.log("演唱會區域價位沒有加載到");
 
     }
@@ -115,6 +123,7 @@ function TicketSection() {
     }, [eventId]);
 
     if (loading) return <LoadingSpinner />;
+    if (!event) return null;  // 如果沒有數據，不渲染任何內容
 
 
     return (

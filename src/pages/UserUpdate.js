@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "../api/ApiService";
 import { User, Phone, Mail, Calendar, CreditCard, Check, Send, AlertTriangle, Lock } from 'lucide-react';
+import LoadingSpinner from "../components/modal/LoadingSpinner";
 
 function UserUpdate() {
     const initialUser = {
@@ -29,31 +30,35 @@ function UserUpdate() {
     const [user, setUser] = useState(initialUser);
     const [message, setMessage] = useState("");
     const [fieldErrors, setFieldErrors] = useState({});
-
-    // 信箱驗證相關的 state
+    const [loading, setLoading] = useState(true);
     const [isVerifying, setIsVerifying] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
     const [verificationStatus, setVerificationStatus] = useState("");
 
     useEffect(() => {
+
         const fetchUser = async () => {
             try {
                 const response = await ApiService.fetchUserUpdate();
                 const userData = response.data.data;
-                setUser({
-                    userName: userData.userName || "",
-                    userPhone: userData.userPhone || "",
-                    userEmail: userData.userEmail || "",
-                    userBirthDate: userData.userBirthDate || "",
-                    userIsVerified: userData.userIsVerified || false,
-                    userIdCard: userData.userIdCard || ""
-                });
+                    setUser({
+                        userName: userData.userName || "",
+                        userPhone: userData.userPhone || "",
+                        userEmail: userData.userEmail || "",
+                        userBirthDate: userData.userBirthDate || "",
+                        userIsVerified: userData.userIsVerified || false,
+                        userIdCard: userData.userIdCard || ""
+                    });
+                    
             } catch (err) {
-                console.error("獲取用戶資料失敗：", err);
-                setMessage("獲取用戶資料失敗");
+                    console.error("獲取用戶資料失敗：", err);
+                    setMessage("獲取用戶資料失敗");
+
+            } finally {
+                    setLoading(false);
             }
         };
-        fetchUser();
+            fetchUser();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -121,7 +126,8 @@ function UserUpdate() {
                 return null;
         }
     };
-
+    if (loading) return <LoadingSpinner />
+    if (!user) return null;  // 或顯示其他替代內容
 
     return (
         <div className="max-w-4xl mx-auto p-6">
@@ -136,7 +142,7 @@ function UserUpdate() {
                         user={user}
                         handleInputChange={handleInputChange}
                         fieldErrors={fieldErrors}
-                        getFieldIcon={getFieldIcon}/>
+                        getFieldIcon={getFieldIcon} />
                     <EmailVerification
                         userIsVerified={user.userIsVerified}
                         isVerifying={isVerifying}
@@ -144,7 +150,7 @@ function UserUpdate() {
                         verificationStatus={verificationStatus}
                         handleSendVerification={handleSendVerification}
                         handleVerifyEmail={handleVerifyEmail}
-                        setVerificationCode={setVerificationCode}/>
+                        setVerificationCode={setVerificationCode} />
                     <SubmitButton />
                 </form>
             </div>
@@ -169,8 +175,8 @@ const MessageAlert = ({ message }) => {
 
     return message ? (
         <div className={`p-4 ${isSuccess
-                ? "bg-green-100 text-green-700 border-l-4 border-green-500"
-                : "bg-red-100 text-red-700 border-l-4 border-red-500"
+            ? "bg-green-100 text-green-700 border-l-4 border-green-500"
+            : "bg-red-100 text-red-700 border-l-4 border-red-500"
             }`}>
             <p className="flex items-center gap-2">
                 {isSuccess ? <Check className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
@@ -224,8 +230,8 @@ const EmailVerification = ({
                     <Mail className="w-5 h-5 text-blue-500" />
                     <span className="font-bold text-gray-700">信箱驗證狀態</span>
                     <span className={`px-2 py-1 rounded-full text-sm ${userIsVerified
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
                         }`}>
                         {userIsVerified ? "已驗證" : "未驗證"}
                     </span>
