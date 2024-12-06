@@ -33,9 +33,9 @@ function AdminHosts() {
                 {/* Navigation Tabs */}
                 <div className="border-b border-gray-700">
                     <nav className="flex   space-x-4" aria-label="Tabs">
-                        {tabs.map((tab) => (
+                        {tabs.map((tab, index) => (
                             <button
-                                key={tab.id}
+                                key={index}
                                 onClick={() => setSelectedTab(tab.id)}
                                 className={`
                                     ${selectedTab === tab.id

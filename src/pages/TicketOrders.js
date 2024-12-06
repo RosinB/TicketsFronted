@@ -82,7 +82,7 @@ function TicketOrders() {
 
     if (loading) return <LoadingSpinner />
     const orderInfo = getOrderInfo(order);
-
+    
 
 
     

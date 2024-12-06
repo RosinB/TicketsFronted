@@ -18,6 +18,25 @@ function TicketSection() {
     const [isModalOpen, setIsModalOpen] = useState(false); // 控制彈窗的狀態
     const [selectedZone, setSelectedZone] = useState(null); // 當前選擇的票區
 
+    const [captchaImage, setCaptchaImage] = useState('');
+    const [captchaKey, setCaptchaKey] = useState('');
+    const [userCaptcha, setUserCaptcha] = useState('');
+
+
+
+    const fetchCaptcha = async () => {
+        try {
+            const response = await ApiService.fetchCAPTCHA(userName);
+            const data = response.data;
+            setCaptchaImage(data.data.captchaImage);
+            setCaptchaKey(data.data.captchaKey);
+            console.log("驗證碼是:"+data.data.captchaKey)
+        } catch (error) {
+            console.error('Error fetching captcha:', error);
+        }
+    };
+
+
 
     const handleSeatSelection = async (zone) => {
         setSelectedZone(zone); // 設置當前選擇的票區
@@ -29,39 +48,50 @@ function TicketSection() {
     };
 
     //====================API==========================
-    const fetchTicketSection=()=>{
+    const fetchTicketSection = () => {
         if (!eventId) {
             console.error("eventId 不存在！");
             alert("ID不存在");
             navigate("/");
             return;
         }
-    
+
         ApiService.getTicketSection(eventId, userName)
-            .then(({data:{data}})=>{
+            .then(({ data: { data } }) => {
                 setEvent(formatEventData(data));
                 setTickets(formatTicketData(data.ticketDto));
                 setLoading(false);
-            }         
-    
+            }
+
             )
-            .catch((error)=>{
+            .catch((error) => {
                 handleError(error)
                 setLoading(false)
                 return;  // 確保錯誤時不會繼續執行
             })
     };
-    //封裝回傳錯誤
-    const handleError=(error)=>{
-        if (error?.response?.status === 400 && 
-            error.response.data.message === "使用者沒有認證") {
-            alert("使用者未認證，請檢查您的帳號狀態。");
-            setTimeout(() => {
-                navigate("/user/update");
-            }, 100);        }
-        console.log("演唱會區域價位沒有加載到");
 
+    // 驗證用戶輸入的驗證碼 (前端)
+    const validateCaptchaFrontend = () => {
+        // 檢查驗證碼是否為6位數字
+
+        console.log("userCaptcha是:"+userCaptcha)
+        console.log("captchaKey是"+captchaKey)
+        
+        return userCaptcha === captchaKey;
+    };
+
+    //封裝回傳錯誤
+    const handleError = (error) => {
+  
+        alert("使用者未認證，請檢查您的帳號狀態。");
+        setTimeout(() => {
+            navigate("/user/update");
+        }, 100);
     }
+
+
+  
 
     //獲得演唱會資訊
     const formatEventData = (data) => ({
@@ -76,7 +106,7 @@ function TicketSection() {
     });
 
     //獲得演唱會票價位置
-    const formatTicketData = (ticketDto) => 
+    const formatTicketData = (ticketDto) =>
         ticketDto.map(ticket => ({
             zone: ticket.ticketName,
             price: ticket.ticketPrice,
@@ -85,7 +115,7 @@ function TicketSection() {
             remaining: ticket.ticketRemaining
         }));
 
-    
+
 
     const handleQuantityChange = (index, value) => {
         setTickets((prevTickets) => {
@@ -106,18 +136,28 @@ function TicketSection() {
             alert("請選擇一個票區並輸入數量！");
             return;
         }
+        const isValid = validateCaptchaFrontend();
+        if (!isValid) {
+            alert("驗證碼輸入錯誤");
+            fetchCaptcha();
 
+            return;
+        }
+    
         const ticketInfo = {
             eventId, // 演唱會 ID
             section: selectedTicket.zone, // 票區名稱
             quantity: selectedTicket.quantity, // 選擇的票數
-            userName: userName // 替換為實際的使用者名稱變數
+            userName: userName, // 替換為實際的使用者名稱變數
+            userCaptcha
         };
-        
+
         navigate("/event/ticket/section/buy", { state: ticketInfo });
     };
 
     useEffect(() => {
+        fetchCaptcha();
+
         fetchTicketSection();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [eventId]);
@@ -133,11 +173,11 @@ function TicketSection() {
 
 
             {/* 下部分 */}
-            <div className="flex flex-col items-center  ">  
+            <div className="flex flex-col items-center  ">
                 <div className="max-w-4xl w-full grid grid-cols-2 gap-4 h-full ">
                     {/* 場地平面圖 */}
                     <VenueMap imageUrl={event.section} />
-                
+
                     <div className="bg-white  rounded-lg shadow-lg  border-2 border-blue-200">
                         {/* 標題 */}
                         <SectionTitle />
@@ -150,16 +190,36 @@ function TicketSection() {
                                     ticket={ticket}
                                     index={index}
                                     onSeatSelection={handleSeatSelection}
-                                    onQuantityChange={handleQuantityChange}/>
+                                    onQuantityChange={handleQuantityChange} />
                             ))}
                         </ul>
-                        {/* 購票按鈕 */}
-                        <CheckoutButton onClick={handleCheckout} />
+
+                        <div className="flex items-center justify-between mt-5">
+                            <div className="captcha-container flex items-center mt-3">
+                                {captchaImage && (
+                                    <img
+                                        src={captchaImage}
+                                        alt="驗證碼"
+                                        onClick={fetchCaptcha}
+                                        className="w-28 h-12 cursor-pointer border border-gray-300 rounded mr-3"
+                                    />
+                                )}
+                                <input
+                                    type="text"
+                                    value={userCaptcha}
+                                    onChange={(e) => setUserCaptcha(e.target.value)}
+                                    className=" w-28 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="驗證碼"
+                                />
+                            </div>
+                            <CheckoutButton onClick={handleCheckout} />
+                        </div>
+
                     </div>
 
                 </div>
-            </div>       
-              {/* 模態框 */}
+            </div>
+            {/* 模態框 */}
             <SeatSectionModal
                 isOpen={isModalOpen}
                 onClose={closeModal}
@@ -179,7 +239,7 @@ export default TicketSection;
 
 // 確認購票按鈕元件
 const CheckoutButton = ({ onClick }) => (
-    <div className="text-center mt-6">
+    <div className="text-center mt-5">
         <button
             className="bg-blue-500 text-white text-sm sm:text-base px-5 sm:px-6 py-2 sm:py-3 rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transition-all"
             onClick={onClick}
@@ -213,9 +273,9 @@ const EventInfoCard = ({ event }) => {
     return (
         <div className="relative flex flex-col items-center bg-white w-full -mt-12  border-2 border-blue-200">
             <div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto p-3 ">
-            {/* 左側圖片 */}
+                {/* 左側圖片 */}
                 <div className="overflow-hidden rounded-lg shadow-md border border-gray-100">
-                    <img 
+                    <img
                         src={event.imageUrl}
                         alt={event.name}
                         className="w-full h-36 object-cover hover:scale-105 transition-transform duration-300"
@@ -270,15 +330,14 @@ const TicketZoneInfo = ({ ticket, onSeatSelection, onQuantityChange, index }) =>
                     <span className="font-semibold text-gray-800">
                         {ticket.zone}
                     </span>
-                    <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                        ticket.status === "熱賣中" && ticket.remaining > 0 && ticket.remaining < 100
-                            ? "bg-orange-100 text-orange-600"
-                            : ticket.status === "熱賣中" 
+                    <span className={`px-2 py-1 text-xs rounded-full font-medium ${ticket.status === "熱賣中" && ticket.remaining > 0 && ticket.remaining < 100
+                        ? "bg-orange-100 text-orange-600"
+                        : ticket.status === "熱賣中"
                             ? "bg-green-100 text-green-600"
                             : "bg-red-100 text-red-600"
-                    }`}>
-                        {ticket.status === "熱賣中" && ticket.remaining < 100 
-                            ? `剩餘 ${ticket.remaining} 張` 
+                        }`}>
+                        {ticket.status === "熱賣中" && ticket.remaining < 100
+                            ? `剩餘 ${ticket.remaining} 張`
                             : ticket.status}
                     </span>
                 </div>
@@ -300,10 +359,10 @@ const TicketZoneInfo = ({ ticket, onSeatSelection, onQuantityChange, index }) =>
                     )}
                 </div>
             </div>
-            
+
             {/* 座位選擇按鈕 */}
             <div className="px-4 pb-3">
-                <button 
+                <button
                     onClick={() => onSeatSelection(ticket.zone)}
                     className="text-sm text-blue-500 hover:text-blue-600 transition-colors"
                 >

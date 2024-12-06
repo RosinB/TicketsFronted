@@ -15,6 +15,7 @@ import TicketPending from "../pages/TicketPending";
 import ForgetPassword from "../components/forgetpwd/ForgetPassword";
 import ResestPassword from "../components/forgetpwd/ResestPassword"
 import TicketPay from "../pages/TicketPay"
+import OrderRefund from "../pages/OrderRefund";
 function Body() {
 
     // 非保護路由配置
@@ -26,7 +27,6 @@ function Body() {
         { path: "/login", element: <Login /> },
         { path: "/forgetpassword", element: <ForgetPassword /> },
         { path: "/forgetpassword/reset/:token", element: <ResestPassword /> },
-
     ];
 
     
@@ -39,6 +39,7 @@ function Body() {
         { path: "/event/ticket/section", element: <TicketSection /> },
         { path: "/user/update", element: <UserUpdate /> },
         { path: "/user/orders", element: <UserOrder /> },
+        { path: "/user/orders/refund", element:<OrderRefund/>}
 
     
     ];

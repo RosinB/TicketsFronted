@@ -140,7 +140,8 @@ const OrderLists=({filteredOrders,toggleExpand,expandedOrderId,navigate,getStatu
                                 {/* 資料顯示 */}
                                 <OrderData order={order} />
                                 {/* 付款按鈕區域 */}
-                                <Pay order={order} expandedOrderId={expandedOrderId} navigate={navigate}/>
+                                <Pay order={order}  navigate={navigate}/>
+                                <Refund order={order} navigate={navigate}/>
                             </div>
                         )}
                     </div>
@@ -313,31 +314,46 @@ const OrderData = ({ order }) => {
     </div>)
 }
 
-const Pay = ({order,expandedOrderId,navigate}) => {
+const Pay = ({order,navigate}) => {
 
-    return (expandedOrderId === order.orderId && (
-        <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
-            {/* 資料顯示 */}
-            <OrderData order={order} />
-            {/* 付款按鈕區域 */}
-            {order.orderStatus === '付款中' && (  // 只在待付款狀態顯示
+    return (
+        order.orderStatus === '付款中' && (
+            <div className="mt-4 flex justify-end">
+                <button
+                    onClick={() => navigate(`/event/ticket/pay/${order.requestId}`, {
+                        state: {
+                            orderId: order.orderId,
+                            requestId: order.requestId
+                        }
+                    })}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 
+                        transition-colors duration-200 flex items-center gap-2"
+                >
+                    <DollarSign className="w-4 h-4" />
+                    立即付款
+                </button>
+            </div>
+        )
+    );
+}
+    const Refund = ({order,navigate}) => {
+
+        return (
+            order.orderStatus === '訂單完成' && (
                 <div className="mt-4 flex justify-end">
                     <button
-                        onClick={() => navigate(`/event/ticket/pay/${order.requestId}`, {
-                            state: {
-                                orderId: order.orderId,
-                                requestId: order.requestId
-                            }
-                        })}
+                        onClick={
+                            () => navigate("/user/orders/refund", {state: {orderId: order.orderId}})
+                        }
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 
                             transition-colors duration-200 flex items-center gap-2"
                     >
                         <DollarSign className="w-4 h-4" />
-                        立即付款
+                        申請退票
                     </button>
                 </div>
-            )}
-        </div>
-    )
-    )
+            )
+        );
+    
+
 }

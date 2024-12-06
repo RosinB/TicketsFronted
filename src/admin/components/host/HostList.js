@@ -70,9 +70,9 @@ function HostList() {
                     <TableHeader />
                     <tbody>
                         {allHost.length > 0 ? (
-                            allHost.map((host) => (
+                            allHost.map((host,index) => (
                                 <tr
-                                    key={host.hostId}
+                                    key={index}
                                     className="bg-gray-900 hover:bg-gray-800 transition"
                                 >
                                     <TableCell>{host.hostId}</TableCell>

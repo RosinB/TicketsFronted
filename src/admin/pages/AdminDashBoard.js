@@ -23,7 +23,7 @@ function AdminDashboard() {
         },
         {
             id: 'orders',
-            label: '訂單管理',
+            label: '訂單查詢',
             icon: <ShoppingCart className="w-5 h-5" />,
             component: <AdminOrder />
         },

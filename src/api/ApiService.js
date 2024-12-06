@@ -118,7 +118,12 @@ const ApiService = {
     clearTicket:(eventId,section)=>ApiClient.post("/admin/event/api/clear",null,{params: {eventId,section}}),
 
 //========================================流量分析================================ 
-    fetchTrafficPerSecond: (start, end) =>  ApiClient.get("/api/traffic/per-second", {params: { start, end }})
+    fetchTrafficPerSecond: (start, end) =>  ApiClient.get("/api/traffic/per-second", {params: { start, end }}),
+
+
+
+//=========================================工具================================================
+    fetchCAPTCHA:(userName)=>ApiClient.get(`/captcha/${userName}`)
 
 };
 
