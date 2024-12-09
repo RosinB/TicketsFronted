@@ -96,7 +96,7 @@ function TicketPay() {
                 if (prevCountdown <= 1) {
                     clearInterval(timer);
                     alert("付款超時，訂單已取消！");
-                    navigate("/cancel");
+                    navigate("/");
                     return 0;
                 }
                 return prevCountdown - 1;

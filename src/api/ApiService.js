@@ -82,6 +82,11 @@ const ApiService = {
     //寄送訂單到信箱
     
 
+    //處理退票相關
+    refundticket:(orderId)=>ApiClient.get(`/user/order/refund/${orderId}`),
+
+    refundform:(formData)=>ApiClient.post("/user/order/refund/form",formData),
+
 // =======================================後台管理者相關================================
 
 

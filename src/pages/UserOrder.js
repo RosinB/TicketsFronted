@@ -116,7 +116,7 @@ const InfoItem = ({ icon, label, value }) => (
 
 export default UserOrder;
 
-const OrderLists=({filteredOrders,toggleExpand,expandedOrderId,navigate,getStatusColor})=>{
+const OrderLists = ({filteredOrders,toggleExpand,expandedOrderId,navigate,getStatusColor}) => {
     return(
         <div className="space-y-4">
         {filteredOrders.length === 0 
@@ -125,13 +125,29 @@ const OrderLists=({filteredOrders,toggleExpand,expandedOrderId,navigate,getStatu
                 <div
                     key={order.orderId}
                     className="bg-white shadow-sm hover:shadow-md rounded-lg overflow-hidden border border-gray-200 transition-shadow duration-200">
+                    {/* 新增的圖片橫幅區域 */}
+                    <div className="relative h-48 w-full overflow-hidden">
+                        <img
+                            src={order.picEventTicket}
+                            alt={order.eventName}
+                            className="w-full h-full object-cover"
+                        />
+                        {/* 漸層遮罩效果 */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/40" />
+                    </div>
+
                     <div className="p-4">
-                        {/* 縮略信息 */}
+                        {/* 保留原本的標題和狀態顯示區域 */}
                         <div className="flex justify-between items-center">
                             {/* 訂單的標題 */}
                             <ToggleTittle order={order} />
                             {/* 訂單狀態顯示 */}
-                            <ToggleStatus toggleExpand={toggleExpand} getStatusColor={getStatusColor} order={order} expandedOrderId={expandedOrderId} />
+                            <ToggleStatus 
+                                toggleExpand={toggleExpand} 
+                                getStatusColor={getStatusColor} 
+                                order={order} 
+                                expandedOrderId={expandedOrderId} 
+                            />
                         </div>
 
                         {/* 詳細信息 */}
@@ -148,7 +164,8 @@ const OrderLists=({filteredOrders,toggleExpand,expandedOrderId,navigate,getStatu
                 </div>
             ))
         )}
-    </div>)
+    </div>
+    );
 }
 
 const SearctFilter =({searchTerm,filterStatus,setSearchTerm,setFilterStatus})=>{
@@ -343,7 +360,7 @@ const Pay = ({order,navigate}) => {
                 <div className="mt-4 flex justify-end">
                     <button
                         onClick={
-                            () => navigate("/user/orders/refund", {state: {orderId: order.orderId}})
+                            () => navigate("/user/orders/refund/", {state: {orderId: order.orderId}})
                         }
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 
                             transition-colors duration-200 flex items-center gap-2"
