@@ -113,6 +113,15 @@ const ApiService = {
     fetchRealTimeTicket:(eventId)=>ApiClient.get(`/admin/event/onsale/${eventId}`),
 
 
+//========================================後台退票處理=====================================
+
+    fetchRefundSubmit:()=>ApiClient.get("/admin/orders/refund"),
+
+
+
+
+
+
 
 //=========================================後台APi=================================
     lockTicket: (locked) =>ApiClient.post(`/admin/event/api/lock`, locked),
@@ -123,6 +132,10 @@ const ApiService = {
 
 //========================================流量分析================================ 
     fetchTrafficPerSecond: (start, end) =>  ApiClient.get("/api/traffic/per-second", {params: { start, end }}),
+
+
+
+
 
 
 
