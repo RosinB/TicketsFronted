@@ -34,7 +34,6 @@ function App() {
     return (
         <Routes>
             {/* 管理員路由 */}
-            <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
             <Route path="/admin/*" element={<AdminLayout />} />
 
             {/* 用戶路由 */}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "../../api/ProtectedRoute";
 import AdminHosts from "../pages/AdminHosts";
 import AdminMembers from "../pages/AdminMembers";
@@ -24,7 +24,10 @@ function AdminBody() {
     return (
         <main className="bg-gray-900 flex-grow h-full">
             <div className="w-9/12 h-full mx-auto">
-                <Routes>
+            <Routes>
+                    {/* 添加預設路由 */}
+                    <Route path="/" element={<Navigate to="dashboard" replace />} />
+                    
                     {adminRoutes.map(({ path, element }) => (
                         <Route 
                             key={path}  
