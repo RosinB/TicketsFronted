@@ -33,8 +33,10 @@ function AdminNavbar() {
 
                         會員
                     </CustomLink>
-            
-        
+                    <CustomLink to="/admin/refund">
+                        <User className="w-5 h-5 text-teal-500" />
+                        退票管理
+                    </CustomLink>
             
                     <CustomLink to="/admin/traffic">
                         <Users className="w-5 h-5  text-teal-500" />

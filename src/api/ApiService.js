@@ -117,8 +117,9 @@ const ApiService = {
 
     fetchRefundSubmit:()=>ApiClient.get("/admin/orders/refund"),
 
+    rejectRefund:(refundId)=>ApiClient.post(`/admin/orders/reject/${refundId}`),
 
-
+    approveRefund:(refundId)=>ApiClient.post(`/admin/orders/success/${refundId}`),
 
 
 
@@ -133,6 +134,7 @@ const ApiService = {
 //========================================流量分析================================ 
     fetchTrafficPerSecond: (start, end) =>  ApiClient.get("/api/traffic/per-second", {params: { start, end }}),
 
+    fetchTrafficAllRecord:(eventId,start,end)=>ApiClient.get("/admin/traffic/all",{params:{eventId,start,end}}),
 
 
 

@@ -6,9 +6,10 @@ import AdminMembers from "../pages/AdminMembers";
 import AdEventDetail from "../components/event/AdEventDetail"
 import AdminOrder from "../pages/AdminOrder";
 import RealTimeTicket from "../pages/ticketStatus/RealTimeTicket"
-import TrafficStatsChart from "../traffic/TrafficStatsChart";
 import AdminDashboard from "../pages/AdminDashBoard";
-
+import AdminRefund from "../pages/AdminRefund";
+import AdminTraffic from "../pages/AdminTraffic"
+import TrafficRecord from "../components/traffic/TrafficRecord";
 function AdminBody() {
     // 路由配置
     const adminRoutes = [
@@ -17,8 +18,11 @@ function AdminBody() {
         { path: "order", element: <AdminOrder /> },
         { path: "event/details/:eventId", element: <AdEventDetail /> },
         { path: "status/realtime/:eventId", element: <RealTimeTicket /> },
-        { path: "traffic", element: <TrafficStatsChart /> },
-        { path: "dashboard", element: <AdminDashboard /> }
+        { path: "traffic", element: <AdminTraffic /> },
+        { path: "dashboard", element: <AdminDashboard /> },
+        { path: "refund", element: <AdminRefund /> },
+        { path: "traffic/record/:eventId", element: <TrafficRecord /> },
+
     ];
 
     return (

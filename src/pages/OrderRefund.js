@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ApiService from "../api/ApiService";
 import LoadingSpinner from "../components/modal/LoadingSpinner";
 
@@ -9,7 +9,7 @@ function OrderRefund() {
     const { orderId } = location.state || {};
     const [order, setOreder] = useState("");
     const [loading, setLoading] = useState(true);
-
+    const navigate=useNavigate();
 
 
     const [formData, setFormData] = useState({
@@ -43,6 +43,8 @@ function OrderRefund() {
 
         try {
             await ApiService.refundform(formData);
+            alert("退票申請成功");
+            navigate("/user/orders")
         } catch (error) {
             console.log("提交表單失敗")
         }
