@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// 建立 Axios 實例 //這會在請求上加token
 const ApiClient = axios.create({
     baseURL: "http://localhost", 
 });

@@ -38,7 +38,7 @@ function RealTimeTicket() {
             return;
         }
         console.log("開始建立 WebSocket 連接...");
-        const ws = new WebSocket("ws://localhost:8080/ws/tickets");
+        const ws = new WebSocket("ws://localhost/ws/tickets");
 
         // 連接建立
         ws.onopen = () => {

@@ -19,7 +19,7 @@ function TicketSales() {
             return;
         }
         if (ticketInfo.poolNumber != null) {
-            // 呼叫座位票的 API
+
             ApiService.buyTicketWithSeat(ticketInfo)
                 .then((res) => {
                     const requestId = res.data.data;

@@ -57,7 +57,7 @@ const ApiService = {
 
 
     //透過演唱會id去顯示票種區域和價位
-    getTicketSection: (eventId,userName) => ApiClient.get(`/sales/goticket/area`,{params:{eventId,userName}}),
+    getTicketSection: (eventId) => ApiClient.get(`/sales/goticket/area/${eventId}`),
 
     checkTicketStatus:(requestId) =>ApiClient.get(`/sales/goticket/area/status/${requestId}`),
 
@@ -67,10 +67,10 @@ const ApiService = {
     //======================================= 訂單相關===================================
     fetchOrder: (orderId,userName,requestId) => ApiClient.get(`/sales/goticket/orders`, {params: { orderId, userName,requestId }}),
 
-    fetchAsbOrder: (orderId,userName) => ApiClient.get(`/sales/goticket/asborders`, {params: { orderId, userName }}),
+    fetchAsbOrder: (orderId) => ApiClient.get(`/sales/goticket/asborders/${orderId}`),
 
 
-    fetchUserOrder:(userName)=>ApiClient.get(`/user/order/${userName}`),
+    fetchUserOrder:()=>ApiClient.get("/user/order"),
 
     //庫款後更新訂單狀況
     updateOrderStatus:(orderId)=> ApiClient.post(`/sales/goticket/pay/${orderId}`),
@@ -142,7 +142,7 @@ const ApiService = {
 
 
 //=========================================工具================================================
-    fetchCAPTCHA:(userName)=>ApiClient.get(`/captcha/${userName}`)
+    fetchCAPTCHA:()=>ApiClient.get("/captcha")
 
 };
 

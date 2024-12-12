@@ -12,7 +12,10 @@ function Home() {
     
     const fetchEvent = ()=>{
         ApiService.fetchAllPic()
-            .then((res)=> {setAllEvent(res.data.data)})
+            .then((res)=> {
+                setAllEvent(res.data.data)    
+                console.log("資料室:",res.data.data);    
+            })
             .catch((err)=>{console.log("輪播圖讀取圖片錯誤",err)})
             .finally(()=>{setLoading(false)})
     };

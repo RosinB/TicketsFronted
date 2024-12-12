@@ -16,7 +16,6 @@ import {
 function TicketOrders() {
     const location = useLocation();
     const { orderId } = location.state || {};
-    const userName = localStorage.getItem("userName")
     const navigate = useNavigate();
 
     const [order, setOrder] = useState(null);
@@ -28,8 +27,8 @@ function TicketOrders() {
             navigate("/");
             return;
         }
-
-        ApiService.fetchAsbOrder(orderId, userName)
+    
+        ApiService.fetchAsbOrder(orderId)
             .then((res) => { setOrder(res.data.data) })
             .catch((err) => { console.log("訂單摘要有錯誤" + err) })
             .finally(() => { setLoading(false); })
@@ -58,7 +57,7 @@ function TicketOrders() {
     };
     const handleSendEmail = async () => {
         try {
-            await ApiService.sendOrderEmail(orderId, userName);
+            await ApiService.sendOrderEmail(orderId);
             alert("訂單已寄送到您的信箱");
         } catch (error) {
             console.log("寄送失敗"+error);

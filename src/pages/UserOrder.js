@@ -33,7 +33,7 @@ function UserOrder() {
 
         const fetchOrder = async () => {
             try {
-                const response = await ApiService.fetchUserOrder(userName);
+                const response = await ApiService.fetchUserOrder();
                 setOrders(response.data.data);
                 console.log(response.data.data)
             } catch (error) {

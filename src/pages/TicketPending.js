@@ -1,57 +1,99 @@
-import React, { useEffect, useState } from "react";
-import ApiService from "../api/ApiService";
+import React, { useEffect, useState, useRef } from "react";
 import LoadingSpinner from "../components/modal/LoadingSpinner";
 import { useLocation, useNavigate } from "react-router-dom";
 
-function TicketPending() {
+function TicketWebSocket() {
     const location = useLocation();
     const navigate = useNavigate();
     const { requestId } = location.state || {};
-
     const [loading, setLoading] = useState(true);
-
-    const checkTicketStatus = async () => {
-        try {
-            // 查詢購票狀態
-            const response = await ApiService.checkTicketStatus(requestId); 
-            const status = response.data.data.status; 
-            console.log("RequestId是:"+requestId+" 狀態是:"+status );
-        
-            if (status === "付款中") {
-                // 購票成功，跳轉到訂單摘要頁面
-                navigate(`/event/ticket/pay/${requestId}`, { state:  
-                    { orderId: response.data.data.orderId, 
-                    requestId
-                } });
-                setLoading(false)
-            } else if (status === "錯誤") {
-                // 購票失敗，提示用戶並跳轉到首頁
-                alert("購票失敗：票務不足"  );
-                navigate("/");
-            } else {
-                console.log("正在輪尋中")
-                setTimeout(checkTicketStatus, 1000);
-            }
-        } catch (error) {
-            alert("伺服器錯誤，請稍後再試！");
-            navigate("/");
-        }
-    };
+    const wsRef = useRef(null);
 
     useEffect(() => {
-        console.log(requestId)
-        if (requestId) {
-            checkTicketStatus(); // 啟動輪詢
-        } else {
+        if (!requestId) {
             alert("無效的購票請求！");
             navigate("/");
+            return;
         }
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [requestId]);
+        const connectWebSocket = () => {
+            
+            const ws = new WebSocket(`ws://localhost:8080/ws/order/status`);
+            wsRef.current = ws;
 
-    if (loading) return <LoadingSpinner />;
-    return <div className="overflow-x-auto">購票處理中...</div>;
+            ws.onopen = () => {
+                console.log("WebSocket 連接已建立");
+                ws.send(JSON.stringify({ requestId }));
+            };
+
+            ws.onmessage = (event) => {
+                try {
+                    const response = JSON.parse(event.data);
+                    console.log("正在使用:RequestId是:", requestId, "狀態是:", response.status);
+
+                    switch (response.status) {
+                        case "付款中":
+                            navigate(`/event/ticket/pay/${requestId}`, {
+                                state: {
+                                    orderId: response.orderId,
+                                    requestId
+                                }
+                            });
+                            setLoading(false);
+                            ws.close();
+                            break;
+
+                        case "錯誤":
+                            alert("購票失敗：票務不足");
+                            navigate("/");
+                            ws.close();
+                            break;
+
+                        default:
+                            console.log("等待訂單處理中...");
+                    }
+                } catch (error) {
+                    console.error("處理訊息時發生錯誤:", error);
+                }
+            };
+
+            ws.onerror = (error) => {
+                console.error("WebSocket 錯誤:", error);
+                alert("連接發生錯誤，請稍後再試！");
+                navigate("/");
+            };
+
+            ws.onclose = (event) => {
+                console.log("WebSocket 連接已關閉", event.code, event.reason);
+                if (event.code !== 1000) {  
+                    setTimeout(connectWebSocket, 3000);
+                }
+            };
+        };
+
+        connectWebSocket();
+
+        // 清理函數
+        return () => {
+            if (wsRef.current) {
+                wsRef.current.close(1000, "Component unmounting");
+                wsRef.current = null;
+            }
+        };
+    }, [requestId, navigate]);
+
+
+    
+    if (loading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen">
+                <LoadingSpinner />
+                <div className="mt-4 text-lg">訂單處理中，請稍候...</div>
+            </div>
+        );
+    }
+
+    return null;
 }
 
-export default TicketPending;
+export default TicketWebSocket;

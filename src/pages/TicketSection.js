@@ -26,7 +26,7 @@ function TicketSection() {
 
     const fetchCaptcha = async () => {
         try {
-            const response = await ApiService.fetchCAPTCHA(userName);
+            const response = await ApiService.fetchCAPTCHA();
             const data = response.data;
             setCaptchaImage(data.data.captchaImage);
             setCaptchaKey(data.data.captchaKey);
@@ -56,7 +56,7 @@ function TicketSection() {
             return;
         }
 
-        ApiService.getTicketSection(eventId, userName)
+        ApiService.getTicketSection(eventId)
             .then(({ data: { data } }) => {
                 setEvent(formatEventData(data));
                 setTickets(formatTicketData(data.ticketDto));
@@ -83,7 +83,7 @@ function TicketSection() {
 
     //封裝回傳錯誤
     const handleError = (error) => {
-  
+
         alert("使用者未認證，請檢查您的帳號狀態。");
         setTimeout(() => {
             navigate("/user/update");
@@ -91,7 +91,7 @@ function TicketSection() {
     }
 
 
-  
+
 
     //獲得演唱會資訊
     const formatEventData = (data) => ({

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Home, Users, LogOut,LayoutDashboard,Building,User } from 'lucide-react';
+import { Home, Users, LogOut, LayoutDashboard, Building, User } from 'lucide-react';
 
 function AdminNavbar() {
     // 登出
@@ -18,33 +18,39 @@ function AdminNavbar() {
                     <Link to="/admin/dashboard" className="hover:text-teal-400 transition">管理員後台</Link>
                 </h1>
 
-                <nav className="flex text-xl space-x-8 font-bold mt-2">
+                <button 
+                    className="lg:hidden text-teal-400 focus:outline-none"
+                    onClick={() => {
+                        const menu = document.getElementById('mobile-menu');
+                        menu.classList.toggle('hidden');
+                    }}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+                <nav id="mobile-menu" className="hidden lg:flex flex-col lg:flex-row text-xl space-y-4 lg:space-y-0 lg:space-x-8 font-bold mt-4 lg:mt-0">
                     <CustomLink to="/admin/dashboard">
                         <LayoutDashboard className="w-5 h-5 text-teal-500" />
-                    演唱會控台
+                        演唱會控台
                     </CustomLink>
                     <CustomLink to="/admin/hosts">
                         <Building className="w-5 h-5 text-teal-500" />
-
                         主辦方
                     </CustomLink>
                     <CustomLink to="/admin/members">
                         <User className="w-5 h-5 text-teal-500" />
-
                         會員
                     </CustomLink>
                     <CustomLink to="/admin/refund">
                         <User className="w-5 h-5 text-teal-500" />
                         退票管理
                     </CustomLink>
-            
                     <CustomLink to="/admin/traffic">
-                        <Users className="w-5 h-5  text-teal-500" />
+                        <Users className="w-5 h-5 text-teal-500" />
                         流量分析測試
                     </CustomLink>
-                
-
-
                     <button
                         onClick={handleLogout}
                         className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition flex items-center gap-2"

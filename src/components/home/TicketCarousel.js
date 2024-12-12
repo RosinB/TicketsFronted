@@ -31,7 +31,7 @@ function TicketCarouse({allEvent}) {
 
 
 
-    console.log("首頁的圖片資料",allEvent);
+    // console.log("首頁的圖片資料",allEvent);
 
     return (
         <div className="w-full h-full -mt-7 -mb-5 ">
