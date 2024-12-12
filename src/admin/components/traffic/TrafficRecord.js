@@ -10,7 +10,7 @@ function TrafficRecord() {
     const { eventId } = useParams();
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
-    const pageSize = 10;
+    const pageSize = 30;
 
     useEffect(() => {
         const start = currentPage * pageSize;
@@ -56,6 +56,7 @@ function TrafficRecord() {
                         <thead className="text-gray-400 text-sm">
                             <tr>
                                 <th className="text-left p-2">用戶名</th>
+                                <th className="text-left p-2">IP</th>
                                 <th className="text-left p-2">時間</th>
                                 <th className="text-left p-2">請求URL</th>
                                 <th className="text-left p-2">執行時間</th>
@@ -64,9 +65,12 @@ function TrafficRecord() {
                             </tr>
                         </thead>
                         <tbody className="text-white">
-                            {trafficData && trafficData.map((record, index) => (
+                            {trafficData && trafficData.filter(record => record.requestUrl !== "/admin/traffic/all")  // 先過濾掉不要的請求
+                                .map((record, index) => (
                                 <React.Fragment key={index}>
                                     <tr className="border-t border-gray-700 hover:bg-gray-700/50">
+                                    <td className="p-2">{record.ip}</td>
+
                                         <td className="p-2">{record.userName}</td>
                                         <td className="p-2">{new Date(record.timestamp).toLocaleString()}</td>
                                         <td className="p-2">{record.requestUrl}</td>
@@ -94,7 +98,6 @@ function TrafficRecord() {
                                                 <div className="p-4 grid grid-cols-3 gap-4 text-sm">
                                                     <div className="space-y-2">
                                                         <h3 className="font-semibold text-gray-400">請求詳情</h3>
-                                                        <p>IP位址: {record.ip}</p>
                                                         <p>請求類型: {record.requestType}</p>
                                                         <p>請求方法: {record.requestMethod}</p>
                                                         <p>來源頁面: {record.referrer}</p>
