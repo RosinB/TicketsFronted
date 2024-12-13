@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, XCircle } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 
 function TrafficRequest() {
     const [requests, setRequests] = useState(() => {
         const savedRequests = sessionStorage.getItem('trafficRequests');
         return savedRequests ? JSON.parse(savedRequests) : [];
-    });    
+    });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,13 +38,41 @@ function TrafficRequest() {
             }
         };
     }, []);
-    console.log("請求是:",requests)
+
+    const renderRequestInfo = (request) => {
+        if (request.requestType === 'BUY_TICKET') {
+            return (
+                <div className="space-y-1">
+                    <div>{request.requestUrl}</div>
+                    <div className="flex gap-2 text-xs">
+                        <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded">
+                            活動 {request.eventId}
+                        </span>
+                        <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded">
+                            {request.ticketType}
+                        </span>
+                        <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded">
+                            {request.ticketQuantity} 張
+                        </span>
+                    </div>
+                </div>
+            );
+        }
+        return request.requestUrl;
+    };
+
+    const renderStatusIcon = (success, errorMessage) => {
+        if (success) {
+            return <CheckCircle2 className="w-4 h-4 text-green-500" />;
+        }
+        return <XCircle className="w-4 h-4 text-red-500" title={errorMessage} />;
+    };
 
     return (
-        <div className="min-h-screen bg-gray-900 px-4 py-6">
+        <div className="min-h-screen bg-gray-900 px-4 py-6 ">
             <header className="max-w-7xl mx-auto mb-6">
                 <div className="flex items-center gap-3 mb-6">
-                    <button 
+                    <button
                         onClick={() => navigate('/admin/traffic')}
                         className="text-teal-500 hover:text-teal-400"
                     >
@@ -61,13 +89,11 @@ function TrafficRequest() {
                             <thead className="text-gray-400 text-sm">
                                 <tr>
                                     <th className="text-left p-2">時間</th>
-                                    <th className="text-left p-2">用戶</th>
-                                    <th className="text-left p-2">請求方式</th>
-                                    <th className="text-left p-2">API路徑</th>
                                     <th className="text-left p-2">IP</th>
+                                    <th className="text-left p-2">用戶</th>
+                                    <th className="text-left p-2">API路徑</th>
                                     <th className="text-left p-2">執行時間</th>
-                                    <th className="text-left p-2">設備</th>
-                                    <th className="text-left p-2">狀態</th>
+                                    <th className="text-left p-2">請求方式</th>
                                     <th className="text-left p-2">錯誤</th>
                                 </tr>
                             </thead>
@@ -75,34 +101,38 @@ function TrafficRequest() {
                                 {requests.map((request) => (
                                     <tr key={request.requestId} className="border-t border-gray-700 hover:bg-gray-700/50">
                                         <td className="p-2">
-                                            {new Date(request.timestamp).toLocaleTimeString()}
+                                            {new Date(request.timestamp).toLocaleTimeString('zh-TW', {
+                                                hour12: false,
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                second: '2-digit'
+                                            })}
                                         </td>
-                                        <td className="p-2">{request.userName}</td>
                                         <td className="p-2">
-                                            <span className={`px-2 py-1 rounded text-xs ${
-                                                getMethodColor(request.requestMethod)
-                                            }`}>
-                                                {request.requestMethod}
-                                            </span>
+                                            {request.ipAddress}
                                         </td>
-                                        <td className="p-2">{request.requestUrl}</td>
-                                        <td className="p-2">{request.ipAddress}</td>
+                                        <td className="p-2">
+                                            {request.userName}
+                                        </td>
+                                        <td className="p-2">
+                                            
+                                            {renderRequestInfo(request)}
+                                        </td>
                                         <td className="p-2">
                                             {request.executionTime}ms
                                         </td>
                                         <td className="p-2">
-                                            <span className="text-xs bg-gray-700 px-2 py-1 rounded">
-                                                {request.deviceType}
-                                            </span>
-                                        </td>
-                                        <td className={`p-2 ${request.success ? 'text-green-500' : 'text-red-500'}`}>
-                                            {request.success ? '成功' : '失敗'}
-                                            {request.errorMessage && 
-                                                <span className="text-xs ml-1">({request.errorMessage})</span>
-                                            }
-                                        </td>
-                                        <td className="p-2">{request.errorMessage}</td>
+                                            <div className="flex items-center gap-2">
+                                                <span className={`px-2 py-1 rounded text-xs ${getMethodColor(request.requestMethod)}`}>
+                                                    {request.requestMethod}
+                                                </span>
+                                                {renderStatusIcon(request.success, request.errorMessage)}
 
+                                            </div>
+                                        </td>
+                                        <td className="p-2 text-red-400">
+                                            {request.errorMessage}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -114,17 +144,13 @@ function TrafficRequest() {
     );
 }
 
-// 輔助函數：根據請求方法返回不同的顏色
 function getMethodColor(method) {
     switch (method?.toUpperCase()) {
         case 'GET':
             return 'bg-blue-500/20 text-blue-400';
         case 'POST':
             return 'bg-green-500/20 text-green-400';
-        case 'PUT':
-            return 'bg-yellow-500/20 text-yellow-400';
-        case 'DELETE':
-            return 'bg-red-500/20 text-red-400';
+
         default:
             return 'bg-gray-500/20 text-gray-400';
     }

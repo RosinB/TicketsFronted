@@ -11,7 +11,7 @@ function AdminNavbar() {
     };
 
     return (
-        <nav className="bg-gradient-to-br from-gray-900 via-gray-800 to-black h-20 sticky top-0 z-10 text-white">
+        <nav className="bg-gradient-to-br from-gray-900 via-gray-800 to-black h-18 sticky top-0 z-10 text-white">
             <div className="container mx-auto flex justify-between items-center py-4 px-6">
                 <h1 className="text-2xl font-bold tracking-wide flex items-center gap-2">
                     <Home className="w-6 h-6" />
