@@ -40,14 +40,12 @@ function RealTimeTicket() {
         console.log("開始建立 WebSocket 連接...");
         const ws = new WebSocket("ws://localhost/ws/tickets");
 
-        // 連接建立
         ws.onopen = () => {
             console.log("WebSocket 連接已建立");
             setSocket(ws);
             setError(null);
         };
 
-        // 接收消息
         ws.onmessage = (event) => {
             console.log("收到 WebSocket 消息:", event.data);
 
@@ -106,7 +104,6 @@ function RealTimeTicket() {
         });
     }, [socket, event.dto, eventId]);
 
-    // 初始化
     useEffect(() => {
 
         const initialize = async () => {

@@ -10,6 +10,7 @@ import AdminDashboard from "../pages/AdminDashBoard";
 import AdminRefund from "../pages/AdminRefund";
 import AdminTraffic from "../pages/AdminTraffic"
 import TrafficRecord from "../components/traffic/TrafficRecord";
+import TrafficRequest from "../components/traffic/TrafficRequest";
 function AdminBody() {
     // 路由配置
     const adminRoutes = [
@@ -22,6 +23,7 @@ function AdminBody() {
         { path: "dashboard", element: <AdminDashboard /> },
         { path: "refund", element: <AdminRefund /> },
         { path: "traffic/record/:eventId", element: <TrafficRecord /> },
+        { path: "traffic/requests", element: <TrafficRequest /> },
 
     ];
 
