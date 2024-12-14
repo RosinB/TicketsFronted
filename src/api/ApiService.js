@@ -137,9 +137,9 @@ const ApiService = {
     fetchTrafficAllRecord:(eventId,start,end)=>ApiClient.get("/admin/traffic/all",{params:{eventId,start,end}}),
 
 
-
-
-
+    blockUser:(userName)=>ApiClient.get(`/admin/traffic/block/${userName}`),
+    unBlockUser:(userName)=>ApiClient.get(`/admin/traffic/unblock/${userName}`),
+    getBlockUser:()=>ApiClient.get("/admin/traffic/block/all"),
 
 //=========================================工具================================================
     fetchCAPTCHA:()=>ApiClient.get("/captcha")

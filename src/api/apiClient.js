@@ -4,7 +4,6 @@ const ApiClient = axios.create({
     baseURL: "http://localhost", 
 });
 
-
 ApiClient.interceptors.request.use(
     (config) => {
     
@@ -27,6 +26,14 @@ ApiClient.interceptors.response.use(
         return response;
     },
     (error) => {
+        console.log("完整錯誤資訊:", error.response);
+        if (error.response?.status === 403 && error.response?.data?.statusCode === 999) {
+            console.log("檢測到帳號被封鎖");
+            window.location.href = '/block';
+            return Promise.reject(new Error("account_blocked"));
+        }
+
+
         if (error.response && error.response.status === 401) {
             // 靜默處理，不顯示警告
             localStorage.removeItem("token");

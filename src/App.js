@@ -5,10 +5,11 @@ import Body from "./layout/Body";
 import Footer from "./layout/Footer";
 import AdminBody from "./admin/layout/AdminBody";
 import AdminNavbar from "./admin/layout/AdminNavbar";
-
+import BlockList from "./admin/components/event/BlockList";
 function App() {
     // 檢查用戶角色的函數
     const checkRole = () => localStorage.getItem("role") || "user";
+
 
     // 管理員頁面布局
     const AdminLayout = () => {
@@ -30,9 +31,17 @@ function App() {
             <Footer />
         </div>
     );
+  // 封鎖頁面布局
+    const BlockLayout = () => (
+    <div className="flex flex-col min-h-screen">
+        <BlockList />
+    </div>
 
+);
     return (
         <Routes>
+            <Route path="/block" element={<BlockLayout />} />
+
             {/* 管理員路由 */}
             <Route path="/admin/*" element={<AdminLayout />} />
 
@@ -41,5 +50,6 @@ function App() {
         </Routes>
     );
 }
+
 
 export default App;

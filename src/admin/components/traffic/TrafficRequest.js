@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeft, CheckCircle2, XCircle } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
+import ApiService from "../../../api/ApiService";
 
 function TrafficRequest() {
     const [requests, setRequests] = useState(() => {
@@ -8,6 +9,7 @@ function TrafficRequest() {
         return savedRequests ? JSON.parse(savedRequests) : [];
     });
     const navigate = useNavigate();
+    const [username, setUsername] = useState('');
 
     useEffect(() => {
         const ws = new WebSocket('ws://localhost/ws/request');
@@ -61,6 +63,23 @@ function TrafficRequest() {
         return request.requestUrl;
     };
 
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value);
+    };
+
+    
+    const handleBlockUser = () => {
+        try {
+            ApiService.blockUser(username);
+            alert("封鎖成功")
+        } catch (error) {
+            console.log("封鎖失敗"+error)
+        }
+    };
+
+
+
+
     const renderStatusIcon = (success, errorMessage) => {
         if (success) {
             return <CheckCircle2 className="w-4 h-4 text-green-500" />;
@@ -69,7 +88,7 @@ function TrafficRequest() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 px-4 py-6 ">
+        <div className="min-h-screen bg-gray-900 px-4 py-6">
             <header className="max-w-7xl mx-auto mb-6">
                 <div className="flex items-center gap-3 mb-6">
                     <button
@@ -79,10 +98,26 @@ function TrafficRequest() {
                         <ArrowLeft className="w-8 h-8" />
                     </button>
                     <h1 className="text-2xl font-bold text-white">即時請求監控</h1>
+                    <div className="flex items-center ml-auto">
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={handleUsernameChange}
+                            placeholder="輸入用戶名"
+                            className="px-4 py-2 text-sm border border-gray-700 bg-gray-800 text-white rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        />
+                        <button
+                            onClick={handleBlockUser}
+                            className="px-4 py-2 text-sm bg-teal-500 text-white rounded-r-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        >
+                            封鎖用戶
+                        </button>
+                    </div>
                 </div>
             </header>
 
             <main className="max-w-7xl mx-auto">
+
                 <div className="bg-gray-800 rounded-lg p-6">
                     <div className="overflow-x-auto">
                         <table className="w-full">
@@ -115,7 +150,7 @@ function TrafficRequest() {
                                             {request.userName}
                                         </td>
                                         <td className="p-2">
-                                            
+
                                             {renderRequestInfo(request)}
                                         </td>
                                         <td className="p-2">

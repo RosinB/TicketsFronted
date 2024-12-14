@@ -84,10 +84,15 @@ function TicketSection() {
     //封裝回傳錯誤
     const handleError = (error) => {
 
-        alert("使用者未認證，請檢查您的帳號狀態。");
-        setTimeout(() => {
-            navigate("/user/update");
-        }, 100);
+        if (error.response && error.response.status === 401) {
+            alert("使用者未認證，請檢查您的帳號狀態。");
+            setTimeout(() => {
+                navigate("/user/update");
+            }, 100);
+        } else {
+            // 處理其他錯誤
+            console.error("發生錯誤:", error);
+        }
     }
 
 

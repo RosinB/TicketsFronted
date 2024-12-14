@@ -30,7 +30,7 @@ function AdminNavbar() {
                     </svg>
                 </button>
 
-                <nav id="mobile-menu" className="hidden lg:flex flex-col lg:flex-row text-xl space-y-4 lg:space-y-0 lg:space-x-8 font-bold mt-4 lg:mt-0">
+                <nav id="mobile-menu" className="hidden md:flex flex-col lg:flex-row text-xl space-y-4 lg:space-y-0 lg:space-x-8 font-bold mt-4 lg:mt-0">
                     <CustomLink to="/admin/dashboard">
                         <LayoutDashboard className="w-5 h-5 text-teal-500" />
                         演唱會控台

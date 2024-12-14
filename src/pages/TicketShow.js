@@ -46,7 +46,9 @@ function TicketShow() {
   const fetchEvent = () => {
     ApiService.fetchTicketsEvent(eventId)
       .then((res) => { setEvent(res.data.data) })
-      .catch((err) => { console.log("抓取演唱會資料失敗", err) })
+      .catch((err) => { console.log("抓取演唱會資料失敗", err) 
+        
+      })
       .finally(() => { setLoading(false) })
   }
 
@@ -65,7 +67,14 @@ function TicketShow() {
     navigate("/event/ticket/section", { state: { eventId } });
   };
 
-
+  if (!event) {
+    return (
+      <div className="flex flex-col items-center pt-20">
+        <h2 className="text-2xl text-gray-700">目前無法取得資料</h2>
+        <p className="text-gray-500 mt-4">請稍後再試。</p>
+      </div>
+    );
+  }
 
 
 
