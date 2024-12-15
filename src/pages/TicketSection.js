@@ -84,7 +84,7 @@ function TicketSection() {
     //封裝回傳錯誤
     const handleError = (error) => {
 
-        if (error.response && error.response.status === 401) {
+        if (error.response && error.response.status === 500) {
             alert("使用者未認證，請檢查您的帳號狀態。");
             setTimeout(() => {
                 navigate("/user/update");
@@ -365,15 +365,17 @@ const TicketZoneInfo = ({ ticket, onSeatSelection, onQuantityChange, index }) =>
                 </div>
             </div>
 
-            {/* 座位選擇按鈕 */}
-            <div className="px-4 pb-3">
-                <button
-                    onClick={() => onSeatSelection(ticket.zone)}
-                    className="text-sm text-blue-500 hover:text-blue-600 transition-colors"
-                >
-                    查看座位圖
-                </button>
-            </div>
+             {/* 座位選擇按鈕 - 只在非售完狀態顯示 */}
+             {ticket.status !== "售完" && (
+                <div className="px-4 pb-3">
+                    <button
+                        onClick={() => onSeatSelection(ticket.zone)}
+                        className="text-sm text-blue-500 hover:text-blue-600 transition-colors"
+                    >
+                        查看座位圖
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

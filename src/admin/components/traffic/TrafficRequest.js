@@ -10,12 +10,17 @@ function TrafficRequest() {
     });
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
+    const [wsStatus, setWsStatus] = useState('connecting'); // 'connecting', 'connected', 'closed'
+    const [ipAddress, setIpAddress] = useState('');
+
 
     useEffect(() => {
         const ws = new WebSocket('ws://localhost/ws/request');
 
         ws.onopen = () => {
             console.log('連接成功');
+            setWsStatus('connected');
+
         };
 
         ws.onmessage = (event) => {
@@ -32,6 +37,8 @@ function TrafficRequest() {
         };
         ws.onclose = () => {
             console.log("websock關閉");
+            setWsStatus('closed');
+
         };
 
         return () => {
@@ -67,16 +74,27 @@ function TrafficRequest() {
         setUsername(event.target.value);
     };
 
-    
+
     const handleBlockUser = () => {
         try {
             ApiService.blockUser(username);
             alert("封鎖成功")
         } catch (error) {
-            console.log("封鎖失敗"+error)
+            console.log("封鎖失敗" + error)
         }
     };
+    const handleIpChange = (event) => {
+        setIpAddress(event.target.value);
+    };
 
+    const handleBlockIp = () => {
+        try {
+            ApiService.blockIp(ipAddress);
+            alert("IP 封鎖成功");
+        } catch (error) {
+            console.log("IP 封鎖失敗" + error);
+        }
+    };
 
 
 
@@ -111,6 +129,22 @@ function TrafficRequest() {
                             className="px-4 py-2 text-sm bg-teal-500 text-white rounded-r-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                         >
                             封鎖用戶
+                        </button>
+                    </div>
+                    {/* 新增的 IP 封鎖 */}
+                    <div className="flex items-center">
+                        <input
+                            type="text"
+                            value={ipAddress}
+                            onChange={handleIpChange}
+                            placeholder="輸入 IP"
+                            className="px-4 py-2 text-sm border border-gray-700 bg-gray-800 text-white rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        />
+                        <button
+                            onClick={handleBlockIp}
+                            className="px-4 py-2 text-sm bg-red-500 text-white rounded-r-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        >
+                            封鎖 IP
                         </button>
                     </div>
                 </div>
@@ -175,6 +209,24 @@ function TrafficRequest() {
                     </div>
                 </div>
             </main>
+            {/* WebSocket 狀態指示器 */}
+            <div className="fixed bottom-4 right-4 bg-gray-800 px-4 py-2 rounded-full shadow-lg">
+                <div className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${wsStatus === 'connected'
+                        ? 'animate-pulse bg-green-500'
+                        : wsStatus === 'connecting'
+                            ? 'animate-pulse bg-yellow-500'
+                            : 'bg-red-500'
+                        }`} />
+                    <span className="text-sm text-white">
+                        {wsStatus === 'connected'
+                            ? '已連接'
+                            : wsStatus === 'connecting'
+                                ? '連接中'
+                                : '已斷開'}
+                    </span>
+                </div>
+            </div>
         </div>
     );
 }

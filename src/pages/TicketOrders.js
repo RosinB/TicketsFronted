@@ -55,19 +55,21 @@ function TicketOrders() {
             { id: "status", icon: <AlertCircle className="text-indigo-500" size={20} />, label: "訂單狀態:", value: orderData.orderStatus }
         ];
     };
-    const handleSendEmail = async () => {
-        try {
-            await ApiService.sendOrderEmail(orderId);
-            alert("訂單已寄送到您的信箱");
-        } catch (error) {
-            console.log("寄送失敗"+error);
+    // const handleSendEmail = async () => {
+    //     try {
+    //         await ApiService.sendOrderEmail(orderId);
+    //         alert("訂單已寄送到您的信箱");
+    //     } catch (error) {
+    //         console.log("寄送失敗"+error);
             
-        }
-    };
+    //     }
+    // };
     useEffect(() => {
         fetchOrder();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [orderId]);
+
+    if (loading) return <LoadingSpinner />
 
     if (!order) return (
         <div className="min-h-screen flex items-center justify-center">
@@ -79,7 +81,6 @@ function TicketOrders() {
     );
 
 
-    if (loading) return <LoadingSpinner />
     const orderInfo = getOrderInfo(order);
     
 
@@ -94,7 +95,7 @@ function TicketOrders() {
                     <OrderTitle/>
                     {/*訂單內容 */}
                     <OrderDetail orderInfo={orderInfo}/>
-                    <EmailButton onSendEmail={handleSendEmail} />
+                    <EmailButton  />
 
                 </div>
             </div>
@@ -141,15 +142,17 @@ const OrderDetail=({orderInfo})=>{
     </div>)
 
 }
-const EmailButton = ({ onSendEmail }) => {
+const EmailButton = () => {
+    const navigate = useNavigate();
+
     return (
         <div className="p-5 flex justify-end">
             <button
-                onClick={onSendEmail}
+                onClick={() => navigate('/user/orders')}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md"
             >
                 <Mail className="w-4 h-4" />
-                寄送訂單至信箱
+                查詢訂單詳情
             </button>
         </div>
     );

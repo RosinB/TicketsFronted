@@ -26,7 +26,8 @@ function Home() {
 
     if(loading) return <LoadingSpinner/>
 
-
+    console.log(allEvent);
+    
 
     return (
         <div className="text-center">

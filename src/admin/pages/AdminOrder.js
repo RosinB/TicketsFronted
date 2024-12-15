@@ -26,7 +26,9 @@ const AdminOrder = () => {
             all: orders.length,
             付款中: orders.filter(order => order.orderStatus === "付款中").length,
             訂單取消: orders.filter(order => order.orderStatus === "訂單取消").length,
-            訂單完成: orders.filter(order => order.orderStatus === "訂單完成").length
+            訂單完成: orders.filter(order => order.orderStatus === "訂單完成").length,
+            申請退票: orders.filter(order => order.orderStatus === "申請退票").length
+
         };
         return counts;
     };
@@ -107,6 +109,7 @@ const AdminOrder = () => {
                     <TabButton status="all" label="全部訂單" />
                     <TabButton status="訂單完成" label="訂單完成" />
                     <TabButton status="付款中" label="付款中" />
+                    <TabButton status="申請退票" label="申請退票" />
                     <TabButton status="訂單取消" label="訂單取消" />
                 </div>
             )}

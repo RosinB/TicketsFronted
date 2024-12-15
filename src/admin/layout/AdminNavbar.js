@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Home, Users, LogOut, LayoutDashboard, Building, User } from 'lucide-react';
+import { Home, Users, LogOut, LayoutDashboard, Building, User,Activity } from 'lucide-react';
 
 function AdminNavbar() {
     // 登出
@@ -40,7 +40,7 @@ function AdminNavbar() {
                         主辦方
                     </CustomLink>
                     <CustomLink to="/admin/members">
-                        <User className="w-5 h-5 text-teal-500" />
+                        <Users className="w-5 h-5 text-teal-500" />
                         會員
                     </CustomLink>
                     <CustomLink to="/admin/refund">
@@ -48,8 +48,8 @@ function AdminNavbar() {
                         退票管理
                     </CustomLink>
                     <CustomLink to="/admin/traffic">
-                        <Users className="w-5 h-5 text-teal-500" />
-                        流量分析測試
+                    <Activity className="w-5 h-5 text-teal-500" />
+                        流量中心
                     </CustomLink>
                     <button
                         onClick={handleLogout}

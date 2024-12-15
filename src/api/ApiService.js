@@ -140,6 +140,9 @@ const ApiService = {
     blockUser:(userName)=>ApiClient.get(`/admin/traffic/block/${userName}`),
     unBlockUser:(userName)=>ApiClient.get(`/admin/traffic/unblock/${userName}`),
     getBlockUser:()=>ApiClient.get("/admin/traffic/block/all"),
+    blockIp:(ipAddress)=>ApiClient.get(`/admin/traffic/block/ip/${ipAddress}`),
+
+
 
 //=========================================工具================================================
     fetchCAPTCHA:()=>ApiClient.get("/captcha")

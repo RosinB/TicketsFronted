@@ -45,7 +45,7 @@ function NewsSection({ allEvent }) {
 
 
     const popularityData = allEvent.map(event => ({
-        name: event.eventName,
+        name: event.eventPerformer,
         popularity: Math.floor(Math.random() * 100),
         interest: Math.floor(Math.random() * 80 + 20)
     }));
@@ -125,6 +125,7 @@ const Chart =({popularityData})=>{
         }
         return null;
     };
+
     return(<div className="bg-white rounded-xl p-6 shadow-xl border border-gray-100">
         <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
             <TrendingUp className="w-6 h-6 text-blue-500" /> {/* 添加圖標 */}

@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { LineChart, Users,  Activity } from 'lucide-react';
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+} from 'recharts';
+import { Users, Activity, LineChart as LineChartIcon } from 'lucide-react';
 import LoadingSpinner from "../../components/modal/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import ApiService from "../../api/ApiService";
@@ -10,18 +19,41 @@ function AdminTraffic() {
         totalTraffic: 0,
         qps: 0
     });
-    const [blockUser,setBlockUser]=useState("")
+    const [blockUser, setBlockUser] = useState("")
     const [userName, setUserName] = useState("");
+    const [wsStatus, setWsStatus] = useState('connecting');
+    const [realtimeQPS, setRealtimeQPS] = useState([]);
 
     const navigate = useNavigate();
 
-  
-    const fetchBlockUser=async()=>{
+
+
+    // 生成即時 QPS 數據
+    useEffect(() => {
+        const generateRealtimeData = () => {
+            const now = new Date();
+            const newData = {
+                time: now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+                value: realTimeStats.qps
+            };
+
+            setRealtimeQPS(prev => {
+                const updatedData = [...prev, newData];
+                if (updatedData.length > 30) updatedData.shift();
+                return updatedData;
+            });
+        };
+
+        const interval = setInterval(generateRealtimeData, 1000);
+        return () => clearInterval(interval);
+    }, [realTimeStats.qps]);
+
+    const fetchBlockUser = async () => {
 
         try {
-            const response=await ApiService.getBlockUser();
+            const response = await ApiService.getBlockUser();
             setBlockUser(response.data.data);
-            console.log("被封鎖的:"+response.data.data);
+            console.log("被封鎖的:" + response.data.data);
 
 
         } catch (error) {
@@ -39,6 +71,8 @@ function AdminTraffic() {
         ws.onopen = () => {
             console.log('WebSocket Connected');
             setLoading(false);
+            setWsStatus('connected');
+
         };
 
         ws.onmessage = (event) => {
@@ -57,10 +91,14 @@ function AdminTraffic() {
 
         ws.onerror = (error) => {
             console.error('WebSocket Error:', error);
+            setWsStatus('error');
+
         };
 
         ws.onclose = () => {
             console.log('WebSocket Disconnected');
+            setWsStatus('closed');
+
         };
 
         // 清理函數
@@ -114,7 +152,34 @@ function AdminTraffic() {
                 <StatsCards stats={combinedStats}
                     onViewActiveUsers={handleViewActiveUsers}
                 />
-                
+                {/* 即時 QPS 圖表 */}
+                <div className="bg-gray-800 p-6 rounded-lg">
+                    <h2 className="text-xl font-bold text-white mb-4">即時 QPS 變化</h2>
+                    <div className="h-[200px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart data={realtimeQPS}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                                <XAxis dataKey="time" stroke="#9CA3AF" />
+                                <YAxis stroke="#9CA3AF" />
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: '#1F2937',
+                                        border: 'none',
+                                        borderRadius: '0.5rem',
+                                        color: '#fff'
+                                    }}
+                                />
+                                <Line
+                                    type="monotone"
+                                    dataKey="value"
+                                    stroke="#10B981"
+                                    dot={false}
+                                    strokeWidth={2}
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
                 {/* 被封鎖用戶列表 */}
                 <div className="bg-gray-800 p-6 rounded-lg">
                     <h2 className="text-xl font-bold text-white mb-4">被封鎖用戶列表</h2>
@@ -156,6 +221,23 @@ function AdminTraffic() {
                     </div>
                 </div>
             </main>
+            <div className="fixed bottom-4 right-4 bg-gray-800 px-4 py-2 rounded-full shadow-lg">
+                <div className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${wsStatus === 'connected'
+                        ? 'animate-pulse bg-green-500'
+                        : wsStatus === 'connecting'
+                            ? 'animate-pulse bg-yellow-500'
+                            : 'bg-red-500'
+                        }`} />
+                    <span className="text-sm text-white">
+                        {wsStatus === 'connected'
+                            ? ' 已連接'
+                            : wsStatus === 'connecting'
+                                ? '連接中...'
+                                : ' 已斷開'}
+                    </span>
+                </div>
+            </div>
         </div>
     );
 }
@@ -170,7 +252,7 @@ const StatsCards = ({ stats, onViewActiveUsers }) => (
             title="今日總請求數"
             value={stats.totalTraffic}
             textColor="text-green-500"
-            icon={<LineChart className="w-8 h-8" />}
+            icon={<LineChartIcon className="w-8 h-8" />} 
         />
         <StatCard
             title="即時請求監控"
@@ -184,7 +266,7 @@ const StatsCards = ({ stats, onViewActiveUsers }) => (
                 </div>
             }
         />
-    
+
     </div>
 );
 

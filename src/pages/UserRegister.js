@@ -14,6 +14,7 @@ function Register() {
         userBirthDate: "",
         userIdCard: ""
     });
+    const today = new Date().toISOString().split("T")[0];
 
     const [fieldErrors, setFieldErrors] = useState({});
 
@@ -69,7 +70,7 @@ function Register() {
         { label: "電話:(10位數)", type: "tel", name: "userPhone" },
         { label: "電子信箱:", type: "email", name: "userEmail" },
         { label: "身分證:", type: "text", name: "userIdCard" },
-        { label: "出生日期:", type: "date", name: "userBirthDate" }
+        { label: "出生日期:", type: "date", name: "userBirthDate", max: today }
     ];
 
 
@@ -164,6 +165,8 @@ const FormRegister = ({ handleSubmit, inputFields, fieldErrors, handleInputChang
                             onChange={handleInputChange}
                             placeholder={`請輸入${field.label.split(':')[0]}`}
                             required
+                            max={field.max || undefined} // 只有在有 max 屬性時才添加
+
                         />
                         {fieldErrors[field.name] && (
                             <p className="mt-1 text-red-500 text-sm">{fieldErrors[field.name]}</p>

@@ -14,6 +14,7 @@ function AdminOnSale() {
     const fetchOnSale = async () => {
         try {
             const response = await ApiService.fetchOnSaleEvent();
+
             setEvents(response.data.data);
         } catch (error) {
             console.log("抓取資料錯誤", error);
@@ -38,17 +39,29 @@ function AdminOnSale() {
 
     // 根據銷售狀態過濾事件
     const getFilteredEvents = () => {
-        if (activeStatus === 'all') return events;
-        return events.filter(event => event.salesStatus === activeStatus);
+        switch (activeStatus) {
+            case 'all':
+                return events;
+            case '開賣中':
+                return events.filter(event => event.eventStatus === '售票中');
+            case '未開賣':
+                return events.filter(event => event.eventStatus === '即將舉辦');
+            default:
+                return events;
+        }
     };
 
     // 獲取每個狀態的數量
     const getStatusCounts = () => ({
         all: events.length,
-        '開賣中': events.filter(event => event.salesStatus === '開賣中').length,
-        '已完售': events.filter(event => event.salesStatus === '已完售').length,
-        '未開賣': events.filter(event => event.salesStatus === '未開賣').length
+        '開賣中': events.filter(event => event.eventStatus === '售票中').length,
+        '未開賣': events.filter(event => event.eventStatus === '即將舉辦').length
     });
+    const statusButtons = [
+        { id: 'all', label: '全部活動' },
+        { id: '開賣中', label: '開賣中', matchStatus: '售票中' },
+        { id: '未開賣', label: '未開賣', matchStatus: '即將舉辦' }
+    ];
 
     const statusCounts = getStatusCounts();
     const filteredEvents = getFilteredEvents();
@@ -58,9 +71,9 @@ function AdminOnSale() {
     // 狀態標籤顏色映射
     const statusColors = {
         '開賣中': 'text-green-400',
-        '已完售': 'text-red-400',
         '未開賣': 'text-yellow-400'
     };
+
     const formatTime = (date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -74,27 +87,17 @@ function AdminOnSale() {
 
     return (
         <div className=" rounded-lg shadow-lg p-6">
-            {/* <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                    <Tag className="w-6 h-6" />
-                    演唱會售票資訊
-                </h1>
-            </div> */}
+
 
             {/* 狀態過濾器 */}
             <div className="flex gap-4 mb-6 -mt-6">
-                {[
-                    { id: 'all', label: '全部活動' },
-                    { id: '開賣中', label: '開賣中' },
-                    { id: '已完售', label: '已完售' },
-                    { id: '未開賣', label: '未開賣' }
-                ].map(status => (
+                {statusButtons.map(status => (
                     <button
                         key={status.id}
                         onClick={() => setActiveStatus(status.id)}
                         className={`px-4 py-2 rounded-lg transition-all duration-200 ${activeStatus === status.id
-                            ? 'bg-teal-500 text-white'
-                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                ? 'bg-teal-500 text-white'
+                                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             }`}
                     >
                         {status.label} ({statusCounts[status.id]})
@@ -140,7 +143,7 @@ function AdminOnSale() {
                                     <td className="px-6 py-4 text-white">{event.eventSalesDate}</td>
                                     <td className="px-6 py-4 text-white">{event.eventSalesTime}</td>
                                     <td className={`px-6 py-4 ${statusColors[event.salesStatus]}`}>
-                                        {event.salesStatus}
+                                        {event.eventStatus}
                                     </td>
                                     <td className="px-6 py-4">
                                         <button

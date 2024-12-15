@@ -10,7 +10,7 @@ function TicketShow() {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [event, setEvent] = useState(null);
-  const [loading, setLoading] = useState(true); // 加載狀態
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const pages = [
@@ -34,35 +34,33 @@ function TicketShow() {
   const getInfoItems = (eventData) => {
     if (!eventData) return [];
 
+    const isSaleStarted = new Date(eventData.eventSalesDate) <= new Date();
+
     return [
       { label: "演唱會名稱", value: eventData.eventName, icon: <Music2 className="w-4 h-4" /> },
       { label: "場地", value: eventData.eventLocation, icon: <MapPin className="w-4 h-4" /> },
       { label: "日期", value: eventData.eventDate, icon: <Calendar className="w-4 h-4" /> },
       { label: "時間", value: eventData.eventTime, icon: <Clock className="w-4 h-4" /> },
-      { label: "購票", value: "button", icon: <Ticket className="w-4 h-4" /> }
+      { label: "購票", value: "button", icon: <Ticket className="w-4 h-4" />, isSaleStarted }
     ];
   };
-  //api
-  const fetchEvent = () => {
-    ApiService.fetchTicketsEvent(eventId)
-      .then((res) => { setEvent(res.data.data) })
-      .catch((err) => { console.log("抓取演唱會資料失敗", err) 
-        
-      })
-      .finally(() => { setLoading(false) })
-  }
+
+
 
   useEffect(() => {
-
+    const fetchEvent = () => {
+      ApiService.fetchTicketsEvent(eventId)
+        .then((res) => { setEvent(res.data.data) })
+        .catch((err) => { console.log("抓取演唱會資料失敗", err) })
+        .finally(() => { setLoading(false) })
+    }
     fetchEvent();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId])
 
   if (loading) return <LoadingSpinner />
 
   const infoItems = getInfoItems(event);
 
-  //進到演唱會銷售網頁
   const goToTicketSales = () => {
     navigate("/event/ticket/section", { state: { eventId } });
   };
@@ -76,38 +74,34 @@ function TicketShow() {
     );
   }
 
-
-
   return (
     <div className="flex flex-col items-center pt-0 space-y-6 -mt-10">
       <EventPic src={event.eventTicketPic} />
-
-      {/* 橫向資訊區塊 */}
+      <div className={`
+        absolute top-3 right-3 
+        px-3 py-1 
+        text-white text-sm 
+        rounded-full 
+        shadow-md
+        ${new Date(event.eventSalesDate) > new Date() ? 'bg-blue-500' : 'bg-green-500'}
+      `}>
+        {new Date(event.eventSalesDate) > new Date() ? "即將開賣" : "熱賣中"}
+      </div>
       <ColumnData infoItems={infoItems} goToTicketSales={goToTicketSales}/>
-
-      {/* 描述與額外資訊 */}
       <ShowData pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
     </div>
   );
 }
 
-
-export default TicketShow;
-
-
 const ColumnData=({infoItems,goToTicketSales})=>{
   return(<div className="bg-white border-2 border-blue-200 w-9/12 rounded-lg py-6 shadow-lg">
     <div className="max-w-4xl min-w-64 mx-auto">
-      {/* 標題 */}
       <ColTitle infoItems={infoItems}/>
-
-      {/* 資料 */}
       <ColData infoItems={infoItems} goToTicketSales={goToTicketSales}/>
     </div>
   </div>)
-
-
 }
+
 const ShowData=({pages,currentPage,setCurrentPage})=>{
   return(<div className="bg-white w-9/12 flex flex-col rounded-lg shadow-lg overflow-hidden">
     <div className="flex justify-start items-center">
@@ -121,26 +115,16 @@ const ShowData=({pages,currentPage,setCurrentPage})=>{
         />
       ))}
     </div>
-
     <hr className="border-t border-gray-200" />
-
     <div className="max-w-4xl text-center text-gray-700 p-6">
       <h3 className="text-2xl font-semibold mb-4">{pages[currentPage].title}</h3>
       <div className="text-sm">{pages[currentPage].content}</div>
     </div>
   </div>
   )
-
-
 }
 
-
-
-
-
-
 const EventPic = ({ src }) => {
-
   return (
     <div className="w-full h-96 flex justify-center relative shadow-lg mt-2">
       <img
@@ -159,7 +143,6 @@ const ColumnHeader = ({ name, icon }) => (
   </span>
 );
 
-// 修改內容樣式
 const ColumnContent = ({ value }) => (
   <div className="w-1/4 flex flex-col items-center justify-center">
     <span className="font-bold text-lg text-blue-500">
@@ -168,14 +151,20 @@ const ColumnContent = ({ value }) => (
   </div>
 );
 
-// 修改按鈕樣式
-const BuyButton = ({ onClick }) => (
+const BuyButton = ({ onClick, isSaleStarted }) => (
   <button
-    className="bg-blue-500 text-white py-2  rounded-lg hover:bg-blue-600 transition-colors duration-200 w-1/4 flex items-center justify-center gap-2 font-semibold"
-    onClick={onClick}
+    className={`
+      py-2 rounded-lg transition-colors duration-200 w-1/4 
+      flex items-center justify-center gap-2 font-semibold
+      ${isSaleStarted 
+        ? "bg-blue-500 text-white hover:bg-blue-600" 
+        : "bg-gray-400 text-white cursor-not-allowed"}
+    `}
+    onClick={isSaleStarted ? onClick : undefined}
+    disabled={!isSaleStarted}
   >
     <Ticket className="w-4 h-4" />
-    立即購票
+    {isSaleStarted ? "立即購票" : "尚未開售"}
   </button>
 );
 
@@ -183,12 +172,12 @@ const TabButton = ({ title, icon, isActive, onClick }) => (
   <button
     onClick={onClick}
     className={`
-          px-6 py-3 font-bold flex items-center gap-2 transition-colors duration-200
-          ${isActive
+      px-6 py-3 font-bold flex items-center gap-2 transition-colors duration-200
+      ${isActive
         ? "bg-blue-600 text-white"
         : "bg-gray-100 text-gray-600 hover:bg-gray-200"
       }
-      `}
+    `}
   >
     {icon}
     {title}
@@ -196,7 +185,6 @@ const TabButton = ({ title, icon, isActive, onClick }) => (
 );
 
 const ColTitle=({infoItems})=>{
-
   return(<div className="flex justify-between text-center border-b-2 border-blue-100 pb-2 mb-4">
     {infoItems.map(item => (
       <ColumnHeader
@@ -212,9 +200,14 @@ const ColData=({infoItems,goToTicketSales})=>{
   return(<div className="flex justify-between text-center">
     {infoItems.map(item => (
       item.value === "button"
-        ? <BuyButton key={item.label} onClick={goToTicketSales} />
+        ? <BuyButton 
+            key={item.label} 
+            onClick={goToTicketSales} 
+            isSaleStarted={item.isSaleStarted}
+          />
         : <ColumnContent key={item.label} value={item.value} />
     ))}
   </div>)
-
 }
+
+export default TicketShow;
