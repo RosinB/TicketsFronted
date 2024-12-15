@@ -180,26 +180,7 @@ function AdminTraffic() {
                         </ResponsiveContainer>
                     </div>
                 </div>
-                {/* 被封鎖用戶列表 */}
-                <div className="bg-gray-800 p-6 rounded-lg">
-                    <h2 className="text-xl font-bold text-white mb-4">被封鎖用戶列表</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {Array.isArray(blockUser) && blockUser.map((user, index) => (
-                            <div key={index} className="bg-gray-700 p-4 rounded-lg flex justify-between items-center">
-                                <span className="text-white">{user}</span>
-                                <button
-                                    onClick={() => {
-                                        setUserName(user);
-                                        handleSendName();
-                                    }}
-                                    className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors"
-                                >
-                                    解封
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                
 
                 {/* 手動輸入解封區域 */}
                 <div className="bg-gray-800 p-6 rounded-lg">
@@ -218,6 +199,26 @@ function AdminTraffic() {
                         >
                             解封
                         </button>
+                    </div>
+                </div>
+                {/* 被封鎖用戶列表 */}
+                <div className="bg-gray-800 p-6 rounded-lg">
+                    <h2 className="text-xl font-bold text-white mb-4">被封鎖用戶列表</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {Array.isArray(blockUser) && blockUser.map((user, index) => (
+                            <div key={index} className="bg-gray-700 p-4 rounded-lg flex justify-between items-center">
+                                <span className="text-white">{user}</span>
+                                {/* <button
+                                    onClick={() => {
+                                        setUserName(user);
+                                        handleSendName();
+                                    }}
+                                    className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors"
+                                >
+                                    解封
+                                </button> */}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </main>
